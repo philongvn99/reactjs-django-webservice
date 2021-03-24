@@ -1,0 +1,2 @@
+tableList = ["goalkeepers", "defenders", "midfielders", "forwards"]
+personalField = ['id', 'name', 'nationality', 'birthday', 'right_foot', 'kit_number', 'height', 'main_position', 'role', 'salary', 'status']
