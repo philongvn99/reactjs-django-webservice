@@ -1,0 +1,5 @@
+react-router-dom
+reactstrap
+djangorestframework 
+django-cors-headers
+psycopg2
