@@ -17,13 +17,13 @@ const HomePage = (props) => {
                                 <div className="border-top border-danger w-100 mx-auto my-3"></div>
                                 <p className="mb-4">Manchester United Football Club is a professional football club based in Old Trafford, Greater Manchester, England, that competes in the Premier League, the top flight of English football. Nicknamed "the Red Devils", the club was founded as Newton Heath LYR Football Club in 1878, changed its name to Manchester United in 1902 and moved to its current stadium, Old Trafford, in 1910.</p>
                             </div>
-                            <div className="col-lg-8"><img src="https://i.pinimg.com/564x/01/63/e3/0163e38a89faf34aef0b98161e1f18fb.jpg" alt="image" className="w-100"/></div>
+                            <div className="col-lg-8"><img src="https://i.pinimg.com/564x/01/63/e3/0163e38a89faf34aef0b98161e1f18fb.jpg" alt="Sir Alex" className="w-100"/></div>
                         </div>
                     </div>
                     <div className="container my-5">
                         <div className="row py-4">
                             <div className="col-lg-8">
-                                <img src="https://i.pinimg.com/564x/a2/33/8c/a2338c3a62379b050ed9e5df9d399129.jpg" alt="image" className="w-100"/>
+                                <img src="https://i.pinimg.com/564x/a2/33/8c/a2338c3a62379b050ed9e5df9d399129.jpg" alt="Old Trafford" className="w-100"/>
                             </div>
                             <div className="col-lg-4 mb-4 my-lg-auto">
                                 <h1 className="text-dark font-weight-bold mb-3">Our Vision</h1>

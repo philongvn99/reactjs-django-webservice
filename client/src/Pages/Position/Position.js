@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from 'axios';
 import Table from '../TableComponent/Table'
-
+import { Container } from 'reactstrap';
 export default class Position extends React.Component{
   constructor() {
     super();
@@ -42,15 +42,18 @@ export default class Position extends React.Component{
       return(
         <div id = "info-table">
           <img style={style.thumbnail_style} src={this.state.thumbnail_pic} alt='ICON of this position'></img>
-          <div id='player-table'>{this.state.playerTable}</div>
-          <div style={{display: 'flex', alignItems:'center', height:'50px'}}>
-            <a style={{marginRight: '20px'}} href={`http://localhost:3000/players/`} ><button class="btn btn-secondary my-2 my-sm-0 fas fa-arrow-alt-circle-left"> Players</button></a>
-            <a style={{margin: '10px'}} href={`http://localhost:3000/players/goalkeepers/`}><button style={{width: '120px'}} class="btn btn-dark my-2 my-sm-0">Goalkeepers</button></a>
-            <a style={{margin: '10px'}} href={`http://localhost:3000/players/defenders`}><button style={{width: '120px'}} class="btn btn-dark my-2 my-sm-0">Defenders</button></a>
-            <a style={{margin: '10px'}} href={`http://localhost:3000/players/midfielders`}><button style={{width: '120px'}} class="btn btn-dark my-2 my-sm-0">Midfielders</button></a>
-            <a style={{margin: '10px'}} href={`http://localhost:3000/players/forwards`}><button style={{width: '120px'}} class="btn btn-dark my-2 my-sm-0">Forwards</button></a>
-          </div>
+          <Container>
+            <div id='player-table'>{this.state.playerTable}</div>
+            <div style={{display: 'flex', alignItems:'center', height:'50px'}}>
+              <a style={{marginRight: '20px'}} href={`http://localhost:3000/players/`} ><button class="btn btn-black my-2 my-sm-0 fas fa-arrow-alt-circle-left"> Players</button></a>
+              <a style={{margin: '10px'}} href={`http://localhost:3000/players/goalkeepers/`}><button style={{width: '120px'}} class="btn btn-dark my-2 my-sm-0">Goalkeepers</button></a>
+              <a style={{margin: '10px'}} href={`http://localhost:3000/players/defenders`}><button style={{width: '120px'}} class="btn btn-dark my-2 my-sm-0">Defenders</button></a>
+              <a style={{margin: '10px'}} href={`http://localhost:3000/players/midfielders`}><button style={{width: '120px'}} class="btn btn-dark my-2 my-sm-0">Midfielders</button></a>
+              <a style={{margin: '10px'}} href={`http://localhost:3000/players/forwards`}><button style={{width: '120px'}} class="btn btn-dark my-2 my-sm-0">Forwards</button></a>
+            </div>
+          </Container>
         </div>
+      
       )
     }
 };

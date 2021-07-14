@@ -1,11 +1,11 @@
-#players td, #players th {
-    border: 1px solid #fff;
+  #players td, #players th {
+    border: 1px solid #faa;
     padding: 8px;
   }
+  #players tr:nth-child(even){background-color: lightcoral;}
+  #players tr:nth-child(odd){background-color: #fff;}
   
-  #players tr:nth-child(even){background-color: #666161;}
-  
-  #players tr:hover {background-color: #ddd;}
+  #players tr:hover {background-color: lightpink;}
   
   #players th {
     padding-top: 12px;
@@ -14,15 +14,32 @@
     background-color: #000;
     color: #fff;
   }
+
+  #players {
+    text-align: center;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+
   #title {
     text-align: center;
     font-family: arial, sans-serif;
   }
   
-  #players {
-    text-align: center;
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    border-collapse: collapse;
-    border: 3px solid #ddd;
-    width: 100%;
+  
+
+  a, a:hover{
+    color: firebrick;
+    font-family: Bradley Hand, cursive;
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: red;
+  }
+
+  th {
+    font-family: Bradley Hand, cursive;
   }

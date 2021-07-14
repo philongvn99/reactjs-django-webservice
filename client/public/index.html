@@ -29,9 +29,46 @@
                         <div class="collapse navbar-collapse" id="navbar-responsive">
                             <ul class="navbar-nav ml-auto">
                                 <li class="nav-item"><a href="http://localhost:3000/home/"     id="home_link"    class="nav-link">Home</a></li>
-                                <li class="nav-item"><a href="http://localhost:3000/players/"  id="player_link"  class="nav-link">Players</a></li>
+                                <li class="nav-item">
+                                    <div class="dropdown-nav">
+                                        <a href="#"  id="player_link"  class="nav-link dropbtn" onclick="return false;">Players</a>
+                                        <div class="dropdown-content">
+                                            <div class="grid-container">
+                                                <div class="child">
+                                                    <a href="http://localhost:3000/players/">All</a>
+                                                </div>
+                                                <div class="child">
+                                                    <a href="http://localhost:3000/players/goalkeepers">Goalkeepers</a>
+                                                    <a href="http://localhost:3000/players/defenders">Defenders</a>
+                                                    <a href="http://localhost:3000/players/midfielders">Midfielders</a>
+                                                    <a href="http://localhost:3000/players/forwards">Forwards</a>
+                                                </div>    
+                                            </div>
+                                        </div> 
+                                    <div>
+                                </li>
                                 <li class="nav-item"><a href="http://localhost:3000/players/"  id="about_link"   class="nav-link">Products</a></li>
-                                <li class="nav-item"><a href="http://localhost:3000/players/"  id="user_link"    class="nav-link">Prices</a></li>
+                                <li class="nav-item">
+                                    <div class="dropdown-nav">
+                                        <a href="#"  id="login_link"    class="nav-link dropbtn" onclick="return false;">Login</a>
+                                        <div class="dropdown-content">
+                                            <div class="grid-container">
+                                                <div class="child">
+                                                    <div class="login-form">
+                                                            <div class="form-group">
+                                                                <label>User Name</label>
+                                                                <input type="text" class="form-control" placeholder="User Name">
+                                                                <label>Password</label>
+                                                                <input type="password" class="form-control" placeholder="Password">
+                                                            </div>
+                                                            <button type="submit" class="btn btn-black">Login</button>
+                                                            <button type="submit" class="btn btn-secondary">Register</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
                                 <li class="nav-item"><a href="http://localhost:3000/players/"  id="user_link"    class="nav-link">Contact Us</a></li>
                             </ul>
                             <form class="form-inline mt-md-0">  
@@ -44,11 +81,11 @@
             </div>
             <div class="row top-bar">
                 <div class="col col-lg-9 col-sm-9 col-xs-12 left-top-slogan">
-                    <div class="html">Make the World RED again</div><!-- .html -->
+                    <div class="top-bar-slogan">Make the World RED again!</div><!-- .html -->
                 </div>
                 <!-- top bar right -->
                 <div class="col col-lg-3 col-sm-3 col-xs-12 right-top-info">
-                    <button class="btn btn-secondary dropdown-toggle language" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button class="btn btn-black dropdown-toggle language" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Language
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">

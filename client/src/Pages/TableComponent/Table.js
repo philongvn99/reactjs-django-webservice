@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React from 'react'
+import { Redirect } from 'react-router-dom'
 import './table-style.css'
 
 class Table extends React.Component {
@@ -38,8 +39,8 @@ class Table extends React.Component {
 
   render() {
      return (
-        <div>
-           <h1 id='title'><a href={`http://localhost:3000/players/${this.props.title}`}>{this.props.title.toUpperCase()}</a></h1>
+        <div id="entire-table">
+           <h1 id='title'><a href={`http://localhost:3000/players/${this.props.title}` }>{this.props.title.toUpperCase()}</a></h1>
            <table id='players'>
               <thead><tr>{this.renderTableHeader()}</tr></thead>
               <tbody>{this.renderTableData()}</tbody>

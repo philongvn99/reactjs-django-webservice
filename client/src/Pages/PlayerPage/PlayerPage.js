@@ -1,6 +1,7 @@
 import React from 'react'
 import axios from 'axios';
 import Table from '../TableComponent/Table'
+import { Container } from 'reactstrap';
 class PlayerPage extends React.Component {
   constructor() {
     super();
@@ -12,7 +13,7 @@ class PlayerPage extends React.Component {
     }
   }
   componentDidMount = () => {
-    document.getElementById('player_link').classList='nav-link active'
+    document.getElementById('player_link').classList='nav-link active dropbtn'
     axios.get('/UnitedHome')
       .then(res => {
         this.setState({
@@ -26,14 +27,42 @@ class PlayerPage extends React.Component {
 
   render() {
     return(
-      <div id = "info-table">
-        <img width="100%" src="https://balajithoughts.files.wordpress.com/2008/05/kingsofeurope1.jpeg"></img>
-        <div id='goalkeeper-table'>{this.state.goalkeeperTable}</div>
-        <div id='defender-table'>{this.state.defenderTable}</div>
-        <div id='midfielder-table'>{this.state.midfielderTable}</div>
-        <div id='forward-table'>{this.state.forwardTable}</div>
+      <div id = "info-table" style={styles.Content}>
+        <div style={styles.table}>
+          <div id='goalkeeper-table'>{this.state.goalkeeperTable}</div>
+          <div id='defender-table'>{this.state.defenderTable}</div>
+          <div id='midfielder-table'>{this.state.midfielderTable}</div>
+          <div id='forward-table'>{this.state.forwardTable}</div>
+        </div>
       </div>
     )
-  }
+  }s
 };
 export default PlayerPage;
+
+const styles = {
+  img: {
+    visibility: "hidden"
+  },
+
+  table: {
+    position: "relative",
+    backgroundColor: "rgba(255,255,255,0.5)",
+    overflow: "scroll",
+    maxWidth: "90%",
+    maxHeight: "900px",
+    fontSize: "10px"
+  },
+
+  Content:{
+    position: "relative",
+    textAlign: "center",
+    backgroundImage: `url("https://images.hdqwalls.com/download/manchester-united-hd-wide-1366x768.jpg")`,
+    backgroundAttachment: "sticky",
+    backgroundSize: "cover",
+    backgroundPosition: "center center",
+    backgroundRepeat: "no-repeat",
+    display: "flex",
+    justifyContent: "center",
+  }
+}
