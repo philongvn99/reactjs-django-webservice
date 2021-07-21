@@ -30,7 +30,7 @@ def getAllInfo():
     allRecord = {}
     for tablename in sp.tableList:
         allRecord[tablename] = []
-        cursorDB.execute("""SELECT * FROM %s""" %(tablename, ))
+        cursorDB.execute("""SELECT * FROM %s""" %('v_' + tablename, ))
         tableContent = cursorDB.fetchall()
         for record in tableContent:
             allRecord[tablename].append(dict(zip(sp.personalField, record)))
@@ -40,19 +40,30 @@ def getInfoByPosition(position):
     if position not in sp.tableList:
         print(position, sp.tableList)
         return None
-    cursorDB.execute("""SELECT * FROM %s""" %(position, ))
+    cursorDB.execute("""SELECT * FROM %s""" %('v_' + position, ))
     tableContent = [] 
     for player in cursorDB.fetchall():    
         tableContent.append(dict(zip(sp.personalField, player)))
     return tableContent
 
 def getInfoByID(position, ID):
-    cursorDB.execute("""SELECT * FROM %s WHERE id = %s""" %(position, ID))
+    cursorDB.execute("""SELECT * FROM %s WHERE id = %s""" %('v_'+ position, ID))
     returnRecord = cursorDB.fetchall()
     if returnRecord == []:
         return None
     personalInfo =  dict(zip(sp.personalField, returnRecord[0]))
     return personalInfo
+
+def getLeagueTable():
+    leagueTable = []
+    cursorDB.execute("""SELECT * FROM tb_league_table order by points DESC, goal_difference DESC, goal_for DESC, goal_against ASC, team_name ASC""")
+    returnRecord = cursorDB.fetchall()
+    if returnRecord == []:
+        return None
+    for record in returnRecord:
+        leagueTable.append(dict(zip(sp.leagueTableField, record)))
+    return leagueTable
+
 
 
 # def createDatabase():

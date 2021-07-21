@@ -10,7 +10,7 @@ from flask import Flask, jsonify
 # Create your views here.
 
 @api_view(['GET', 'POST'])
-def homePage(request):
+def Info(request):
     if request.method == 'GET':
         allTable = models.getAllInfo()
         return Response(allTable, status=status.HTTP_200_OK)
@@ -47,3 +47,11 @@ def InfoByID(request, position, ID):
         if _infoByID == None:
             return Response("No Player Found", status=status.HTTP_204_NO_CONTENT)
         return Response(_infoByID, status=status.HTTP_200_OK)
+
+@api_view(['GET', 'POST'])
+def LeagueTable(request):
+    if request.method == 'GET':
+        _leagueTable = models.getLeagueTable()
+        if _leagueTable == None:
+            return Response("EPL League Table Found", status=status.HTTP_204_NO_CONTENT)
+        return Response(_leagueTable, status=status.HTTP_200_OK)

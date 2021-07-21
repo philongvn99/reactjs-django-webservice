@@ -1,0 +1,65 @@
+  #clubs td, #clubs th {
+    border: 1px solid gainsboro;
+    padding: 8px;
+  }
+
+
+  #clubs tr:nth-child(n){background-color: #fff;}
+  #clubs tr:nth-child(-1n+5){background-color: lightpink;}
+  #clubs tr:nth-child(-1n+4){background-color:hotpink;}
+  #clubs tr:nth-child(-1n+1){background-color:deeppink;}
+  #clubs tr:nth-child(n+18){background-color: violet;}
+  #clubs tr {background-color:#fff;}
+
+  
+  #clubs tr:hover {background-color:lavender;}
+  
+  #clubs th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    background-color: #303;
+    color: #fff;
+  }
+
+  #clubs {
+    text-align: center;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+
+  #title {
+    text-align: center;
+    font-family: arial, sans-serif;
+  }
+  
+  
+
+  a, a:hover{
+    color: firebrick;
+    font-family: Bradley Hand, cursive;
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: red;
+  }
+
+  th {
+    font-family: Bradley Hand, cursive;
+  }
+
+  td {
+    min-width: 75px;
+  }
+
+  td div {
+    float:left
+  }
+
+  td img {
+    width: 20px;
+    height: 20px;
+  }

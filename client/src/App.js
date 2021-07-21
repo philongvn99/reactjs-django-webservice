@@ -1,6 +1,7 @@
-import HomePage     from "./Pages/HomePage/HomePage";
-import PlayerPage   from "./Pages/PlayerPage/PlayerPage";
-import Position     from "./Pages/Position/Position";
+import HomePage     from "./Pages/Home/HomePage";
+import PlayerPage   from "./Pages/Player/PlayerPage/PlayerPage";
+import Position     from "./Pages/Player/Position/Position";
+import LeagueTable   from "./Pages/League/LeagueTable/LeagueTable";
 import React, { Component } from 'react'
 import {
     BrowserRouter as Router,
@@ -20,6 +21,7 @@ class App extends Component {
             <Route exact path={"/home"} component={HomePage} />
             <Route exact path={"/players"} component={PlayerPage} />
             <Route exact path={"/players/:pos"} component={Position} />
+            <Route exact path={"/league/table"} component={LeagueTable} />
         </Router>
     );
     }

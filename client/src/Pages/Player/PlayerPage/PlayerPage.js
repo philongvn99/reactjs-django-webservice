@@ -14,7 +14,7 @@ class PlayerPage extends React.Component {
   }
   componentDidMount = () => {
     document.getElementById('player_link').classList='nav-link active dropbtn'
-    axios.get('/UnitedHome')
+    axios.get('/UnitedHome/player')
       .then(res => {
         this.setState({
           goalkeeperTable: <Table players={res.data.goalkeepers} title="goalkeepers"></Table>,

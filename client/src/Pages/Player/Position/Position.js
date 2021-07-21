@@ -14,7 +14,7 @@ export default class Position extends React.Component{
   componentDidMount = () => {
     document.getElementById('player_link').classList='nav-link active'
     const {pos} = this.props.match.params
-    axios.get(`/UnitedHome/${pos}`)
+    axios.get(`/UnitedHome/player/${pos}`)
     .then(res => {
         let link = null
         switch(pos) {
@@ -31,7 +31,6 @@ export default class Position extends React.Component{
             link = "https://i.pinimg.com/564x/55/64/c6/5564c698148d68cb710abdbef7beeb00.jpg";
             break;
         }
-        console.log(res.data)
         this.setState({
           playerTable : <Table players={res.data} title={pos}></Table>, 
           thumbnail_pic: link});
@@ -53,7 +52,6 @@ export default class Position extends React.Component{
             </div>
           </Container>
         </div>
-      
       )
     }
 };

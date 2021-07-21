@@ -1,5 +1,11 @@
-DROP TABLE IF EXISTS player_info;
-CREATE TABLE IF NOT EXISTS player_info (
+DROP VIEW IF EXISTS v_defenders, v_goalkeepers, v_forwards, v_midfielders CASCADE;
+DROP TABLE IF EXISTS r_goalscore, r_owngoal, r_yellow_card, r_red_card;
+DROP TABLE IF EXISTS tb_match;
+DROP TABLE IF EXISTS tb_league_table;
+DROP TABLE IF EXISTS tb_player_info;
+
+
+CREATE TABLE IF NOT EXISTS tb_player_info (
 	player_id SMALLSERIAL PRIMARY KEY,
 	player_name VARCHAR(256) NOT NULL,
 	player_nationality VARCHAR(30) NOT NULL,
@@ -13,7 +19,63 @@ CREATE TABLE IF NOT EXISTS player_info (
 	player_status VARCHAR(20)
 );
 
-INSERT INTO player_info  (
+CREATE TABLE IF NOT EXISTS tb_league_table (
+	team_id SMALLSERIAL PRIMARY KEY,
+	team_name VARCHAR(256),
+	team_logo_link VARCHAR(256),
+	played_game INT DEFAULT 0 NOT NULL,
+	win_game INT DEFAULT 0 NOT NULL,
+	drawn_game INT DEFAULT 0 NOT NULL,
+	lost_game INT DEFAULT 0 NOT NULL,
+	goal_for INT DEFAULT 0 NOT NULL,
+	goal_against INT DEFAULT 0 NOT NULL,
+	goal_difference INT DEFAULT 0 NOT NULL,
+	points INT DEFAULT 0 NOT NULL,
+	season VARCHAR(4) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS tb_match (
+	match_id SMALLSERIAL PRIMARY KEY,
+	enemy_id INT NOT NULL,
+	stadium VARCHAR(256) NOT NULL,
+	home BOOLEAN NOT NULL,
+	home_score INT,
+	enemy_score INT,
+	matchdate DATE,
+	CONSTRAINT fk_enemy  FOREIGN KEY (enemy_id) REFERENCES tb_league_table(team_id) ON DELETE CASCADE
+);
+
+
+CREATE TABLE r_goalscore (
+  goalscorer_id	INT REFERENCES tb_player_info (player_id) ON UPDATE CASCADE ON DELETE CASCADE, 
+  match_id 		INT REFERENCES tb_match (match_id) ON UPDATE CASCADE,
+  minute   		INT NOT NULL,
+  pen 			BOOLEAN NOT NULL,
+  CONSTRAINT goalscore_pkey PRIMARY KEY (goalscorer_id, match_id, minute)  -- explicit pk
+);
+
+CREATE TABLE r_owngoal (
+  owngoalscorer_id	INT REFERENCES tb_player_info (player_id) ON UPDATE CASCADE ON DELETE CASCADE, 
+  match_id 		INT REFERENCES tb_match (match_id) ON UPDATE CASCADE,
+  minute   		INT NOT NULL,
+  CONSTRAINT owngoal_pkey PRIMARY KEY (owngoalscorer_id, match_id, minute)  -- explicit pk
+);
+
+CREATE TABLE r_yellow_card (
+  offender_id	INT REFERENCES tb_player_info (player_id) ON UPDATE CASCADE ON DELETE CASCADE, 
+  match_id 		INT REFERENCES tb_match (match_id) ON UPDATE CASCADE,
+  minute   		INT NOT NULL,
+  CONSTRAINT yellow_card_pkey PRIMARY KEY (offender_id, match_id, minute)  -- explicit pk
+);
+
+CREATE TABLE r_red_card (
+  offender_id	INT REFERENCES tb_player_info (player_id) ON UPDATE CASCADE ON DELETE CASCADE, 
+  match_id 		INT REFERENCES tb_match (match_id) ON UPDATE CASCADE,
+  minute   		INT NOT NULL,
+  CONSTRAINT red_card_pkey PRIMARY KEY (offender_id, match_id, minute)  -- explicit pk
+);
+
+INSERT INTO tb_player_info  (
 	player_name, 
 	player_nationality, 
 	player_birthday, 
@@ -54,18 +116,45 @@ INSERT INTO player_info  (
 		('Anthony Martial', 	'France', 		'1995-12-05', TRUE, 	9,  	181, '{"RW", "LW", "ST"}', 			'Forward', 		250, 	'first team'),
 		('Edison Cavani', 		'Uruguay', 		'1987-02-14', TRUE, 	7,  	184, '{"RW", "LW", "ST"}', 			'Forward', 		210, 	'first team');
 
+
+INSERT INTO tb_league_table (team_name, team_logo_link, season) VALUES 
+		('Arsenal', 'https://resources.premierleague.com/premierleague/badges/t3.png', '2122'),
+		('Aston Villa', 'https://resources.premierleague.com/premierleague/badges/t7.png', '2122'),
+		('Brenford', 'https://resources.premierleague.com/premierleague/badges/t94.png', '2122'),
+		('Brighton and Hove Albion', 'https://resources.premierleague.com/premierleague/badges/t36.png', '2122'),
+		('Burnley', 'https://resources.premierleague.com/premierleague/badges/t90.png', '2122'),
+		('Chelsea', 'https://resources.premierleague.com/premierleague/badges/t8.png', '2122'),
+		('Crystal Palace', 'https://resources.premierleague.com/premierleague/badges/t31.png', '2122'),
+		('Everton', 'https://resources.premierleague.com/premierleague/badges/t11.png', '2122'),
+		('Leeds United', 'https://resources.premierleague.com/premierleague/badges/t2.png', '2122'),
+		('Leicester City', 'https://resources.premierleague.com/premierleague/badges/t13.png', '2122'),
+		('Liverpool', 'https://resources.premierleague.com/premierleague/badges/t14.png', '2122'),
+		('Manchester City', 'https://resources.premierleague.com/premierleague/badges/t43.png', '2122'),
+		('Manchester United', 'https://resources.premierleague.com/premierleague/badges/t1.png', '2122'),
+		('Newcastle United', 'https://resources.premierleague.com/premierleague/badges/t4.png', '2122'),
+		('Norwich City', 'https://resources.premierleague.com/premierleague/badges/t45.png', '2122'),
+		('Southamton', 'https://resources.premierleague.com/premierleague/badges/t20.png', '2122'),
+		('Tottenham Hotspur', 'https://resources.premierleague.com/premierleague/badges/t6.png', '2122'),
+		('Watford', 'https://resources.premierleague.com/premierleague/badges/t57.png', '2122'),
+		('West Ham United', 'https://resources.premierleague.com/premierleague/badges/t21.png', '2122'),
+		('Wolverhamton Wanderers', 'https://resources.premierleague.com/premierleague/badges/t39.png', '2122');
+
+INSERT INTO tb_match (enemy_id, stadium, home) VALUES 
+		(9, 'Old Trafford', TRUE), 
+		(16, 'St MARRY', FALSE);
+
 -- create GOALKEEPERS view
-CREATE OR REPLACE VIEW goalkeepers AS 
-	SELECT * FROM player_info where player_role = 'Goalkeeper';
+CREATE OR REPLACE VIEW v_goalkeepers AS 
+	SELECT * FROM tb_player_info where player_role = 'Goalkeeper';
 	
 -- create DEFENDERS view
-CREATE OR REPLACE VIEW defenders AS 
-	SELECT * FROM player_info where player_role = 'Defender';
+CREATE OR REPLACE VIEW v_defenders AS 
+	SELECT * FROM tb_player_info where player_role = 'Defender';
 	
 -- create MIDFIELDERS view
-CREATE OR REPLACE VIEW midfielders AS 
-	SELECT * FROM player_info where player_role = 'Midfielder';
+CREATE OR REPLACE VIEW v_midfielders AS 
+	SELECT * FROM tb_player_info where player_role = 'Midfielder';
 	
 -- create FORWARDS view
-CREATE OR REPLACE VIEW forwards AS 
-	SELECT * FROM player_info where player_role = 'Forward';
+CREATE OR REPLACE VIEW v_forwards AS 
+	SELECT * FROM tb_player_info where player_role = 'Forward';
