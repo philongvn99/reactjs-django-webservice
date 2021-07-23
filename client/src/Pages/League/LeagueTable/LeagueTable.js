@@ -1,14 +1,15 @@
-import React from 'react'
+import React from 'react';
 import axios from 'axios';
-import Table from '../TableComponent/Table'
-import { Container } from 'reactstrap';
+import StandingTable from './resource/StandingTableComponent/StandingTable';
+import { Container, Row, Col } from 'reactstrap';
+import clubsMap from './resource/ClubsMap.png'
 export default class LeagueTable extends React.Component{
   constructor() {
     super();
     this.state = {
-      players: [],
-      playerTable: null,
-      thumbnail_pic: null
+      standingTable: null,
+      eplLogoPic: null,
+      eplMapsPic: null
     }
   }
   componentDidMount = () => {
@@ -17,17 +18,25 @@ export default class LeagueTable extends React.Component{
     .then(res => {
         console.log(res.data);
         this.setState({
-          playerTable : <Table teams={res.data} title='league table'></Table>, 
-          thumbnail_pic: 'https://www.sportsmax.tv/media/k2/items/cache/878777739252ea3eeb6a80c154ac05e3_XL.jpg'});
+          standingTable : <StandingTable teams={res.data} title='league table'></StandingTable>, 
+          eplLogoPic: 'https://www.fifplay.com/img/public/premier-league-2-logo.png',
+          eplMapsPic: clubsMap});
       })
     }
     
   render(){
       return(
         <div id = "info-table">
-          <img style={style.thumbnail_style} src={this.state.thumbnail_pic} alt='ICON of this position'></img>
-          <Container>
-            <div id='player-table'>{this.state.playerTable}</div>
+          <Container style={style.containter} fluid>
+            <Row>
+              <Col xs="12" sm="2" style={style.besideBanner}>
+                <img  style={style.besideBannerStyle} src={this.state.eplLogoPic} alt='EPL Logo'></img>
+              </Col>
+              <Col xs="12" sm="8" style={style.scrollaleTable}><div id='club-table'>{this.state.standingTable}</div></Col>
+              <Col xs="12" sm="2" style={style.besideBanner}>
+                <img  style={style.besideBannerStyle} src={this.state.eplMapsPic} alt='Map of clubs'></img>
+              </Col>
+            </Row>
           </Container>
         </div>
       )
@@ -35,9 +44,20 @@ export default class LeagueTable extends React.Component{
 };
 
 const style ={
-  thumbnail_style: {
-    margin: 'auto',
-    display: 'block',
-    width: '100%'
+  besideBannerStyle: {
+    width: "inherit",
+  },
+  containter: {
+    position:"relative",
+    width: "100%",
+    backgroundColor: "#ffe"
+  },
+  scrollaleTable: {
+    overflow: "scroll",
+    height: "inherit"
+  },
+  besideBanner: {
+    display: "flex",
+    alignItems: "center",
   }
 }

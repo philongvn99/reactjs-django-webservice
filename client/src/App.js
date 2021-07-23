@@ -1,7 +1,8 @@
 import HomePage     from "./Pages/Home/HomePage";
 import PlayerPage   from "./Pages/Player/PlayerPage/PlayerPage";
 import Position     from "./Pages/Player/Position/Position";
-import LeagueTable   from "./Pages/League/LeagueTable/LeagueTable";
+import LeagueTable  from "./Pages/League/LeagueTable/LeagueTable";
+import AddingForm   from "./Pages/League/LeagueTable/AddingForm/AddingForm";  
 import React, { Component } from 'react'
 import {
     BrowserRouter as Router,
@@ -22,6 +23,7 @@ class App extends Component {
             <Route exact path={"/players"} component={PlayerPage} />
             <Route exact path={"/players/:pos"} component={Position} />
             <Route exact path={"/league/table"} component={LeagueTable} />
+            <Route exact path={"/league/addingform"} component={AddingForm} />
         </Router>
     );
     }

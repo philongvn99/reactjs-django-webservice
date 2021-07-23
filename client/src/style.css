@@ -10,9 +10,13 @@
 @media only screen and (min-width : 1200px) { }
 /*========== Non-Mobile First Method ==========*/
 /* Large Devices, Wide Screens */
-@media only screen and (max-width : 1200px) { }
+@media only screen and (max-width : 1200px) {}
 /* Medium Devices, Desktops */
-@media only screen and (max-width : 992px) { }
+@media only screen and (max-width : 992px) { 
+  .sticky-top {
+    position:relative
+  }
+}
 /* Small Devices, Tablets */
 @media only screen and (max-width : 768px) { 
   .menu-col img{
@@ -42,7 +46,6 @@ a {
 
 .top-bar {
     align-items: center;
-    border-width: 4px;
     background-color: #000000;
   }
 .left-top-slogan, .list-inline-item a, .right-top-info a {
@@ -70,7 +73,7 @@ a {
     align-content: center;
 }
 
-.header {
+.header-nav-bar {
   align-content: center;
   border-width: 5px;
   background-color: rgb(245, 0, 0);
@@ -187,7 +190,7 @@ a {
 
 /*============= === =============*/
 
-.header .col-lg-3{
+.header-nav-bar .col-lg-3{
   align-items: center;
 }
 

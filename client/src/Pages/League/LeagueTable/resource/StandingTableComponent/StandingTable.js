@@ -1,7 +1,7 @@
 import React from 'react'
-import './table-style.css'
+import './standing-table-style.css'
 
-class Table extends React.Component {
+class standingTable extends React.Component {
   constructor(props) {
      super(props)
      this.state = {
@@ -10,22 +10,18 @@ class Table extends React.Component {
   }
 
   renderTableHeader() {
-   //   let header = Object.keys(this.state.teams[0])
-   //   return header.map((key, index) => {
-   //      return index > 0 ? <th key={index}>{key.toUpperCase()}</th> : null
-   //   })
    return (
       <tr>
-         <th key={1}>Position</th>
+         <th key={1}>Pos</th>
          <th key={2}>Club</th>
-         <th key={3}>Played</th>
-         <th key={4}>Won</th>
-         <th key={5}>Drawn</th>
-         <th key={6}>Lost</th>
+         <th key={3}>Pld</th>
+         <th key={4}>W</th>
+         <th key={5}>D</th>
+         <th key={6}>L</th>
          <th key={7}>GF</th>
          <th key={8}>GA</th>
          <th key={9}>GD</th>
-         <th key={10}>Points</th>
+         <th key={10}>Pts</th>
       </tr>
       
    )
@@ -56,7 +52,6 @@ class Table extends React.Component {
   render() {
      return (
         <div id="entire-table">
-           <h1 id='title'><a href={`http://localhost:3000/clubs/${this.props.title}` }>{this.props.title.toUpperCase()}</a></h1>
            <table id='clubs'>
               <thead>{this.renderTableHeader()}</thead>
               <tbody>{this.renderTableData()}</tbody>
@@ -65,4 +60,4 @@ class Table extends React.Component {
      )
   }
 }
-export default Table
+export default standingTable

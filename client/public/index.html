@@ -15,88 +15,102 @@
   </head>
   <body>
     <div>
-      <div class="container-fluid">
-            <div class="row header sticky-top">
-                <div class="col menu-col">
-                    <nav class="navbar navbar-expand-xl navbar-dark">
-                        <a href="http://localhost:3000/home/" class="navbar-brand"><img src="/favicon.ico"/></a>
-                        <button class="navbar-toggler" type="button" data-toggle="collapse"
-                            data-target="#navbar-responsive" aria-controls="navbar-responsive"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-                        
-                        <div class="collapse navbar-collapse" id="navbar-responsive">
-                            <ul class="navbar-nav ml-auto">
-                                <li class="nav-item"><a href="http://localhost:3000/home/"     id="home_link"    class="nav-link">Home</a></li>
-                                <li class="nav-item">
-                                    <div class="dropdown-nav">
-                                        <a href="#"  id="player_link"  class="nav-link dropbtn" onclick="return false;">Players</a>
-                                        <div class="dropdown-content">
-                                            <div class="grid-container">
-                                                <div class="child">
-                                                    <a href="http://localhost:3000/players/">All</a>
+        <header class="sticky-top">
+            <div class="container-fluid">
+                <div class="row header-nav-bar">
+                    <div class="col menu-col">
+                        <nav class="navbar navbar-expand-xl navbar-dark">
+                            <a href="http://localhost:3000/home/" class="navbar-brand"><img src="/favicon.ico"/></a>
+                            <button class="navbar-toggler" type="button" data-toggle="collapse"
+                                data-target="#navbar-responsive" aria-controls="navbar-responsive"
+                                aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                            
+                            <div class="collapse navbar-collapse" id="navbar-responsive">
+                                <ul class="navbar-nav ml-auto">
+                                    <li class="nav-item"><a href="http://localhost:3000/home/"     id="home_link"    class="nav-link">Home</a></li>
+                                    <li class="nav-item">
+                                        <div class="dropdown-nav">
+                                            <a href="#"  id="player_link"  class="nav-link dropbtn" onclick="return false;">Players</a>
+                                            <div class="dropdown-content">
+                                                <div class="grid-container">
+                                                    <div class="child">
+                                                        <a href="http://localhost:3000/players/">All</a>
+                                                    </div>
+                                                    <div class="child">
+                                                        <a href="http://localhost:3000/players/goalkeepers">Goalkeepers</a>
+                                                        <a href="http://localhost:3000/players/defenders">Defenders</a>
+                                                        <a href="http://localhost:3000/players/midfielders">Midfielders</a>
+                                                        <a href="http://localhost:3000/players/forwards">Forwards</a>
+                                                    </div>    
                                                 </div>
+                                            </div> 
+                                        <div>
+                                    </li>
+                                    <li class="nav-item">
+                                        <div class="dropdown-nav">
+                                            <a href="#"  id="league_link"   class="nav-link">League</a>
+                                            <div class="dropdown-content">
                                                 <div class="child">
-                                                    <a href="http://localhost:3000/players/goalkeepers">Goalkeepers</a>
-                                                    <a href="http://localhost:3000/players/defenders">Defenders</a>
-                                                    <a href="http://localhost:3000/players/midfielders">Midfielders</a>
-                                                    <a href="http://localhost:3000/players/forwards">Forwards</a>
-                                                </div>    
+                                                    <a href="http://localhost:3000/league/table" class="nav-link">League Table</a>
+                                                    <a href="http://localhost:3000/league/addingform" class="nav-link">Adding Form</a>
+                                                </div>
                                             </div>
-                                        </div> 
-                                    <div>
-                                </li>
-                                <li class="nav-item"><a href="http://localhost:3000/league/table"  id="league_link"   class="nav-link">League</a></li>
-                                <li class="nav-item">
-                                    <div class="dropdown-nav">
-                                        <a href="#"  id="login_link"    class="nav-link dropbtn" onclick="return false;">Login</a>
-                                        <div class="dropdown-content">
-                                            <div class="grid-container">
-                                                <div class="child">
-                                                    <div class="login-form">
-                                                            <div class="form-group">
-                                                                <label>User Name</label>
-                                                                <input type="text" class="form-control" placeholder="User Name">
-                                                                <label>Password</label>
-                                                                <input type="password" class="form-control" placeholder="Password">
-                                                            </div>
-                                                            <button type="submit" class="btn btn-black">Login</button>
-                                                            <button type="submit" class="btn btn-secondary">Register</button>
+                                        </div>
+                                    </li>
+                                    <li class="nav-item">
+                                        <div class="dropdown-nav">
+                                            <a href="#"  id="login_link"    class="nav-link dropbtn" onclick="return false;">Login</a>
+                                            <div class="dropdown-content">
+                                                <div class="grid-container">
+                                                    <div class="child">
+                                                        <div class="login-form">
+                                                            <form action="//localhost:8000/UnitedHome/league/" method="post" class="form-group">
+                                                                    <label>User Name</label>
+                                                                    <input type="text" class="form-control" placeholder="User Name">
+                                                                    <label>Password</label>
+                                                                    <input type="password" class="form-control" placeholder="Password">
+                                                                    <input type="submit" value="OK">
+                                                                    <br>
+                                                                    <button type="submit" class="btn btn-black">Login</button>
+                                                                    <button type="submit" class="btn btn-secondary">Register</button>
+                                                            </form>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </li>
-                                <li class="nav-item"><a href="http://localhost:3000/players/"  id="user_link"    class="nav-link">Contact Us</a></li>
+                                    </li>
+                                    <li class="nav-item"><a href="http://localhost:3000/players/"  id="user_link"    class="nav-link">Contact Us</a></li>
+                                </ul>
+                                <form class="form-inline mt-md-0">  
+                                    <input type="text" placeholder="Search" aria-label="Search" class="form-control mr-sm-2">
+                                    <button class="btn btn-light my-2 my-sm-0">Search</button>
+                                </form>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+                <div class="row top-bar">
+                    <div class="col col-lg-9 col-sm-9 col-xs-12 left-top-slogan">
+                        <div class="top-bar-slogan">Make the World RED again!</div><!-- .html -->
+                    </div>
+                    <!-- top bar right -->
+                    <div class="col col-lg-3 col-sm-3 col-xs-12 right-top-info">
+                        <button class="btn btn-black dropdown-toggle language" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Language
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <ul class="language-selection">
+                                <li><a  title="Tiếng Việt" href="#"><img width="25" height="15" src="https://uziiw38pmyg1ai60732c4011-wpengine.netdna-ssl.com/wp-content/dropzone/2020/01/2560px-Flag_of_Vietnam-510x340.png" alt="Tiếng Việt">&nbsp;Tiếng Việt</a></li>
+                                <li><a  title="English" href="#"><img width="25" height="15" src="https://upload.wikimedia.org/wikipedia/en/a/ae/Flag_of_the_United_Kingdom.svg" alt="English">&nbsp;English</a></li>
                             </ul>
-                            <form class="form-inline mt-md-0">  
-                                <input type="text" placeholder="Search" aria-label="Search" class="form-control mr-sm-2">
-                                <button class="btn btn-light my-2 my-sm-0">Search</button>
-                            </form>
-                        </div>
-                    </nav>
-                </div>
+                        </div>          
+                    </div>
+                </div><!-- .#top-bar -->
             </div>
-            <div class="row top-bar">
-                <div class="col col-lg-9 col-sm-9 col-xs-12 left-top-slogan">
-                    <div class="top-bar-slogan">Make the World RED again!</div><!-- .html -->
-                </div>
-                <!-- top bar right -->
-                <div class="col col-lg-3 col-sm-3 col-xs-12 right-top-info">
-                    <button class="btn btn-black dropdown-toggle language" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Language
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <ul class="language-selection">
-                            <li><a  title="Tiếng Việt" href="#"><img width="25" height="15" src="https://uziiw38pmyg1ai60732c4011-wpengine.netdna-ssl.com/wp-content/dropzone/2020/01/2560px-Flag_of_Vietnam-510x340.png" alt="Tiếng Việt">&nbsp;Tiếng Việt</a></li>
-                            <li><a  title="English" href="#"><img width="25" height="15" src="https://upload.wikimedia.org/wikipedia/en/a/ae/Flag_of_the_United_Kingdom.svg" alt="English">&nbsp;English</a></li>
-                        </ul>
-                    </div>          
-                </div>
-            </div><!-- .#top-bar -->
-        </div>
+        </header>
         <div id="root"></div>
         <footer>
             <div class="container">
