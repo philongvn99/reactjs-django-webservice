@@ -134,6 +134,17 @@ a {
 
 
 /*.......... GRID........................*/
+.container {
+  margin-left:unset !important;
+  margin-right:unset !important;
+  max-width: none;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+}
+
 .grid-container {
   display: grid;
   background-color: rgb(106, 36, 36);

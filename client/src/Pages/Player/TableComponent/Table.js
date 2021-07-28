@@ -1,5 +1,4 @@
 import React from 'react'
-import { Redirect } from 'react-router-dom'
 import './table-style.css'
 
 class Table extends React.Component {
@@ -11,10 +10,20 @@ class Table extends React.Component {
   }
 
   renderTableHeader() {
-     let header = Object.keys(this.state.players[0])
-     return header.map((key, index) => {
-        return index > 0 ? <th key={index}>{key.toUpperCase()}</th> : null
-     })
+        return (
+         <tr>
+            <th key={1}>Name</th>
+            <th key={2}>Nationality</th>
+            <th key={3}>Birth</th>
+            <th key={4}>Foot</th>
+            <th key={5}>Num</th>
+            <th key={6}>Height</th>
+            <th key={7}>Pos</th>
+            <th key={8}>Role</th>
+            <th key={9}>Wage (Euro)</th>
+            <th key={10}>Status</th>
+         </tr>
+        )
   }
 
   renderTableData() {
@@ -28,7 +37,7 @@ class Table extends React.Component {
               <td>{right_foot ? 'right' : 'left'}</td>
               <td>{kit_number}</td>
               <td>{height}</td>
-              <td>{main_position.toString()}</td>
+              <td>{main_position.toString().replace(',', ', ')}</td>
               <td>{role}</td>
               <td>{salary}</td>
               <td>{status}</td>
@@ -37,16 +46,18 @@ class Table extends React.Component {
      })
   }
 
-  render() {
-     return (
-        <div id="entire-table">
-           <h1 id='title'><a href={`http://localhost:3000/players/${this.props.title}` }>{this.props.title.toUpperCase()}</a></h1>
-           <table id='players'>
-              <thead><tr>{this.renderTableHeader()}</tr></thead>
-              <tbody>{this.renderTableData()}</tbody>
-           </table>
-        </div>
-     )
-  }
+   render() {
+      return (
+         <div id="entire-table">
+            <h1 id='title'><a href={`http://localhost:3000/players/${this.props.title}` }>{this.props.title.toUpperCase()}</a></h1>
+            <div id="info-table">
+               <table id='players'>
+                  <thead>{this.renderTableHeader()}</thead>
+                  <tbody>{this.renderTableData()}</tbody>
+               </table>
+            </div>
+         </div>
+      )
+   }
 }
 export default Table

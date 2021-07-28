@@ -1,7 +1,6 @@
 import React from 'react'
 import axios from 'axios';
 import Table from '../TableComponent/Table'
-import { Container } from 'reactstrap';
 class PlayerPage extends React.Component {
   constructor() {
     super();
@@ -27,7 +26,7 @@ class PlayerPage extends React.Component {
 
   render() {
     return(
-      <div id = "info-table" style={styles.Content}>
+      <div id = "position-table" style={styles.Content}>
         <div style={styles.table}>
           <div id='goalkeeper-table'>{this.state.goalkeeperTable}</div>
           <div id='defender-table'>{this.state.defenderTable}</div>
@@ -57,7 +56,7 @@ const styles = {
   Content:{
     position: "relative",
     textAlign: "center",
-    backgroundImage: `url("https://images.hdqwalls.com/download/manchester-united-hd-wide-1366x768.jpg")`,
+    backgroundImage: `url("https://i2-prod.manchestereveningnews.co.uk/incoming/article15211519.ece/ALTERNATES/s1200/1_dressingrrom.jpg")`,
     backgroundAttachment: "sticky",
     backgroundSize: "cover",
     backgroundPosition: "center center",

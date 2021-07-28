@@ -16,7 +16,6 @@ export default class LeagueTable extends React.Component{
     document.getElementById('league_link').classList='nav-link active'
     axios.get(`/UnitedHome/league/table`)
     .then(res => {
-        console.log(res.data);
         this.setState({
           standingTable : <StandingTable teams={res.data} title='league table'></StandingTable>, 
           eplLogoPic: 'https://www.fifplay.com/img/public/premier-league-2-logo.png',
@@ -53,7 +52,6 @@ const style ={
     backgroundColor: "#ffe"
   },
   scrollaleTable: {
-    overflow: "scroll",
     height: "inherit"
   },
   besideBanner: {
