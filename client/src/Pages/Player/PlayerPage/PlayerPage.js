@@ -1,41 +1,43 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import Table from '../TableComponent/Table'
-class PlayerPage extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      goalkeeperTable: null,
-      defenderTable: null,
-      midfielderTable: null,
-      forwardTable: null
-    }
-  }
-  componentDidMount = () => {
-    document.getElementById('player_link').classList='nav-link active dropbtn'
-    axios.get('/UnitedHome/player')
-      .then(res => {
-        this.setState({
-          goalkeeperTable: <Table players={res.data.goalkeepers} title="goalkeepers"></Table>,
-          defenderTable: <Table players={res.data.defenders} title="defenders"></Table>,
-          midfielderTable: <Table players={res.data.midfielders} title="midfielders"></Table>,
-          forwardTable: <Table players={res.data.forwards} title="forwards"></Table>
-        });
-      })
-    }
 
-  render() {
-    return(
-      <div id = "position-table" style={styles.Content}>
-        <div style={styles.table}>
-          <div id='goalkeeper-table'>{this.state.goalkeeperTable}</div>
-          <div id='defender-table'>{this.state.defenderTable}</div>
-          <div id='midfielder-table'>{this.state.midfielderTable}</div>
-          <div id='forward-table'>{this.state.forwardTable}</div>
-        </div>
+
+const PlayerPage = () => {
+
+  const  [goalkeeperTable, setGoalkeeperTable] = useState(null);
+  const  [defenderTable, setDefenderTable] = useState(null);
+  const  [midfielderTable, setMidfielderTable] = useState(null);
+  const  [forwardTable, setForwardTable] = useState(null);
+
+  useEffect(() => {
+    async function fetchMyAPI() {
+      document.getElementById('player_link').classList='nav-link active dropbtn'
+      await axios.get('/UnitedHome/player')
+        .then(res => {
+          setGoalkeeperTable(<Table players={res.data.goalkeepers} title="goalkeepers"></Table>);
+          setDefenderTable(<Table players={res.data.goalkeepers} title="defender"></Table>);
+          setMidfielderTable(<Table players={res.data.goalkeepers} title="midfielders"></Table>);
+          setForwardTable(<Table players={res.data.goalkeepers} title="forwards"></Table>);
+        })
+        .catch(err => {
+          alert(err);
+        });
+      };
+    fetchMyAPI();
+  }, [])
+    
+
+  return(
+    <div id = "position-table" style={styles.Content}>
+      <div style={styles.table}>
+        <div id='goalkeeper-table'>{goalkeeperTable}</div>
+        <div id='defender-table'>{defenderTable}</div>
+        <div id='midfielder-table'>{midfielderTable}</div>
+        <div id='forward-table'>{forwardTable}</div>
       </div>
-    )
-  }s
+    </div>
+  )
 };
 export default PlayerPage;
 

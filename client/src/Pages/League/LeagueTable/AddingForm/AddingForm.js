@@ -1,5 +1,5 @@
+// eslint-disable-next-line
 import React, { useState, useEffect } from 'react';
-import ReactDOM from 'react-dom';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { Container, Row, Col } from 'reactstrap';
 import axios from 'axios';

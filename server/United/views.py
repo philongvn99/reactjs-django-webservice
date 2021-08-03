@@ -10,9 +10,9 @@ from flask import Flask, jsonify
 # Create your views here.
 
 @api_view(['GET', 'POST'])
-def Info(request):
+def BasicInfo(request):
     if request.method == 'GET':
-        allTable = models.getAllInfo()
+        allTable = models.getBasicInfo()
         return Response(allTable, status=status.HTTP_200_OK)
     elif request.method == 'POST':
         inputD = models.inputJSON(request.data)

@@ -26,24 +26,32 @@ class inputJSON(forms.Form):
     method = forms.CharField(required=True, max_length=100)
     dataip = forms.CharField(required=True, max_length=4)
 
-def getAllInfo():
+class BasicPlayerInfo(models.Model):
+    name = models.CharField(max_length=50)
+    nationality = models.CharField(max_length=20)
+    birthday = models.DateField()
+    role = models.CharField(max_length=20)
+    height = models.IntegerField()
+    salary = models.IntegerField(null='non-Public')
+    status = models.CharField(max_length=20)
+
+def getBasicInfo():
     allRecord = {}
-    for tablename in sp.tableList:
-        allRecord[tablename] = []
-        cursorDB.execute("""SELECT * FROM %s""" %('v_' + tablename, ))
+    for position in sp.tableList:
+        allRecord[position] = []
+        cursorDB.execute("""SELECT %s FROM %s""" %(sp.basicStr , 'v_' + position, ))
         tableContent = cursorDB.fetchall()
         for record in tableContent:
-            allRecord[tablename].append(dict(zip(sp.personalField, record)))
+            allRecord[position].append(dict(zip(sp.BasicPlayerInfoField, record)))
     return allRecord
 
 def getInfoByPosition(position):
     if position not in sp.tableList:
-        print(position, sp.tableList)
         return None
-    cursorDB.execute("""SELECT * FROM %s""" %('v_' + position, ))
+    cursorDB.execute("""SELECT %s FROM %s""" %(sp.basicStr , 'v_' + position, ))
     tableContent = [] 
     for player in cursorDB.fetchall():    
-        tableContent.append(dict(zip(sp.personalField, player)))
+        tableContent.append(dict(zip(sp.BasicPlayerInfoField, player)))
     return tableContent
 
 def getInfoByID(position, ID):

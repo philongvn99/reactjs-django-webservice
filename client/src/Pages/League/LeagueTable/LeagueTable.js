@@ -1,46 +1,48 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import StandingTable from './resource/StandingTableComponent/StandingTable';
 import { Container, Row, Col } from 'reactstrap';
-import clubsMap from './resource/ClubsMap.png'
-export default class LeagueTable extends React.Component{
-  constructor() {
-    super();
-    this.state = {
-      standingTable: null,
-      eplLogoPic: null,
-      eplMapsPic: null
-    }
-  }
-  componentDidMount = () => {
-    document.getElementById('league_link').classList='nav-link active'
-    axios.get(`/UnitedHome/league/table`)
-    .then(res => {
-        this.setState({
-          standingTable : <StandingTable teams={res.data} title='league table'></StandingTable>, 
-          eplLogoPic: 'https://www.fifplay.com/img/public/premier-league-2-logo.png',
-          eplMapsPic: clubsMap});
+import clubsMap from './resource/ClubsMap.png';
+
+const LeagueTable = () => {
+  const [standingTable, setStandingTable] = useState(null);
+  const [eplLogoPic, setEplLogoPic] = useState(null);
+  const [eplMapsPic, setEplMapsPic] = useState(null);
+
+  useEffect(()=>{
+    async function fetchMyAPI() {
+      document.getElementById('league_link').classList='nav-link active'
+      await axios.get(`/UnitedHome/league/table`)
+      .then(res => {
+          setStandingTable(<StandingTable teamlist={res.data} title='league table'></StandingTable>); 
+          setEplLogoPic('https://www.fifplay.com/img/public/premier-league-2-logo.png');
+          setEplMapsPic(clubsMap);
       })
+      .catch(err => {
+        alert(err);
+      });
     }
+    fetchMyAPI();
+  }, [])
     
-  render(){
-      return(
-        <div id = "info-table">
-          <Container style={style.containter} fluid>
-            <Row>
-              <Col xs="12" sm="2" style={style.besideBanner}>
-                <img  style={style.besideBannerStyle} src={this.state.eplLogoPic} alt='EPL Logo'></img>
-              </Col>
-              <Col xs="12" sm="8" style={style.scrollaleTable}><div id='club-table'>{this.state.standingTable}</div></Col>
-              <Col xs="12" sm="2" style={style.besideBanner}>
-                <img  style={style.besideBannerStyle} src={this.state.eplMapsPic} alt='Map of clubs'></img>
-              </Col>
-            </Row>
-          </Container>
-        </div>
-      )
-    }
+  return(
+    <div id = "info-table">
+      <Container style={style.containter} fluid>
+        <Row>
+          <Col xs="12" sm="2" style={style.besideBanner}>
+            <img  style={style.besideBannerStyle} src={eplLogoPic} alt='EPL Logo'></img>
+          </Col>
+          <Col xs="12" sm="8" style={style.scrollaleTable}><div id='club-table'>{standingTable}</div></Col>
+          <Col xs="12" sm="2" style={style.besideBanner}>
+            <img  style={style.besideBannerStyle} src={eplMapsPic} alt='Map of clubs'></img>
+          </Col>
+        </Row>
+      </Container>
+    </div>
+  )
 };
+
+export default LeagueTable;
 
 const style ={
   besideBannerStyle: {
