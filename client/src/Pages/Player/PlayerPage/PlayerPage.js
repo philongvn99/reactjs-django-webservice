@@ -1,24 +1,24 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
-import Table from '../TableComponent/Table'
+import PlayerTable from '../resource/TableComponent/PlayerTable'
 
 
 const PlayerPage = () => {
 
-  const  [goalkeeperTable, setGoalkeeperTable] = useState(null);
-  const  [defenderTable, setDefenderTable] = useState(null);
-  const  [midfielderTable, setMidfielderTable] = useState(null);
-  const  [forwardTable, setForwardTable] = useState(null);
+  const  [goalkeeperData, setGoalkeeperData] = useState(null);
+  const  [defenderData, setDefenderData] = useState(null);
+  const  [midfielderData, setMidfielderData] = useState(null);
+  const  [forwardData, setForwardData] = useState(null);
 
   useEffect(() => {
     async function fetchMyAPI() {
       document.getElementById('player_link').classList='nav-link active dropbtn'
-      await axios.get('/UnitedHome/player')
+      await axios.get(`http://localhost:8000/UnitedHome/player/`)
         .then(res => {
-          setGoalkeeperTable(<Table players={res.data.goalkeepers} title="goalkeepers"></Table>);
-          setDefenderTable(<Table players={res.data.goalkeepers} title="defender"></Table>);
-          setMidfielderTable(<Table players={res.data.goalkeepers} title="midfielders"></Table>);
-          setForwardTable(<Table players={res.data.goalkeepers} title="forwards"></Table>);
+          setGoalkeeperData(res.data.goalkeepers);
+          setDefenderData(res.data.defenders);
+          setMidfielderData(res.data.midfielders);
+          setForwardData(res.data.forwards);
         })
         .catch(err => {
           alert(err);
@@ -31,10 +31,18 @@ const PlayerPage = () => {
   return(
     <div id = "position-table" style={styles.Content}>
       <div style={styles.table}>
-        <div id='goalkeeper-table'>{goalkeeperTable}</div>
-        <div id='defender-table'>{defenderTable}</div>
-        <div id='midfielder-table'>{midfielderTable}</div>
-        <div id='forward-table'>{forwardTable}</div>
+        <div id='goalkeeper-table'>
+          {(goalkeeperData !== null) && <PlayerTable players={goalkeeperData} title="goalkeepers"></PlayerTable> }
+        </div>
+        <div id='defender-table'>
+          {(defenderData !== null) && <PlayerTable players={defenderData} title="defenders"></PlayerTable>}
+        </div>
+        <div id='midfielder-table'>
+          {(midfielderData !== null) && <PlayerTable players={midfielderData} title="midfielders"></PlayerTable>}
+        </div>
+        <div id='forward-table'>
+          {(forwardData !== null) && <PlayerTable players={forwardData} title="forwards"></PlayerTable>}
+          </div>
       </div>
     </div>
   )
@@ -49,9 +57,8 @@ const styles = {
   table: {
     position: "relative",
     backgroundColor: "rgba(255,255,255,0.5)",
-    overflow: "scroll",
     maxWidth: "90%",
-    maxHeight: "900px",
+    height: "fit-content",
     fontSize: "10px"
   },
 
@@ -62,8 +69,9 @@ const styles = {
     backgroundAttachment: "sticky",
     backgroundSize: "cover",
     backgroundPosition: "center center",
-    backgroundRepeat: "no-repeat",
+    backgroundRepeat: "repeat-y",
     display: "flex",
     justifyContent: "center",
+    minHeight: "2000px"
   }
 }

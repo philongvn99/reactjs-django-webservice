@@ -2,7 +2,7 @@ import HomePage     from "./Pages/Home/HomePage";
 import PlayerPage   from "./Pages/Player/PlayerPage/PlayerPage";
 import Position     from "./Pages/Player/Position/Position";
 import LeagueTable  from "./Pages/League/LeagueTable/LeagueTable";
-import AddingForm   from "./Pages/League/LeagueTable/AddingForm/AddingForm";  
+import AddingForm   from "./Pages/League/AddingForm/AddingForm";  
 import React, { Component } from 'react'
 import {
     BrowserRouter as Router,

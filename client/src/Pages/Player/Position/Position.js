@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios';
-import Table from '../TableComponent/Table'
+import PlayerTable from '../resource/TableComponent/PlayerTable'
 import { Container, Row, Col } from 'reactstrap';
 
 const Position = (props) => {
@@ -31,7 +31,7 @@ const Position = (props) => {
               link = "https://i.pinimg.com/564x/55/64/c6/5564c698148d68cb710abdbef7beeb00.jpg";
               break;
           }
-          setPlayerTable(<Table players={res.data} title={pos}></Table>); 
+          setPlayerTable(<PlayerTable players={res.data} title={pos}></PlayerTable>); 
           setThumbnailLink(link);
         })
     }

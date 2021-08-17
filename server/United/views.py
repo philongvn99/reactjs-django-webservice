@@ -4,10 +4,16 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 import json
-from . import models
+from . import models, support as sp
 from flask import Flask, jsonify
 
+
+
 # Create your views here.
+
+
+
+# ALL PLAYER INFOs
 
 @api_view(['GET', 'POST'])
 def BasicInfo(request):
@@ -15,8 +21,9 @@ def BasicInfo(request):
         allTable = models.getBasicInfo()
         return Response(allTable, status=status.HTTP_200_OK)
     elif request.method == 'POST':
-        inputD = models.inputJSON(request.data)
-        print(inputD)
+        print(request, request.data.json())
+        inputD = models.inputJSON(request.data.json())
+        # print(inputD)
         # if(~inputD.is_valid()):
         #     jsonStr = json.loads(inputD.errors.as_json())
         #     print(jsonStr)
@@ -34,11 +41,17 @@ def BasicInfo(request):
 
 
 
+# PLAYER INFOs BY POSITION
+
 @api_view(['GET', 'POST'])
 def InfoByPosition(request, position):
     if request.method == 'GET':
         _infoByPosition = models.getInfoByPosition(position)
         return Response(_infoByPosition, status=status.HTTP_200_OK)
+
+
+
+# PLAYER INFO BY ID
 
 @api_view(['GET', 'POST'])
 def InfoByID(request, position, ID):
@@ -48,10 +61,48 @@ def InfoByID(request, position, ID):
             return Response("No Player Found", status=status.HTTP_204_NO_CONTENT)
         return Response(_infoByID, status=status.HTTP_200_OK)
 
-@api_view(['GET', 'POST'])
+
+# EPL TEAM INFO
+
+@api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def LeagueTable(request):
+
+    # POST
+    if request.method == 'POST':
+        return Response({status: 'Have not been defined'}, status=status.HTTP_200_OK)
+
+
+    # GET
     if request.method == 'GET':
         _leagueTable = models.getLeagueTable()
         if _leagueTable == None:
             return Response("EPL League Table Found", status=status.HTTP_204_NO_CONTENT)
         return Response(_leagueTable, status=status.HTTP_200_OK)
+
+    # UPDATE
+    elif request.method == 'PUT':
+        matchResuls = models.MatchResultListForm(request.data)        # Validating INPUT
+
+        # Invalid Input
+        if(not matchResuls.is_valid() ):
+            jsonStr = json.loads(matchResuls.errors.as_json())
+            sp.display(jsonStr)
+            return Response(jsonStr, status=status.HTTP_406_NOT_ACCEPTABLE)
+
+        # Valid Input
+        else:
+            response = models.updateLeagueTable(request.data['id'], request.data['goalscore'], request.data['goalconceded'], len(request.data['id']))
+            return Response(response, status=status.HTTP_200_OK)
+
+    # DELETE
+    elif request.method == 'DELETE':
+        response = models.clearLeagueTable()
+        return Response(response, status=status.HTTP_200_OK)
+
+@api_view(['GET', 'POST'])
+def test(request):
+    if request.method == 'GET':
+        _infoByID = models.test()
+        if _infoByID == None:
+            return Response("No Player Found", status=status.HTTP_204_NO_CONTENT)
+        return Response(_infoByID, status=status.HTTP_200_OK)

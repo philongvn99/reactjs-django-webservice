@@ -3,11 +3,9 @@ import './standing-table-style.css'
 
 const StandingTable = (props) => {
    const [teamList, setTeamList] = useState([]);
-   const [profileState, setProfileState] = useState(props);
 
    useEffect(() => {
-      setProfileState(props);
-      setTeamList(profileState.teamlist)
+      setTeamList(props.teamlist)
    }, [props]);
 
    const renderTableHeader = () => {
@@ -30,19 +28,19 @@ const StandingTable = (props) => {
 
    const renderTableData = () => {
      return teamList.map((team, index) => {
-        var {id, team_name, logo_link, played_game, won_game, drawn_game, lost_game, goal_for, goal_against, goal_difference, points } = team //destructuring
+        var {team_id, team_name, team_logo_link, team_played_game, team_won_game, team_drawn_game, team_lost_game, team_goal_for, team_goal_against, team_goal_difference, team_points } = team //destructuring
         return (
-           <tr key={id}>
+           <tr key={team_id}>
               <td>{index + 1}</td>
-              <td><div><img src={logo_link} alt={team_name + 'logo'}/>  {team_name}</div></td>
-              <td>{played_game}</td>
-              <td>{won_game}</td>
-              <td>{drawn_game}</td>
-              <td>{lost_game}</td>
-              <td>{goal_for}</td>
-              <td>{goal_against}</td>
-              <td>{goal_difference}</td>
-              <td>{points}</td>
+              <td><div><img src={team_logo_link} alt={team_name + 'logo'} className="logo"/>  {team_name}</div></td>
+              <td>{team_played_game}</td>
+              <td>{team_won_game}</td>
+              <td>{team_drawn_game}</td>
+              <td>{team_lost_game}</td>
+              <td>{team_goal_for}</td>
+              <td>{team_goal_against}</td>
+              <td>{team_goal_difference}</td>
+              <td>{team_points}</td>
            </tr>
         )
      })

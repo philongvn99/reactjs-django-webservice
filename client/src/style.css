@@ -228,6 +228,7 @@ footer {
   padding: 1rem 2rem 3rem;
 }
 footer img {
+  position:initial;
   height: auto; 
   width: auto; 
   max-width: 5rem; 
@@ -251,4 +252,10 @@ ul.social li {
 footer .svg-inline--fa {
   font-size: 3rem;
 }
+ #inherit-pos {
+  position: inherit;
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+ }
 /*============= === =============*/
