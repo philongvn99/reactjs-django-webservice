@@ -56,7 +56,6 @@ const styles = {
 
   table: {
     position: "relative",
-    backgroundColor: "rgba(255,255,255,0.5)",
     maxWidth: "90%",
     height: "fit-content",
     fontSize: "10px"
@@ -65,13 +64,10 @@ const styles = {
   Content:{
     position: "relative",
     textAlign: "center",
-    backgroundImage: `url("https://i2-prod.manchestereveningnews.co.uk/incoming/article15211519.ece/ALTERNATES/s1200/1_dressingrrom.jpg")`,
-    backgroundAttachment: "sticky",
-    backgroundSize: "cover",
-    backgroundPosition: "center center",
-    backgroundRepeat: "repeat-y",
+    background: "repeating-linear-gradient(45deg,red,black 7%,white 10%)",
+    width: "100%",
     display: "flex",
     justifyContent: "center",
-    minHeight: "2000px"
+    padding: "20px 0px"
   }
 }

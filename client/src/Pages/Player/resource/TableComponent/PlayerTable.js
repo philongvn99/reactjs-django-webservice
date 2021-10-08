@@ -10,14 +10,14 @@ const PlayerTable = (props) => {
    const renderTableHeader = () =>{
       return (
          <tr>
-            <th key={'player-header-0'}></th>
-            <th key={'player-header-1'} style={{minWidth: '160px'}}>Name</th>
-            <th key={'player-header-2'}>Nationality</th>
-            <th key={'player-header-3'}>Birth</th>
-            <th key={'player-header-4'}>Height</th>
-            <th key={'player-header-5'} style={{minWidth: '120px'}}>Role</th>
-            <th key={'player-header-6'}>Wage (Euro)</th>
-            <th key={'player-header-7'}>Status</th>
+            <th className="th-position" key={'player-header-0'}></th>
+            <th className="th-position" key={'player-header-1'} style={{minWidth: '200px'}}>Name</th>
+            <th className="th-position" key={'player-header-2'} style={{minWidth: '150px'}}>Nationality</th>
+            <th className="th-position" key={'player-header-3'} style={{minWidth: '150px'}}>Birth</th>
+            <th className="th-position" key={'player-header-4'}>Height</th>
+            <th className="th-position" key={'player-header-5'} style={{minWidth: '150px'}}>Role</th>
+            <th className="th-position" key={'player-header-6'}>Wage (Euro)</th>
+            <th className="th-position" key={'player-header-7'}>Status</th>
          </tr>
       )
    };
@@ -29,27 +29,27 @@ const PlayerTable = (props) => {
          var {id, name, nationality, birthday, height, role, salary, status } = player //destructuring
          return (
             <tr key={index + '-player'}>
-               <td>
+               <td className="td-position"> 
                      <i className='bx bxs-user-pin' onMouseOver={() => setIdDisplayed(id)}  onMouseOut={() => setIdDisplayed(0)}></i>
                      {(idDisplayed===id) && (<MiniTable playerID={id} position={title}></MiniTable>)}
                </td>
-               <td>{name}</td>
-               <td>{nationality}</td>
-               <td>{birthday}</td>
-               <td>{height}</td>
-               <td>{role}</td>
-               <td>{salary}</td>
-               <td>{status}</td>
+               <td className="td-position"> {name}</td>
+               <td className="td-position"> {nationality}</td>
+               <td className="td-position"> {birthday}</td>
+               <td className="td-position"> {height}</td>
+               <td className="td-position"> {role}</td>
+               <td className="td-position"> {salary}</td>
+               <td className="td-position"> {status}</td>
             </tr>
          )
       })
    };
 
    return (
-      <div id="entire-table">
-         <h1 id='title'><a href={`http://localhost:3000/players/${title}` }>{title.toUpperCase()}</a></h1>
-         <div id="info-table">
-            <table id='players'>
+      <div className="entire-table">
+         <h1 className='title'><a href={`http://localhost:3000/players/${title}` }>{title.toUpperCase()}</a></h1>
+         <div className="info-table">
+            <table className='players'>
                <thead>{renderTableHeader()}</thead>
                <tbody>{renderTableData()}</tbody>
             </table>
@@ -64,17 +64,18 @@ const MiniTable = (props) => {
    const [playerID, setPlayerID] = useState(props.playerID);
    
    useEffect(() => {
+      let unmounted = false;
       function fetchMyAPI() {
-         //await axios.get(`http://localhost:8000/UnitedHome/player/${position}/${playerID}`)
          axios.get(`http://localhost:8000/UnitedHome/player/${position}/${playerID}/`)
          .then( res => {
-            setInfo(res.data);
-         })
+               if(!unmounted) setInfo(res.data);
+            })
          .catch(err => {
             alert(err);
-          });
+         });
       }
       fetchMyAPI();
+      return () => { unmounted = true };
    }, [position, playerID])
 
    return (

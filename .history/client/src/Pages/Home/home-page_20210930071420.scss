@@ -1,0 +1,40 @@
+.center-row {
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.title {
+    justify-content: center;
+    display: flex;
+}
+
+.basic-article-group {
+    padding: 10px 0px;
+}
+
+.jump-section-1 {
+    background-color: red;
+    margin-bottom: 10px;
+}
+
+.jump-col {
+    text-align: center;
+}
+
+.jump-button {
+    margin: 10px;
+    border: solid black 5px;
+    border-radius: 20px;
+    padding: 0px;
+    background-color: black;
+}
+
+.jump-button img {
+    height: 120px;
+    width: 120px;
+    border-radius: 15px;
+}
+
+.article-thumbnail {
+    height: 99vh;    
+}

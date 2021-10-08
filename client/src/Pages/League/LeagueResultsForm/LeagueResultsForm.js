@@ -61,7 +61,8 @@ const getListStyle = (isDraggingOver, boardtype) => ({
     background: boardtype === 'teams' ? '#e90052' : (boardtype === 'home' ? '#00ff85' : '#04f5ff'),
     padding: grid,
     width: '100%',
-    minHeight: `820px`,
+    minHeight: `1600px`,
+    borderRadius: '20px'
 });
 
 const style = {
@@ -111,7 +112,7 @@ const scoreList = () => {
     return ret;
 };
 
-const AddingForm = () => {
+const LeagueResultsForm = () => {
     const [teams, setTeams] = useState([]);
     const [home, setHome] = useState([]);
     const [away, setAway] = useState([]);
@@ -126,7 +127,8 @@ const AddingForm = () => {
             async function fetchMyAPI() {
                 await axios.get('/UnitedHome/league/table')
                 .then(res => {
-                  setTeams(res.data);
+                    console.log(res)
+                    setTeams(res.data);
                 })
                 .catch(err => {
                   alert(err);
@@ -172,6 +174,8 @@ const AddingForm = () => {
                 goalconceded: teamGCList
             })
             .then(function (response) {
+                if (response.data.success) alert("Successful Update");
+                else alert("Unsuccessful Update");
                 console.log(response);
             })
         }
@@ -181,9 +185,9 @@ const AddingForm = () => {
     const renderScoreBoard = (num) => ( 
         Array.from({ length: num }, (v, k) => k).map(k => (
             <div style={style.scoreboardStyle} key={`math${k}-result`}>
-                <input type='number' id={`home-score-${k}`} name={`home${k}`} min="0"  value={score[`home${k}`]}   onChange={handleChange}  style={style.scoreStyle}></input>
+                <input type='number' id={`home-score-${k}`} name={`home${k}`} min="0"  value={score[`home${k}`] || 0}   onChange={handleChange}  style={style.scoreStyle}></input>
                  - 
-                <input type='number' id={`away-score-${k}`} name={`away${k}`} min="0"  value={score[`away${k}`]}   onChange={handleChange}  style={style.scoreStyle}></input>
+                <input type='number' id={`away-score-${k}`} name={`away${k}`} min="0"  value={score[`away${k}`] || 0}   onChange={handleChange}  style={style.scoreStyle}></input>
             </div>
         ))
     );
@@ -260,7 +264,7 @@ const AddingForm = () => {
                                             )}>
                                             <img src={item.team_logo_link} alt={item.team_acronym_name + '-logo'} style={style.imgStyle}/>
                                             <span>{item.team_acronym_name}</span>
-                                            <span style={style.rankStyle}>{index + 1}</span>
+                                            <span style={style.rankStyle}>{item.team_id}</span>
                                         </div>
                                     )}
                                 </Draggable>
@@ -351,4 +355,4 @@ const AddingForm = () => {
     );
 }
 
-export default AddingForm;
+export default LeagueResultsForm;

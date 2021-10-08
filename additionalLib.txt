@@ -1,5 +1,8 @@
 react-router-dom
 reactstrap
+node-sass
+wow.js
+react-beautiful-dnd
 djangorestframework 
 django-cors-headers
 psycopg2

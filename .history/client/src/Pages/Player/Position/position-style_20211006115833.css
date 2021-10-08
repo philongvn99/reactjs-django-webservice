@@ -1,0 +1,14 @@
+.position-thumbnail {
+    margin: auto;
+    display: block;
+    width: 100%;
+    background-color: black;
+}
+
+.position-link {
+    margin: 10px;
+}
+
+.position-button{
+    width: fit-content;
+}
