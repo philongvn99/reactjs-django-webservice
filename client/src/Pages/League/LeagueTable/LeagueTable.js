@@ -12,7 +12,7 @@ const LeagueTable = () => {
   useEffect(()=>{
     async function fetchMyAPI() {
       document.getElementById('league_link').classList='nav-link active'
-      await axios.get(`http://localhost:8000/UnitedHome/league/table`)
+      await axios.get(`/UnitedHome/league/table`)
       .then(res => {        
           fireDatabase.ref('/epl-table')
             .on('value', snapshot => {

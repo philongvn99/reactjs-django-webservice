@@ -1,25 +1,41 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import UserProfile from './Component/UserProfile'
-import './style.css';
-import axios from 'axios';
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
+import UserProfile from "./Component/UserProfile";
+import Audio from "./Component/Audio";
+import "./style.css";
+import axios from "axios";
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App/>, document.getElementById('root'));
 
-var myAudio = document.getElementsByTagName("Audio")[0];
 
-window.onload = function() {
-    myAudio.volume=0.2;
-    myAudio.pause();
+
+window.onload = function () {
+
+    const pauseMusic = sessionStorage.getItem("musicPaused");
+    const srcMusic = sessionStorage.getItem("musicSrc");
+
+    ReactDOM.render(<Audio src={srcMusic ?  srcMusic : "/resource/music/GloryGloryManUnited.mp3"}/>, document.getElementById('audio'));
+
+    var myAudio = document.getElementById("background-music");
+
+    myAudio.volume = 0.05;
+    myAudio.currentTime = sessionStorage.getItem("musicCurrTime");
+
+    (pauseMusic === 'true') ? myAudio.pause() : myAudio.play();
 }
+
+window.addEventListener("beforeunload", function(event) {
+    var myAudio = document.getElementById("background-music");
+    
+    sessionStorage.setItem("musicCurrTime", myAudio.currentTime);
+    sessionStorage.setItem("musicPaused", myAudio.paused);
+    sessionStorage.setItem("musicSrc", myAudio.src);
+})
 
 const switchMusic = () => {
+    var myAudio = document.getElementById("background-music");
     return myAudio.paused ? myAudio.play() : myAudio.pause();
-}
-
-const selectMusic = (option) => {
-    myAudio.src=option;
 }
 
 const submitLogin = () => {
@@ -31,7 +47,7 @@ const submitLogin = () => {
 
     if(usernameLogin.length < 6) usernameErrorHTML = "Username must have at least 6 characters";
     else if (!usernameLogin.match(/^[0-9A-Za-z.@]+$/g)) usernameErrorHTML = "Username contains some special characters";
-    
+
     document.getElementById("user-error").innerHTML = usernameErrorHTML;
 
     if(passwordLogin.length < 6) passwordErrorHTML = "Password must have at least 6 characters";
@@ -41,19 +57,19 @@ const submitLogin = () => {
 
     if ((usernameErrorHTML === "") && (passwordErrorHTML === "")) {
         axios.post(
-            'http://localhost:8000/UnitedHome/login/', 
+            'http://localhost:8000/UnitedHome/login/',
             {
-                username: usernameLogin, 
+                username: usernameLogin,
                 password: passwordLogin
             }
         )
         .then( (res) => {
-            if(res.data.success) 
+            if(res.data.success)
             {
                 console.log(res.data)
                 ReactDOM.render(<UserProfile userInfo={res.data.userInfo}/>, document.getElementById('login-dropdown'));
                 document.getElementById("login_link").innerHTML = res.data.userInfo.name;
-            } 
+            }
             else alert("Username or Password is INVALID");
         })
         .catch( (err) => alert(err))
@@ -63,9 +79,6 @@ const submitLogin = () => {
 // BUTTON ONCLICK FUNCTION
 
 document.getElementById("music-switch").onclick = function() {switchMusic()};
-document.getElementById("ggmu-option").onclick = function() {selectMusic("/resource/music/GloryGloryManUnited.mp3")};
-document.getElementById("hnnu-option").onclick = function() {selectMusic("/resource/music/HaNoiNU.mp3")};
-document.getElementById("tn-option").onclick = function() {selectMusic("/resource/music/TheNights.mp3")};
 document.getElementById("login-btn").onclick = function() {submitLogin()}
 
 //---------------------------------

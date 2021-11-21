@@ -66,7 +66,7 @@ const MiniTable = (props) => {
    useEffect(() => {
       let unmounted = false;
       function fetchMyAPI() {
-         axios.get(`http://localhost:8000/UnitedHome/player/${position}/${playerID}/`)
+         axios.get(`/UnitedHome/player/${position}/${playerID}/`)
          .then( res => {
                if(!unmounted) setInfo(res.data);
             })

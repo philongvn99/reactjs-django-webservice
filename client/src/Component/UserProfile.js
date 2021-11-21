@@ -16,7 +16,7 @@ const UserProfile = (props) => {
             })
         };
         getAvatarUrl()},
-        []
+        [userInfo.username]
     )
     return (
         <div style={styles.profileBlock}>

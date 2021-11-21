@@ -9,31 +9,30 @@ import React, { Component } from 'react'
 import {
     BrowserRouter as Router,
     Route,
+    Switch,
     Redirect
   } from "react-router-dom";
 
 
 class App extends Component {
 
-  constructor(props) {
-    super(props)
-  }
-
   componentDidMount() {}
 
   render() {
     return (
         <Router>
-            <Route exact path="/"
-                render={ () =>  {return (<Redirect to="/home" /> )}}
-              />
-            <Route exact path={"/home"} component={HomePage} />
-            <Route exact path={"/players"} component={PlayerPage} />
-            <Route exact path={"/players/:pos"} component={Position} />
-            <Route exact path={"/league/table"} component={LeagueTable} />
-            <Route exact path={"/league/leagueform"} component={LeagueResultsForm} />
-            <Route exact path={"/league/matchform"} component={MatchResultsForm} />
-            <Route exact path={"/signup"} component={SignUpForm} />
+            <Switch>
+                <Route exact path="/"
+                    render={ () =>  {return (<Redirect to="/home" /> )}}
+                  />
+                <Route exact path={"/home"} component={HomePage} />
+                <Route exact path={"/players"} component={PlayerPage} />
+                <Route exact path={"/players/:pos"} component={Position} />
+                <Route exact path={"/league/table"} component={LeagueTable} />
+                <Route exact path={"/league/leagueform"} component={LeagueResultsForm} />
+                <Route exact path={"/league/matchform"} component={MatchResultsForm} />
+                <Route exact path={"/signup"} component={SignUpForm} />
+            </Switch>
         </Router>
     );
     }

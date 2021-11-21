@@ -13,7 +13,7 @@ const PlayerPage = () => {
   useEffect(() => {
     async function fetchMyAPI() {
       document.getElementById('player_link').classList='nav-link active dropbtn'
-      await axios.get(`http://localhost:8000/UnitedHome/player/`)
+      await axios.get(`/UnitedHome/player/`)
         .then(res => {
           setGoalkeeperData(res.data.goalkeepers);
           setDefenderData(res.data.defenders);

@@ -46,11 +46,41 @@ const Position = (props) => {
                 </Row>
                 <Row>
                     <div style={{display: 'flex', alignItems:'center', height:'50px'}}>
-                        <a className="position-link" href={`http://localhost:3000/players/`} ><button className="btn btn-black my-2 my-sm-0 fas fa-tshirt"></button></a>
-                        <a className="position-link" href={`http://localhost:3000/players/goalkeepers/`}><button className="position-button btn btn-dark my-2 my-sm-0 fas fa-hand-paper"></button></a>
-                        <a className="position-link" href={`http://localhost:3000/players/defenders`}><button className="position-button btn btn-dark my-2 my-sm-0 fas fa-shield-alt"></button></a>
-                        <a className="position-link" href={`http://localhost:3000/players/midfielders`}><button className="position-button btn btn-dark my-2 my-sm-0 fas fa-radiation"></button></a>
-                        <a className="position-link" href={`http://localhost:3000/players/forwards`}><button className="position-button btn btn-dark my-2 my-sm-0 fas fa-bolt"></button></a>
+                        <a className="position-link" href={`http://localhost:3000/players/`}  title="player-button">
+                            <button 
+                                className="btn btn-black my-2 my-sm-0 fas fa-tshirt" 
+                                title="player-button"
+                                aria-hidden="false"
+                            />
+                        </a>
+                        <a className="position-link" href={`http://localhost:3000/players/goalkeepers/`} title="goalkeeper-button">
+                            <button 
+                                className="position-button btn btn-dark my-2 my-sm-0 fas fa-hand-paper" 
+                                title="goalkeeper-button"
+                                aria-hidden="false"
+                            />
+                        </a>
+                        <a className="position-link" href={`http://localhost:3000/players/defenders`} title="defender-button">
+                            <button 
+                                className="position-button btn btn-dark my-2 my-sm-0 fas fa-shield-alt" 
+                                title="defender-button"
+                                aria-hidden="false"
+                            />
+                        </a>
+                        <a className="position-link" href={`http://localhost:3000/players/midfielders`} title="midfielder-button">
+                            <button 
+                                className="position-button btn btn-dark my-2 my-sm-0 fas fa-radiation" 
+                                title="midfielder-button"
+                                aria-hidden="false"
+                            />
+                        </a>
+                        <a className="position-link" href={`http://localhost:3000/players/forwards`} title="forward-button"> 
+                            <button 
+                                className="position-button btn btn-dark my-2 my-sm-0 fas fa-bolt" 
+                                title="forward-button"
+                                aria-hidden="false"
+                            />
+                        </a>
                     </div>
                 </Row>
             </Col>

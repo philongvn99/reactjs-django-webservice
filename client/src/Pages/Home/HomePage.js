@@ -12,7 +12,6 @@ const HomePage = () => {
         function getThumbnailSrcDict() {
             fireDatabase.ref(`/home`)
             .on('value', snapshot => {
-                console.log(snapshot.val())
                 setThumbnailSrcDict(snapshot.val());
             }, (errorObject) => {
                 console.log('The read failed: ' + errorObject.name);
@@ -33,7 +32,6 @@ const HomePage = () => {
     let articleRef4 = useRef(null);
 
     const executeScroll = (ref) => {
-        console.log(ref)
         if (!ref.current) return;
         ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }
@@ -50,10 +48,10 @@ const HomePage = () => {
                 </Col>
             </Row>
             <Row className="jump-section-1">
-                <Col sm="3" className="wow fadeInUp jump-col"><button className="jump-button" onClick={() => executeScroll(articleRef1)}>{(thumbnailSrcDict !== null )&&<img src={thumbnailSrcDict["jump-1"]["article-1"]["mini-thumbnail"]} alt="jump-1-1" ></img>}</button></Col>
-                <Col sm="3" className="wow fadeInDown jump-col"><button className="jump-button" onClick={() => executeScroll(articleRef2)}>{(thumbnailSrcDict !== null )&&<img src={thumbnailSrcDict["jump-1"]["article-2"]["mini-thumbnail"]} alt="jump-1-2" ></img>}</button></Col>
-                <Col sm="3" className="wow fadeInDown jump-col"><button className="jump-button" onClick={() => executeScroll(articleRef3)}>{(thumbnailSrcDict !== null )&&<img src={thumbnailSrcDict["jump-1"]["article-3"]["mini-thumbnail"]} alt="jump-1-2" ></img>}</button></Col>
-                <Col sm="3" className="wow fadeInUp jump-col"><button className="jump-button" onClick={() => executeScroll(articleRef4)}>{(thumbnailSrcDict !== null )&&<img src={thumbnailSrcDict["jump-1"]["article-4"]["mini-thumbnail"]} alt="jump-1-1" ></img>}</button></Col>
+                <Col sm="3" className="wow fadeInUp jump-col"><button className="jump-button" aria-label="Jump Button 1" onClick={() => executeScroll(articleRef1)}>{(thumbnailSrcDict !== null )&&<img src={thumbnailSrcDict["jump-1"]["article-1"]["mini-thumbnail"]} alt="jump-1-1" ></img>}</button></Col>
+                <Col sm="3" className="wow fadeInDown jump-col"><button className="jump-button" aria-label="Jump Button 2" onClick={() => executeScroll(articleRef2)}>{(thumbnailSrcDict !== null )&&<img src={thumbnailSrcDict["jump-1"]["article-2"]["mini-thumbnail"]} alt="jump-1-2" ></img>}</button></Col>
+                <Col sm="3" className="wow fadeInDown jump-col"><button className="jump-button" aria-label="Jump Button 3" onClick={() => executeScroll(articleRef3)}>{(thumbnailSrcDict !== null )&&<img src={thumbnailSrcDict["jump-1"]["article-3"]["mini-thumbnail"]} alt="jump-1-2" ></img>}</button></Col>
+                <Col sm="3" className="wow fadeInUp jump-col"><button className="jump-button" aria-label="Jump Button 4" onClick={() => executeScroll(articleRef4)}>{(thumbnailSrcDict !== null )&&<img src={thumbnailSrcDict["jump-1"]["article-4"]["mini-thumbnail"]} alt="jump-1-1" ></img>}</button></Col>
             </Row>
             <Row className="basic-article-group"> 
                 <Col sm="2"></Col>
