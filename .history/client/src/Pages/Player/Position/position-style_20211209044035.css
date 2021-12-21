@@ -1,0 +1,14 @@
+.position-thumbnail {
+  margin: auto;
+  display: block;
+  width: 100%;
+  background: linear-gradient(#000020, black);
+}
+
+.position-link {
+  margin: 10px;
+}
+
+.position-button {
+  width: fit-content;
+}

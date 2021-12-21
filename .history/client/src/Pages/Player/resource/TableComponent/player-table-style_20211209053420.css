@@ -1,0 +1,57 @@
+.players td,
+.players th {
+  border: 1px solid #faa;
+  padding: 8px;
+  text-align: center;
+}
+.players tr:nth-child(even) {
+  background-color: lightcoral;
+}
+.players tr:nth-child(odd) {
+  background-color: brown;
+}
+.players tr:hover {
+  background-color: indianred;
+}
+
+.players th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: center;
+  background-color: #000;
+  color: #fff;
+}
+
+@media only screen and (max-width: 768px) {
+  .td-position,
+  .th-position {
+    min-width: 60px !important;
+    font-weight: 100px !important;
+  }
+}
+
+.entire-table {
+  padding: 5px;
+  border: 5px solid black;
+  border-radius: 10px;
+  margin: 5px 0px;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.players {
+  text-align: center;
+  border-collapse: collapse;
+}
+
+a {
+  color: firebrick;
+  text-decoration: none;
+}
+
+a:hover {
+  color: red;
+}
+
+th {
+  font-family: Bradley Hand, cursive;
+}

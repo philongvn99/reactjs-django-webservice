@@ -1,0 +1,38 @@
+#signup-background {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+#signup-form{
+    display: block;
+    background-color:crimson;
+    padding: 20px;
+    text-align: center;
+    margin: 10px 0px;
+    border-radius: 10px;
+    font-size: large;
+    width: fit-content;
+}
+
+.submit-signup-field{
+    margin-top: 30px;
+    align-content: center;
+    height: 50px;
+}
+
+div label{
+    float: left;
+}
+
+div input{
+    float: right;
+    margin-left: 10px;
+    border-radius: 4px;
+}
+
+.signup-form button {
+    background-color:lightpink;
+    border-radius: 10px;
+    width: 150px;
+}
