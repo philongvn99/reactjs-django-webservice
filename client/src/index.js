@@ -33,6 +33,20 @@ window.addEventListener("beforeunload", function(event) {
     sessionStorage.setItem("musicSrc", myAudio.src);
 })
 
+window.addEventListener("scroll", function(event) {
+    var header = document.getElementById("header");
+    var topbar = document.getElementById("topbar");
+    if (window.scrollY > 80) {
+        header.classList.add('sticky') 
+        topbar.classList.add('invisible') 
+    }
+    else {
+        header.classList.remove('sticky'); //header.style.setProperty('visibility', 'visible');
+        topbar.classList.remove('invisible') 
+    }
+});
+
+
 const switchMusic = () => {
     var myAudio = document.getElementById("background-music");
     return myAudio.paused ? myAudio.play() : myAudio.pause();
@@ -131,7 +145,7 @@ document.getElementById("music-switch").onclick = function() {switchMusic()};
 const userInfo = JSON.parse(localStorage.getItem('user'))
 var loginComponent = undefined
 
-if (Object.keys(userInfo).length > 0) {
+if (userInfo != null  && Object.keys(userInfo).length > 0) {
     document.getElementById("login_link").innerHTML = userInfo.name;
     loginComponent = <UserProfile userInfo={userInfo}/>;
 }
@@ -139,4 +153,3 @@ else {
     loginComponent = defaultLoginComponent;
 };
 ReactDOM.render(loginComponent, document.getElementById('login-dropdown'));
-

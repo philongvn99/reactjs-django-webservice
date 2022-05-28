@@ -6,3 +6,4 @@ react-beautiful-dnd
 djangorestframework 
 django-cors-headers
 psycopg2
+flask

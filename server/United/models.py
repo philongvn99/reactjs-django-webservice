@@ -10,18 +10,19 @@ from . import support as sp
 # Create your models here.
 
 
-#===========================INITIAL==========================//
-connectionPG = psycopg2.connect(user = "postgres",
-                                    password = "01886933234",
-                                    host = "127.0.0.1",
-                                    port = "5432",
-                                    database = "postgres")
+# ===========================INITIAL==========================//
+connectionPG = psycopg2.connect(user="philong249",
+                                password="01886933234",
+                                host="localhost",
+                                port="5432",
+                                database="plpostgres_database")
 cursorDB = connectionPG.cursor()
-print ( connectionPG.get_dsn_parameters(),"\n")
+print(connectionPG.get_dsn_parameters(), "\n")
 cursorDB.execute("SELECT version();")
 record = cursorDB.fetchone()
-print("You are connected to - ", record,"\n")
-#==============================================================//
+print("You are connected to - ", record, "\n")
+# ==============================================================//
+
 
 class inputJSON(forms.Form):
     method = forms.CharField(required=True, max_length=100)
@@ -33,6 +34,7 @@ class MatchResultListForm(forms.Form):
     goalscore = SimpleArrayField(forms.IntegerField(required=True))
     goalconceded = SimpleArrayField(forms.IntegerField(required=True))
 
+
 class BasicPlayerInfo(models.Model):
     name = models.CharField(max_length=50)
     nationality = models.CharField(max_length=20)
@@ -42,40 +44,46 @@ class BasicPlayerInfo(models.Model):
     salary = models.IntegerField(null='non-Public')
     status = models.CharField(max_length=20)
 
+
 class LoginInfo(forms.Form):
-    username =  forms.CharField(required=True, max_length=40, min_length=6)
-    password =  forms.CharField(required=True, max_length=40, min_length=6)
+    username = forms.CharField(required=True, max_length=40, min_length=6)
+    password = forms.CharField(required=True, max_length=40, min_length=6)
 
 # PLAYER----------------------------------------------------------------------------
+
 
 def getBasicInfo():
     allRecord = {}
     for position in sp.tableList:
         allRecord[position] = []
-        cursorDB.execute("""SELECT * FROM v_%s""" %(position, ))
+        cursorDB.execute("""SELECT * FROM v_%s""" % (position, ))
         tableContent = cursorDB.fetchall()
         for record in tableContent:
-            allRecord[position].append(dict(zip(sp.BasicPlayerInfoField, record)))
+            allRecord[position].append(
+                dict(zip(sp.BasicPlayerInfoField, record)))
     return allRecord
+
 
 def getInfoByPosition(position):
     if position not in sp.tableList:
         return None
-    cursorDB.execute("""SELECT * FROM v_%s""" %(position, ))
-    tableContent = [] 
-    for player in cursorDB.fetchall():    
+    cursorDB.execute("""SELECT * FROM v_%s""" % (position, ))
+    tableContent = []
+    for player in cursorDB.fetchall():
         tableContent.append(dict(zip(sp.BasicPlayerInfoField, player)))
     return tableContent
 
+
 def getInfoByID(position, ID):
-    cursorDB.execute("""SELECT * FROM get_player_by_id(%s)""" %(ID, ))
+    cursorDB.execute("""SELECT * FROM get_player_by_id(%s)""" % (ID, ))
     returnRecord = cursorDB.fetchall()
     if returnRecord == []:
         return None
-    personalInfo =  dict(zip(sp.personalField, returnRecord[0]))
+    personalInfo = dict(zip(sp.personalField, returnRecord[0]))
     return personalInfo
 
 # LEAGUE----------------------------------------------------------------------------
+
 
 def getLeagueTable():
     leagueTable = []
@@ -87,9 +95,11 @@ def getLeagueTable():
         leagueTable.append(dict(zip(sp.leagueTableField, record)))
     return leagueTable
 
+
 def updateLeagueTable(idList, gsList, gcList, nTeam):
     res = []
-    cursorDB.execute("""SELECT * from update_league_table( ARRAY %s, ARRAY %s, ARRAY %s, %s)""" %(idList, gsList, gcList, nTeam))
+    cursorDB.execute("""SELECT * from update_league_table( ARRAY %s, ARRAY %s, ARRAY %s, %s)""" %
+                     (idList, gsList, gcList, nTeam))
     connectionPG.commit()
     returnRecord = cursorDB.fetchall()
     if returnRecord == []:
@@ -97,6 +107,7 @@ def updateLeagueTable(idList, gsList, gcList, nTeam):
     for record in returnRecord:
         res.append(dict(zip(sp.leagueTableField, record)))
     return res
+
 
 def clearLeagueTable():
     res = []
@@ -109,15 +120,20 @@ def clearLeagueTable():
         res.append(dict(zip(sp.leagueTableFieldRes, record)))
     return res
 
+
 def summitUserLoginData(username, password):
-    cursorDB.execute("""SELECT * FROM authenticate_user('%s', '%s')""" %(username, password))
+    cursorDB.execute(
+        """SELECT * FROM authenticate_user('%s', '%s')""" % (username, password))
     return dict(zip(('username', 'email', 'phone', 'name'), cursorDB.fetchall()[0]))
 
+
 def getUserInfo(username):
-    cursorDB.execute("""SELECT * FROM get_user_by_username('%s')""" %(username))
+    cursorDB.execute(
+        """SELECT * FROM get_user_by_username('%s')""" % (username))
     return dict(zip(('username', 'email', 'phone', 'name'), cursorDB.fetchall()[0]))
 
 # TEST---------------------------------------------------------------------------------
+
 
 def test():
     leagueTable = []
@@ -130,7 +146,6 @@ def test():
     return leagueTable
 
 
-
 # def createDatabase():
 #     cursorDB.execute("""DROP SCHEMA public CASCADE;
 #                         CREATE SCHEMA public;""")
@@ -140,5 +155,3 @@ def test():
 #             cursorDB.execute("INSERT INTO %s %s VALUES %s" %(tablename, sp.fieldInserted, personalInfo, ))
 #     connectionPG.commit()
 #     print("Table created successfully in PostgreSQL ")
-
-

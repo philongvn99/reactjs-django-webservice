@@ -116,7 +116,7 @@
 #clubs tr:nth-child(n) {
   background-color: lightslategrey;
 }
-#clubs tr:nth-child(-1n + 5) {
+#clubs tr:nth-child(-1n + 6) {
   background-color: lightpink;
 }
 #clubs tr:nth-child(-1n + 4) {

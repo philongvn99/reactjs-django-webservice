@@ -83,7 +83,7 @@ const MiniTable = (props) => {
          <div style={{backgroundColor:'teal', fontSize:'20px', padding: '10px'}}>
             <b>{info.name}</b>
          </div>
-         <div style={{backgroundColor:'azure', textAlign: 'left', padding: '10px', fontSize:'15px' }}>
+         <div style={{backgroundColor:'darkgray', textAlign: 'left', padding: '10px', fontSize:'15px' }}>
             <div style={{padding: '10px'}}>
                   <b>Full name:    </b>{info.full_name}<br></br>
                   <b>Nationality:  </b>{info.nationality}<br></br>

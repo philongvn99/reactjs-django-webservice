@@ -58,7 +58,6 @@ const style ={
   containter: {
     position:"relative",
     width: "100%",
-    backgroundColor: "#050505"
   },
   scrollaleTable: {
     height: "inherit"

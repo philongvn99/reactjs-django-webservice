@@ -53,9 +53,21 @@ body {
   background-color: rgb(247, 247, 247);
 }
 
+.sticky {
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 600;
+}
+
+.invisible {
+  visibility: "hidden";
+}
+
 #root {
-  background: linear-gradient(#000020, black 20%, #000020);
-  /* background: repeating-linear-gradient(45deg, pink, white 10%); */
+  /* background: linear-gradient(#cf7e7e, #050516); */
+  background: repeating-linear-gradient(45deg, pink, white 10%);
 }
 
 a {
@@ -64,7 +76,9 @@ a {
 
 .top-bar {
   align-items: center;
-  background-color: #000000;
+  background-size: cover;
+  background-image: url(https://i.pinimg.com/originals/96/c1/84/96c184acc2cfdcf5f3df60d00923f134.jpg);
+  min-height: 80px;
 }
 
 .left-top-slogan,
@@ -124,10 +138,11 @@ a {
 .header-nav-bar {
   align-content: center;
   border-width: 5px;
-  background-image: url(http://www.vivianplantation.com/images/top-header-blue.gif?crc=3843190975);
-  /* background: linear-gradient(black, red); */
-  position: -webkit-sticky;
+  /* http://www.vivianplantation.com/images/top-header-blue.gif?crc=3843190975 */
+  position: -webkit-sticky; /* Safari */
   position: sticky;
+  top: 0;
+  background: linear-gradient(black, red);
   top: 0;
   z-index: 1020;
 }
