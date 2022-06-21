@@ -114,6 +114,7 @@ def UserLogin(request):
         # Valid Input
         else:
             response = models.summitUserLoginData(request.data['username'], request.data['password'])
+            print(response)
             return Response({'success': response['username'] != None, 'userInfo' : response}, status = status.HTTP_200_OK if response != [] else status.HTTP_203_NON_AUTHORITATIVE_INFORMATION)
 
 @api_view(['GET'])

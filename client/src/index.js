@@ -5,151 +5,165 @@ import UserProfile from "./Component/UserProfile";
 import Audio from "./Component/Audio";
 import "./style.css";
 import axios from "axios";
+import { Navbar } from "reactstrap";
+import $ from "jquery";
 
-ReactDOM.render(<App/>, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById("root"));
 
 window.onload = function () {
+  const pauseMusic = sessionStorage.getItem("musicPaused");
+  const srcMusic = sessionStorage.getItem("musicSrc");
 
-    const pauseMusic = sessionStorage.getItem("musicPaused");
-    const srcMusic = sessionStorage.getItem("musicSrc");
+  ReactDOM.render(
+    <Audio
+      src={srcMusic ? srcMusic : "/resource/music/GloryGloryManUnited.mp3"}
+    />,
+    document.getElementById("audio")
+  );
 
-    ReactDOM.render(<Audio src={srcMusic ?  srcMusic : "/resource/music/GloryGloryManUnited.mp3"}/>, document.getElementById('audio'));
+  let myAudio = document.getElementById("background-music");
 
-    let myAudio = document.getElementById("background-music");
+  myAudio.volume = 0.05;
+  myAudio.currentTime = sessionStorage.getItem("musicCurrTime");
 
-    myAudio.volume = 0.05;
-    myAudio.currentTime = sessionStorage.getItem("musicCurrTime");
+  pauseMusic === "true"
+    ? myAudio.pause()
+    : myAudio.play().catch((error) => {
+        //  when an exception is played, the exception flow is followed
+      });
+};
 
-    (pauseMusic === 'true') ? myAudio.pause() : myAudio.play().catch(error => {
-        //  when an exception is played, the exception flow is followed 
-    });
-}
+window.addEventListener("beforeunload", function (event) {
+  var myAudio = document.getElementById("background-music");
 
-window.addEventListener("beforeunload", function(event) {
-    var myAudio = document.getElementById("background-music");
-    
-    sessionStorage.setItem("musicCurrTime", myAudio.currentTime);
-    sessionStorage.setItem("musicPaused", myAudio.paused);
-    sessionStorage.setItem("musicSrc", myAudio.src);
-})
-
-window.addEventListener("scroll", function(event) {
-    var header = document.getElementById("header");
-    var topbar = document.getElementById("topbar");
-    if (window.scrollY > 80) {
-        header.classList.add('sticky') 
-        topbar.classList.add('invisible') 
-    }
-    else {
-        header.classList.remove('sticky'); //header.style.setProperty('visibility', 'visible');
-        topbar.classList.remove('invisible') 
-    }
+  sessionStorage.setItem("musicCurrTime", myAudio.currentTime);
+  sessionStorage.setItem("musicPaused", myAudio.paused);
+  sessionStorage.setItem("musicSrc", myAudio.src);
 });
 
+$(document).on("scroll", function () {
+  if (window.scrollY > 78) {
+    $("#topbar").addClass("invisible"); //hide();
+  } else {
+    $("#topbar").removeClass("invisible"); //show();
+  }
+});
 
 const switchMusic = () => {
-    var myAudio = document.getElementById("background-music");
-    return myAudio.paused ? myAudio.play() : myAudio.pause();
-}
+  var myAudio = document.getElementById("background-music");
+  return myAudio.paused ? myAudio.play() : myAudio.pause();
+};
 
 const submitLogin = () => {
-    var usernameLogin = document.getElementById("login-username").value;
-    var passwordLogin = document.getElementById("login-password").value;
+  var usernameLogin = document.getElementById("login-username").value;
+  var passwordLogin = document.getElementById("login-password").value;
 
-    let usernameErrorHTML = "";
-    let passwordErrorHTML = "";
+  let usernameErrorHTML = "";
+  let passwordErrorHTML = "";
 
-    if(usernameLogin.length < 6) usernameErrorHTML = "Username must have at least 6 characters";
-    else if (!usernameLogin.match(/^[0-9A-Za-z.@]+$/g)) usernameErrorHTML = "Username contains some special characters";
+  if (usernameLogin.length < 6)
+    usernameErrorHTML = "Username must have at least 6 characters";
+  else if (!usernameLogin.match(/^[0-9A-Za-z.@]+$/g))
+    usernameErrorHTML = "Username contains some special characters";
 
-    document.getElementById("user-error").innerHTML = usernameErrorHTML;
+  document.getElementById("user-error").innerHTML = usernameErrorHTML;
 
-    if(passwordLogin.length < 6) passwordErrorHTML = "Password must have at least 6 characters";
-    else if (!passwordLogin.match(/^[0-9A-Za-z.@]+$/g) ) passwordErrorHTML = "Password contains some special characters";
+  if (passwordLogin.length < 6)
+    passwordErrorHTML = "Password must have at least 6 characters";
+  else if (!passwordLogin.match(/^[0-9A-Za-z.@]+$/g))
+    passwordErrorHTML = "Password contains some special characters";
 
-    document.getElementById("pass-error").innerHTML = passwordErrorHTML;
+  document.getElementById("pass-error").innerHTML = passwordErrorHTML;
 
-    if ((usernameErrorHTML === "") && (passwordErrorHTML === "")) {
-        axios.post(
-            'http://localhost:8000/UnitedHome/login/',
-            {
-                username: usernameLogin,
-                password: passwordLogin
-            }
-        )
-        .then( (res) => {
-            if(res.data.success)
-            {
-                localStorage.setItem('user', JSON.stringify(res.data.userInfo))
-                document.getElementById("login_link").innerHTML = res.data.userInfo.name;
-                ReactDOM.render(<UserProfile userInfo={res.data.userInfo}/>, document.getElementById('login-dropdown'));
-            }
-            else alert("Username or Password is INVALID");
-        })
-        .catch( (err) => alert(err))
-    }
-}
+  if (usernameErrorHTML === "" && passwordErrorHTML === "") {
+    axios
+      .post("http://localhost:8000/UnitedHome/login/", {
+        username: usernameLogin,
+        password: passwordLogin,
+      })
+      .then((res) => {
+        if (res.data.success) {
+          localStorage.setItem("user", JSON.stringify(res.data.userInfo));
+          document.getElementById("login_link").innerHTML =
+            res.data.userInfo.name;
+          ReactDOM.render(
+            <UserProfile userInfo={res.data.userInfo} />,
+            document.getElementById("login-dropdown")
+          );
+        } else alert("Username or Password is INVALID");
+      })
+      .catch((err) => alert(err));
+  }
+};
 
-export const defaultLoginComponent = (<div className="login-form">
+export const defaultLoginComponent = (
+  <div className="login-form">
     <form>
-        <label>
-            <i className="bx bx-user"></i>
-            <span>User Name</span> 
-        </label><br/>
-        <input
-            id="login-username"
-            type="text"
-            className="form-control login-input"
-            placeholder="Username"
-            autoComplete="off"
-        /><br /><br />
-        <div className="error-notice" id="user-error">
-            <br />
-        </div>
-        <label>
-            <i className="bx bx-user"></i>
-            <span>Password</span> 
-        </label><br />
-        <input
-            id="login-password"
-            type="password"
-            className="form-control login-input"
-            placeholder="Password"
-            autoComplete="off"
-        /><br/><br/>
-        <div className="error-notice" id="pass-error">
-            <br />
-        </div>
+      <label>
+        <i className="bx bx-user"></i>
+        <span>User Name</span>
+      </label>
+      <br />
+      <input
+        id="login-username"
+        type="text"
+        className="form-control login-input"
+        placeholder="Username"
+        autoComplete="off"
+      />
+      <br />
+      <br />
+      <div className="error-notice" id="user-error">
+        <br />
+      </div>
+      <label>
+        <i className="bx bx-user"></i>
+        <span>Password</span>
+      </label>
+      <br />
+      <input
+        id="login-password"
+        type="password"
+        className="form-control login-input"
+        placeholder="Password"
+        autoComplete="off"
+      />
+      <br />
+      <br />
+      <div className="error-notice" id="pass-error">
+        <br />
+      </div>
     </form>
     <button className="btn btn-black" id="login-btn" onClick={submitLogin}>
-        Login
+      Login
     </button>
     <button
-        className="btn btn-secondary"
-        onClick={() => window.location.href='http://localhost:3000/user/signup/'}
-        >
-        Register
+      className="btn btn-secondary"
+      onClick={() =>
+        (window.location.href = "http://localhost:3000/user/signup/")
+      }
+    >
+      Register
     </button>
-</div>);
-
-
+  </div>
+);
 
 // BUTTON ONCLICK FUNCTION
 
-document.getElementById("music-switch").onclick = function() {switchMusic()};
+document.getElementById("music-switch").onclick = function () {
+  switchMusic();
+};
 
 //---------------------------------
 
-
 // Render User Table
-const userInfo = JSON.parse(localStorage.getItem('user'))
-var loginComponent = undefined
+const userInfo = JSON.parse(localStorage.getItem("user"));
+var loginComponent = undefined;
 
-if (userInfo != null  && Object.keys(userInfo).length > 0) {
-    document.getElementById("login_link").innerHTML = userInfo.name;
-    loginComponent = <UserProfile userInfo={userInfo}/>;
+if (userInfo != null && Object.keys(userInfo).length > 0) {
+  document.getElementById("login_link").innerHTML = userInfo.name;
+  loginComponent = <UserProfile userInfo={userInfo} />;
+} else {
+  loginComponent = defaultLoginComponent;
 }
-else {
-    loginComponent = defaultLoginComponent;
-};
-ReactDOM.render(loginComponent, document.getElementById('login-dropdown'));
+ReactDOM.render(loginComponent, document.getElementById("login-dropdown"));

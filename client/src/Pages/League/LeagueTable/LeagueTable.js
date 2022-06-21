@@ -1,69 +1,33 @@
-import React, {useEffect, useState} from 'react';
-import axios from 'axios';
-import StandingTable from '../resource/StandingTableComponent/StandingTable';
-import { Container, Row, Col } from 'reactstrap';
-import {fireDatabase} from "../../../config/firebaseConfig";
-
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import StandingTable from "../resource/StandingTableComponent/StandingTable";
+import { Container, Row, Col } from "reactstrap";
 
 const LeagueTable = () => {
   const [teams, setTeams] = useState(null);
-  const [eplBannerUrls, setEplBannerUrls] = useState(null);
 
-  useEffect(()=>{
+  useEffect(() => {
     async function fetchMyAPI() {
-      document.getElementById('league_link').classList='nav-link active'
-      await axios.get(`/UnitedHome/league/table`)
-      .then(res => {        
-          fireDatabase.ref('/epl-table')
-            .on('value', snapshot => {
-                setTeams(res.data);
-                setEplBannerUrls(snapshot.val());
-            }, (errorObject) => {
-                console.log('The read failed: ' + errorObject.name);
-            })
-      })
-      .catch(err => {
-        alert(err);
-      });
+      document.getElementById("league_link").classList = "nav-link active";
+      await axios
+        .get(`/UnitedHome/league/table`)
+        .then((res) => {
+          setTeams(res.data);
+        })
+        .catch((err) => {
+          alert(err);
+        });
     }
     fetchMyAPI();
-  }, [])
-    
-  return(
-    (eplBannerUrls !== null) &&
-      <Container style={style.containter} fluid id="info-table">
-        <Row>
-          <Col xs="12" sm="2" style={style.besideBanner}>
-            <img  style={style.besideBannerStyle} src={eplBannerUrls['left-banner']} alt='EPL Logo'></img>
-          </Col>
-          <Col xs="12" sm="8" style={style.scrollaleTable}>
-            <div id='club-table'>
-              {(teams !== null) && <StandingTable teamlist={teams} title='league table'></StandingTable>}
-            </div>
-          </Col>
-          <Col xs="12" sm="2" style={style.besideBanner}>
-            <img  style={style.besideBannerStyle} src={eplBannerUrls['right-banner']} alt='Map of clubs'></img>
-          </Col>
-        </Row>
-      </Container>
-  )
+  }, []);
+
+  return (
+    <div id="club-table">
+      {teams !== null && (
+        <StandingTable teamlist={teams} title="league table"></StandingTable>
+      )}
+    </div>
+  );
 };
 
 export default LeagueTable;
-
-const style ={
-  besideBannerStyle: {
-    width: "inherit",
-  },
-  containter: {
-    position:"relative",
-    width: "100%",
-  },
-  scrollaleTable: {
-    height: "inherit"
-  },
-  besideBanner: {
-    display: "flex",
-    alignItems: "center",
-  }
-}

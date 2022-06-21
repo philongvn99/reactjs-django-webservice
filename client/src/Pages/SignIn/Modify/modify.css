@@ -1,10 +1,10 @@
-#signup-background {
+#modify-background {
   align-items: center;
   justify-content: center;
   display: flex;
 }
 
-#signup-form {
+#modify-form {
   display: block;
   background-color: crimson;
   padding: 20px;
@@ -12,10 +12,10 @@
   margin: 10px 0px;
   border-radius: 10px;
   font-size: large;
-  width: fit-content;
+  width: 60%;
 }
 
-.submit-signup-field {
+.submit-modify-field {
   margin-top: 30px;
   align-content: center;
   height: 50px;
@@ -27,11 +27,10 @@ div label {
 
 div input {
   float: right;
-  margin-left: 10px;
   border-radius: 4px;
 }
 
-.signup-form button {
+.modify-form button {
   background-color: lightpink;
   border-radius: 10px;
   width: 150px;

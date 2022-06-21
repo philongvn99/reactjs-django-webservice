@@ -107,41 +107,46 @@
   height: inherit;
 }
 
-#clubs td,
+#clubs td ,
 #clubs th {
-  border: 1px solid gainsboro;
+  border: 1px solid #000;
   padding: 8px;
 }
 
+#clubs td {
+  color: #38003c;
+}
+
+
+
 #clubs tr:nth-child(n) {
-  background-color: lightslategrey;
+  background-color: #fff;
 }
 #clubs tr:nth-child(-1n + 6) {
-  background-color: lightpink;
+  background-color: #4eff83
 }
 #clubs tr:nth-child(-1n + 4) {
-  background-color: hotpink;
+  background-color: #ea4c89;
 }
 #clubs tr:nth-child(-1n + 1) {
-  background-color: deeppink;
+  background-color: #f5005f
 }
 #clubs tr:nth-child(n + 18) {
-  background-color: violet;
+  background-color: #04f5ff;
 }
 #clubs tr {
-  background-color: #fff;
+  background-color: #38003c;
 }
 
 #clubs tr:hover {
-  background-color: aquamarine;
+  background-color: #ebff00;
 }
 
 #clubs th {
   padding-top: 12px;
   padding-bottom: 12px;
   text-align: center;
-  background-color: #303;
-  color: #fff;
+  background-color: #38003c;
 }
 
 #clubs {
@@ -161,16 +166,6 @@
   font-family: arial, sans-serif;
 }
 
-a,
-a:hover {
-  color: firebrick;
-  font-family: Bradley Hand, cursive;
-  text-decoration: none;
-}
-
-a:hover {
-  color: red;
-}
 
 th {
   font-family: Bradley Hand, cursive;

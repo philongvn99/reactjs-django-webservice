@@ -15,6 +15,10 @@
     width: fit-content;
 }
 
+.title{
+    font-size: xx-large;
+}
+
 .submit-signup-field{
     margin-top: 30px;
     align-content: center;
@@ -27,7 +31,6 @@ div label{
 
 div input{
     float: right;
-    margin-left: 10px;
     border-radius: 4px;
 }
 

@@ -49,6 +49,13 @@ class LoginInfo(forms.Form):
     username = forms.CharField(required=True, max_length=40, min_length=6)
     password = forms.CharField(required=True, max_length=40, min_length=6)
 
+class SignupInfo(forms.Form):
+    username = forms.CharField(required=True, max_length=40, min_length=6)
+    password = forms.CharField(required=True, max_length=40, min_length=6)
+    phone = forms.CharField(required=True, max_length=40, min_length=6)
+    email = forms.CharField(required=True, max_length=40, min_length=6)
+    license = forms.CharField(required=False, max_length=40, min_length=7)
+
 # PLAYER----------------------------------------------------------------------------
 
 

@@ -49,8 +49,14 @@ body {
   font-weight: 400;
   line-height: 1.5;
   text-align: left;
-  color: #fff;
-  background-color: rgb(247, 247, 247);
+  color: white;
+  z-index: 50;
+}
+
+a,
+a:hover {
+  font-family: Bradley Hand, cursive;
+  text-decoration: none;
 }
 
 .sticky {
@@ -58,12 +64,13 @@ body {
   position: sticky;
   top: 0;
   width: 100%;
-  z-index: 600;
+  z-index: 50;
 }
 
 .invisible {
-  visibility: "hidden";
+  visibility: hidden;
 }
+
 
 #root {
   /* background: linear-gradient(#cf7e7e, #050516); */
@@ -75,9 +82,11 @@ a {
 }
 
 .top-bar {
+  z-index: -1000;
   align-items: center;
   background-size: cover;
-  background-image: url(https://i.pinimg.com/originals/96/c1/84/96c184acc2cfdcf5f3df60d00923f134.jpg);
+  background-color:#000;
+  /* background-image: url(https://i.pinimg.com/originals/96/c1/84/96c184acc2cfdcf5f3df60d00923f134.jpg); */
   min-height: 80px;
 }
 
@@ -131,10 +140,6 @@ a {
   border-color: transparent;
 }
 
-.body-content {
-  align-content: center;
-}
-
 .header-nav-bar {
   align-content: center;
   border-width: 5px;
@@ -144,10 +149,11 @@ a {
   top: 0;
   background: linear-gradient(black, red);
   top: 0;
-  z-index: 1020;
+  z-index: 600;
 }
 
 /*============= NAVIGATION =============*/
+
 .navbar-brand img {
   height: 100px;
 }
@@ -156,7 +162,6 @@ a {
   font-weight: 600;
   letter-spacing: 0.1rem;
   box-shadow: 0 0.5rem 0.5rem rgba(0, 0, 0, 0.05);
-  z-index: 1;
 }
 .nav-item {
   padding: 0.5rem;
@@ -177,11 +182,11 @@ a {
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color: rgb(240, 224, 224);
+  background-color:mistyrose;
   min-width: max-content;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  z-index: 1;
-  padding: 2px 2px;
+  border-radius: 20px;
+  overflow: hidden;
+  /* padding: 2px 2px; */
 }
 
 .dropdown-content a {
@@ -194,7 +199,7 @@ a {
 }
 
 .dropdown-content a:hover {
-  background-color: rgb(197, 92, 92);
+  background-color: firebrick;
 }
 
 .dropdown-nav:hover .dropdown-content {
@@ -227,7 +232,7 @@ a {
 .child {
   display: inline-block;
   text-align: center;
-  padding: 2px;
+  /* padding: 2px; */
   min-width: 150px;
 }
 

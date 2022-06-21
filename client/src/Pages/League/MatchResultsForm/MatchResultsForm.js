@@ -1,5 +1,5 @@
-import React, { useState, useEffect, Component } from "react";
-//import ResourcesService from "../services/ResourcesService";
+import React, { useState, useEffect, useRef } from "react";
+import { Container, Row, Col } from "reactstrap";
 
 const MatchResultsForm = (props) => {
   const [update, setUpdate] = useState({
@@ -8,6 +8,8 @@ const MatchResultsForm = (props) => {
     shortDescription: "",
     title: "",
   });
+  const [selectedFile, setSelectedFile] = useState();
+  const inputRef = useRef(null);
 
   useEffect(() => {
     // if (update.id === "_dto") {
@@ -23,103 +25,66 @@ const MatchResultsForm = (props) => {
     // }
   }, []);
 
-  const saveDataUpdate = () => {
-    // let jsonData = {
-    //   content: update.content,
-    //   shortDescription: update.shortDescription,
-    //   title: update.title,
-    // };
-    // console.log(jsonData)
-    // if (update.id === "_dto") {
-    //   ResourcesService.createNewResource(jsonData).then((res) => {
-    //     props.history.push("/");
-    //   });
-    // } else {
-    //   ResourcesService.updateResource(jsonData, update.id).then((res) => {
-    //     props.history.push("/");
-    //   });
-    // }
-    props.history.push("/");
-  };
+  const handleUploadImage = () => {
+    // Assuming only image
+    var file = inputRef.current.files[0];
+    if (file != null) {
+      var reader = new FileReader();
+      var url = reader.readAsDataURL(file);
 
-  useEffect(() => {
-    //saveDataUpdate();
-  }, []);
-
-  const cancel = () => {
-    props.history.push("/");
-  };
-
-  const getTitle = () => {
-    if (update.id === "_dto") {
-      return <h3 className="text-center">Adding Data</h3>;
-    } else {
-      return <h3 className="text-center">Updating Data</h3>;
+      reader.onloadend = function (e) {
+        setSelectedFile(reader.result);
+      };
     }
   };
 
+  const runAI = () => {};
+
   return (
-    <div>
-      <br />
-      <div className="container">
-        <div className="row">
-          <div className="card col-md-6 offset-md-3 offset-md-3">
-            {getTitle()}
-            <div className="card-body">
-              <form>
-                <div className="form-group">
-                  <label> Content </label>
-                  <input
-                    placeholder="Content"
-                    name="content"
-                    className="form-control"
-                    value={update.content}
-                    onChange={(e) => setUpdate({ content: e.target.value })}
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label> Short Description </label>
-                  <input
-                    placeholder="Short Description"
-                    name="shortDescription"
-                    className="form-control"
-                    value={update.shortDescription}
-                    onChange={(e) =>
-                      setUpdate({ shortDescription: e.target.value })
-                    }
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label> Title </label>
-                  <input
-                    placeholder="Title"
-                    name="title"
-                    className="form-control"
-                    value={update.title}
-                    onChange={(e) => setUpdate({ title: e.target.value })}
-                  />
-                </div>
-                <br />
-
-                <button className="btn btn-success" onClick={saveDataUpdate}>
-                  Save
-                </button>
-
-                <button
-                  style={{ marginLeft: "15px" }}
-                  className="btn btn-secondary"
-                  onClick={cancel}
-                >
-                  Cancel
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <Container>
+      <Row style={{ height: "400px" }}>
+        <Col
+          sm="3"
+          style={{
+            backgroundColor: "black",
+            padding: "20px",
+            margin: "20px",
+            border: "10px solid green",
+          }}
+        >
+          <Row>
+            <form>
+              <input
+                ref={inputRef}
+                type="file"
+                name="user[image]"
+                multiple="true"
+                onChange={handleUploadImage}
+              />
+            </form>
+          </Row>
+          <Row>
+            <form>
+              <button onClick={runAI}>Run</button>
+            </form>
+          </Row>
+        </Col>
+        <Col
+          sm="7"
+          style={{
+            backgroundColor: "green",
+            padding: "20px",
+            margin: "20px",
+            display: "flex",
+            justifyContent: "center",
+            border: "10px solid black",
+            maxHeight: "100%",
+          }}
+        >
+          <img src={selectedFile} style={{ maxHeight: "300px" }} />
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

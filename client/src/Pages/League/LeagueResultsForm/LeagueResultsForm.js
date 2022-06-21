@@ -39,8 +39,9 @@ const getItemStyle = (isDragging, draggableStyle) => ({
   display: "flex",
   flexDirection: "row",
   alignItems: "center",
+  color: "#303",
   // change background colour if dragging
-  background: isDragging ? "deeppink" : "lightslategrey",
+  background: isDragging ? "deeppink" : "#fff",
   // styles we need to apply on draggables
   ...draggableStyle,
 });
@@ -51,7 +52,9 @@ const getListStyle = (boardtype) => ({
       ? "#e90052"
       : boardtype === "home"
       ? "#00ff85"
-      : "#04f5ff",
+      : boardtype === "away"
+      ? "#04f5ff"
+      : "#ebff00",
   padding: grid,
   width: "100%",
   minHeight: `1600px`,
@@ -89,9 +92,11 @@ const style = {
   },
   boardStyle: {
     padding: "10px",
+    backgroundColor: "#ebff00",
+    borderRadius: "20px",
   },
   submitButton: {
-    width: "250px",
+    width: "100px",
     height: "50px",
   },
 };
@@ -114,11 +119,9 @@ const LeagueResultsForm = () => {
     hometeams: "home",
     awayteams: "away",
   });
-  const [selectedFile, setSelectedFile] = useState();
   const [score, setScore] = useState(scoreList);
 
   const isInitialMount = useRef(true);
-  const inputRef = useRef(null);
 
   useEffect(() => {
     if (isInitialMount.current) {
@@ -176,21 +179,6 @@ const LeagueResultsForm = () => {
     }
     event.preventDefault();
   };
-
-  const handleUploadImage = () => {
-    // Assuming only image
-    var file = inputRef.current.files[0];
-    if (file != null) {
-      var reader = new FileReader();
-      var url = reader.readAsDataURL(file);
-
-      reader.onloadend = function (e) {
-        setSelectedFile(reader.result);
-      };
-    }
-  };
-
-  const runAI = () => {};
 
   const renderScoreBoard = (num) =>
     Array.from({ length: num }, (v, k) => k).map((k) => (
@@ -265,48 +253,6 @@ const LeagueResultsForm = () => {
   // But in this example everything is just done in one place for simplicity
   return (
     <Container>
-      <Row style={{ height: "400px" }}>
-        <Col
-          sm="3"
-          style={{
-            backgroundColor: "black",
-            padding: "20px",
-            margin: "20px",
-            border: "10px solid green",
-          }}
-        >
-          <Row>
-            <form>
-              <input
-                ref={inputRef}
-                type="file"
-                name="user[image]"
-                multiple="true"
-                onChange={handleUploadImage}
-              />
-            </form>
-          </Row>
-          <Row>
-            <form>
-              <button onClick={runAI}>Run</button>
-            </form>
-          </Row>
-        </Col>
-        <Col
-          sm="7"
-          style={{
-            backgroundColor: "green",
-            padding: "20px",
-            margin: "20px",
-            display: "flex",
-            justifyContent: "center",
-            border: "10px solid black",
-            maxHeight: "100%",
-          }}
-        >
-          <img src={selectedFile} style={{ maxHeight: "300px" }} />
-        </Col>
-      </Row>
       <Row>
         <DragDropContext onDragEnd={onDragEnd}>
           <Col style={{ width: "30%" }}>
@@ -384,7 +330,7 @@ const LeagueResultsForm = () => {
             </Droppable>
           </Col>
           <Col style={{ width: "10%" }}>
-            <div style={style.boardStyle}>
+            <div style={getListStyle(null)}>
               <h1 style={style.hStyle}>RESULT</h1>
               {
                 <form onSubmit={handleSubmit}>

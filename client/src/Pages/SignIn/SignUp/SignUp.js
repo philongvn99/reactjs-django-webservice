@@ -1,78 +1,160 @@
-import React, {useState, useEffect} from "react";
-import {fireDatabase, storage} from "../../../config/firebaseConfig";
-import "./sign-up.css"
+import React, { useState, useEffect } from "react";
+import { fireDatabase, storage } from "../../../config/firebaseConfig";
+import { Container, Row, Col } from "reactstrap";
+import "./sign-up.css";
 
 const SignUpForm = (props) => {
-    const [userInfo, setUserInfo] = useState({username: "", email:"", phone: "", name:"", password:"", c_password: ""})
-    
-    const submitHandler = (event) => {
-        console.log(userInfo)
-    }
+  const [username, setUsername] = useState(null);
+  const [name, setName] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [phone, setPhone] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [confirmPassword, setConfirmPassword] = useState(null);
+  const [license, setLicense] = useState(null);
+  const [error, setError] = useState({
+    username: "",
+    email: "",
+    phone: "",
+    name: "",
+    password: "",
+    c_password: "",
+    license: "",
+  });
 
-    return (
-        <div id="signup-background">
-            <div id="signup-form">
-                <h1>SIGN UP</h1>
-                <div className="submit-signup-field">
-                    <label htmlFor="UserName">UserName</label>
-                    <input 
-                        id="signup-username"
-                        type="text"
-                        placeholder="Username"
-                        onChange={(e) => setUserInfo({ ...userInfo, username: e.target.value })}
-                        />
-                </div>
-                <div className="submit-signup-field">
-                    <label htmlFor="Email">Email</label>
-                    <input 
-                        id="signup-email"
-                        type="email"
-                        placeholder="Email"
-                        onChange={(e) => setUserInfo({ ...userInfo, email: e.target.value })}
-                        />
-                </div>
-                <div className="submit-signup-field">
-                    <label htmlFor="Phone Number">Phone Number</label>
-                    <input 
-                        id="signup-phone"
-                        type="number"
-                        placeholder="Phone Number"
-                        onChange={(e) => setUserInfo({ ...userInfo, phone: e.target.value })}
-                        />
-                </div>
-                <div className="submit-signup-field">
-                    <label htmlFor="Name">Name</label>
-                    <input 
-                        id="signup-name"
-                        type="text"
-                        placeholder="Name"
-                        onChange={(e) => setUserInfo({ ...userInfo, name: e.target.value })}
-                        />
-                </div>
-                <div className="submit-signup-field">
-                    <label htmlFor="Password">Password</label>
-                    <input 
-                        id="signup-password" 
-                        type="password" 
-                        placeholder="Password"
-                        onChange={(e) => setUserInfo({ ...userInfo, password: e.target.value })}
-                        />
-                </div>
-                <div className="submit-signup-field">
-                    <label htmlFor="Confirm Password">Confirm Password</label>
-                    <input 
-                        id="signup-confirm-password" 
-                        type="password" 
-                        placeholder="Confirm Password"
-                        onChange={(e) => setUserInfo({ ...userInfo, c_password: e.target.value })}
-                        />
-                </div>
-                <div className="submit-signup-field">
-                    <button id="Signup-submit" onClick={submitHandler}>Sign Up</button>
-                </div>
-            </div>
+  const submitHandler = (event) => {
+    console.log(
+      username,
+      email,
+      phone,
+      name,
+      password,
+      confirmPassword,
+      license
+    );
+  };
+
+  return (
+    <Container id="signup-background">
+      <Col id="signup-form" sm="8">
+        <Row className="title">SIGN UP</Row>
+        <Row className="submit-signup-field">
+          <Col>
+            <label htmlFor="username">USERNAME</label>
+          </Col>
+          <Col>
+            <input
+              id="signup-username"
+              type="text"
+              placeholder="Pikachu123"
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </Col>
+          <div className="error-notice" id={`username-error`}>
+            {error.username}
+          </div>
+        </Row>
+        <Row className="submit-signup-field">
+          <Col>
+            <label htmlFor="email">EMAIL</label>
+          </Col>
+          <Col>
+            <input
+              id={"signup-email"}
+              type="text"
+              placeholder="meotwo@gmail.com"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </Col>
+          <div className="error-notice" id={`email-error`}>
+            {error.email}
+          </div>
+        </Row>
+        <Row className="submit-signup-field">
+          <Col>
+            <label htmlFor="name">NAME</label>
+          </Col>
+          <Col>
+            <input
+              id={"signup-name"}
+              type="text"
+              placeholder="UCHIHA SATOSHI"
+              onChange={(e) => setName(e.target.value)}
+            />
+          </Col>
+          <div className="error-notice" id="name-error">
+            {error.name}
+          </div>
+        </Row>
+        <Row className="submit-signup-field">
+          <Col>
+            <label htmlFor="email">PHONE</label>
+          </Col>
+          <Col>
+            <input
+              id={"signup-phone"}
+              type="text"
+              placeholder="0123xxxxxx"
+              onChange={(e) => setPhone(e.target.value)}
+            />
+          </Col>
+          <div className="error-notice" id={`phone-error`}>
+            {error.phone}
+          </div>
+        </Row>
+        <Row className="submit-signup-field">
+          <Col>
+            <label htmlFor="email">PASSWORD</label>
+          </Col>
+          <Col>
+            <input
+              id={"signup-password"}
+              type="password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </Col>
+          <div className="error-notice" id={`password-error`}>
+            {error.password}
+          </div>
+        </Row>
+        <Row className="submit-signup-field">
+          <Col>
+            <label htmlFor="email">CONFIRM PASSWORD</label>
+          </Col>
+          <Col>
+            <input
+              id={"signup-confirmpassword"}
+              type="password"
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+          </Col>
+          <div className="error-notice" id={`confirmpassword-error`}>
+            {error.c_password}
+          </div>
+        </Row>
+        <Row className="submit-signup-field">
+          <Col>
+            <label htmlFor="license">LICENSE PLATE NUMBER</label>
+          </Col>
+          <Col>
+            <input
+              id={"signup-license"}
+              type="text"
+              placeholder="64B2-00298"
+              onChange={(e) => setLicense(e.target.value)}
+            />
+          </Col>
+          <div className="error-notice" id={`license-error`}>
+            {error.license}
+          </div>
+        </Row>
+        <div className="submit-signup-field">
+          <button id="Signup-submit" onClick={submitHandler}>
+            Sign Up
+          </button>
         </div>
-    )
+      </Col>
+    </Container>
+  );
 };
 
 export default SignUpForm;
