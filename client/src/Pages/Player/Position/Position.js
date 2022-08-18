@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import PlayerTable from "../resource/TableComponent/PlayerTable";
-import { Container, Row, Col } from "reactstrap";
+import { Container, Row } from "reactstrap";
 import { fireDatabase } from "../../../config/firebaseConfig";
 import "./position-style.css";
 
@@ -15,21 +14,22 @@ const Position = (props) => {
     const { pos } = props.match.params;
 
     async function fetchMyAPI() {
-      axios.get(`/UnitedHome/player/${pos}`).then((res) => {
-        fireDatabase.ref(`/player-table/${pos}`).on(
-          "value",
-          (snapshot) => {
-            setThumbnailLink(snapshot.val());
-          },
-          (errorObject) => {
-            console.log("The read failed: " + errorObject.name);
-          }
-        );
+      fireDatabase.ref(`/player-table/${pos + "s"}`).on(
+        "value",
+        (snapshot) => {
+          setThumbnailLink(snapshot.val());
+        },
+        (errorObject) => {
+          console.log("The read failed: " + errorObject.name);
+        }
+      );
 
-        setPlayerTable(
-          <PlayerTable players={res.data} title={pos}></PlayerTable>
-        );
-      });
+      setPlayerTable(
+        <PlayerTable
+          players={JSON.parse(sessionStorage.getItem("players"))[pos]}
+          title={pos}
+        ></PlayerTable>
+      );
     }
     fetchMyAPI();
   }, [props]);
@@ -59,7 +59,7 @@ const Position = (props) => {
           </a>
           <a
             className="position-link"
-            href={`http://localhost:3000/players/goalkeepers/`}
+            href={`http://localhost:3000/players/goalkeeper`}
             title="goalkeeper-button"
           >
             <button
@@ -70,7 +70,7 @@ const Position = (props) => {
           </a>
           <a
             className="position-link"
-            href={`http://localhost:3000/players/defenders`}
+            href={`http://localhost:3000/players/defender`}
             title="defender-button"
           >
             <button
@@ -81,7 +81,7 @@ const Position = (props) => {
           </a>
           <a
             className="position-link"
-            href={`http://localhost:3000/players/midfielders`}
+            href={`http://localhost:3000/players/midfielder`}
             title="midfielder-button"
           >
             <button
@@ -92,7 +92,7 @@ const Position = (props) => {
           </a>
           <a
             className="position-link"
-            href={`http://localhost:3000/players/forwards`}
+            href={`http://localhost:3000/players/forward`}
             title="forward-button"
           >
             <button

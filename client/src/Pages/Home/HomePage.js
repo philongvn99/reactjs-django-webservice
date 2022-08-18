@@ -1,6 +1,6 @@
-import React, { useRef, useState, useEffect } from "react";
-import { Container, Row, Col } from "reactstrap";
 import WOW from "wowjs";
+import { Container, Row, Col } from "reactstrap";
+import React, { useRef, useState, useEffect } from "react";
 import { fireDatabase } from "../../config/firebaseConfig";
 import "./home-page.scss";
 
@@ -8,7 +8,9 @@ const HomePage = () => {
   const [thumbnailSrcDict, setThumbnailSrcDict] = useState(null);
 
   useEffect(() => {
-    function getThumbnailSrcDict() {
+    document.getElementById("home_link").classList = "nav-link active";
+    document.getElementById("home_indicator").classList = "menu-item active";
+    async function getThumbnailSrcDict() {
       fireDatabase.ref(`/home`).on(
         "value",
         (snapshot) => {
@@ -25,8 +27,6 @@ const HomePage = () => {
     getThumbnailSrcDict();
   }, []);
 
-  document.getElementById("home_link").classList = "nav-link active";
-
   let articleRef1 = useRef(null);
   let articleRef2 = useRef(null);
   let articleRef3 = useRef(null);
@@ -38,7 +38,7 @@ const HomePage = () => {
   };
 
   return (
-    <Container>
+    <Container id="home-page">
       <Row className="wow fadeInDown">
         <Col>
           <h1 className="text-dark font-weight-bold mb-3 title">

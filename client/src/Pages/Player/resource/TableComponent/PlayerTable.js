@@ -1,83 +1,61 @@
-import React, { useState, useEffect } from "react";
-import { Container, Row, Col } from "reactstrap";
+import React, { useState, useId } from "react";
 import "./player-table-style.css";
-import axios from "axios";
 
 const PlayerTable = (props) => {
-  const [players, setPlayers] = useState(props.players);
-  const [title, setTitle] = useState(props.title);
   const [idDisplayed, setIdDisplayed] = useState(-1);
 
   const renderTableHeader = () => {
     return (
       <tr>
         <th className="th-position" key={"player-header-0"}></th>
-        <th
-          className="th-position"
-          key={"player-header-1"}
-          style={{ minWidth: "200px" }}
-        >
+        <th className="th-position" key="player-header-name">
           Name
         </th>
-        <th
-          className="th-position"
-          key={"player-header-2"}
-          style={{ minWidth: "150px" }}
-        >
+        <th className="th-position" key="player-header-nationality">
           Nationality
         </th>
-        <th
-          className="th-position"
-          key={"player-header-3"}
-          style={{ minWidth: "150px" }}
-        >
+        <th className="th-position" key="player-header-birth">
           Birth
         </th>
-        <th className="th-position" key={"player-header-4"}>
+        <th className="th-position" key="player-header-height">
           Height
         </th>
-        <th
-          className="th-position"
-          key={"player-header-5"}
-          style={{ minWidth: "150px" }}
-        >
+        <th className="th-position" key="player-header-role">
           Role
         </th>
-        <th className="th-position" key={"player-header-6"}>
+        <th className="th-position" key="player-header-wage">
           Wage (Euro)
         </th>
-        <th className="th-position" key={"player-header-7"}>
+        <th className="th-position" key="player-header-status">
           Status
         </th>
       </tr>
     );
   };
 
-  useEffect(() => {}, []);
-
   const renderTableData = () => {
-    return players.map((player, index) => {
-      var { id, name, nationality, birthday, height, role, salary, status } =
-        player; //destructuring
+    return props.players.map((player, index) => {
       return (
         <tr key={index + "-player"}>
           <td className="td-position">
             <i
-              className="bx bxs-user-pin"
-              onMouseOver={() => setIdDisplayed(id)}
-              onMouseOut={() => setIdDisplayed(0)}
+              className="fas fa-info"
+              onMouseOver={() => setIdDisplayed(player.id)}
+              onMouseOut={() => setIdDisplayed("22")}
             ></i>
-            {idDisplayed === id && (
-              <MiniTable playerID={id} position={title}></MiniTable>
+          </td>
+          <td className="td-position">
+            {player.name}
+            {idDisplayed === player.id && (
+              <MiniTable playerInfo={player}></MiniTable>
             )}
           </td>
-          <td className="td-position"> {name}</td>
-          <td className="td-position"> {nationality}</td>
-          <td className="td-position"> {birthday}</td>
-          <td className="td-position"> {height}</td>
-          <td className="td-position"> {role}</td>
-          <td className="td-position"> {salary}</td>
-          <td className="td-position"> {status}</td>
+          <td className="td-position"> {player.nationality}</td>
+          <td className="td-position"> {player.birthday}</td>
+          <td className="td-position"> {player.height}</td>
+          <td className="td-position"> {player.role}</td>
+          <td className="td-position"> {player.salary}</td>
+          <td className="td-position"> {player.status}</td>
         </tr>
       );
     });
@@ -85,11 +63,11 @@ const PlayerTable = (props) => {
 
   return (
     <div className="entire-table">
-      <h1 className="title">
-        <a href={`http://localhost:3000/players/${title}`}>
-          {title.toUpperCase()}
+      <p className="position-title">
+        <a href={`http://localhost:3000/players/${props.title}`}>
+          {(props.title + "s").toUpperCase()}
         </a>
-      </h1>
+      </p>
       <div className="info-table">
         <table className="players">
           <thead>{renderTableHeader()}</thead>
@@ -101,76 +79,55 @@ const PlayerTable = (props) => {
 };
 
 const MiniTable = (props) => {
-  const [info, setInfo] = useState({});
-  const [position, setPos] = useState(props.position);
-  const [playerID, setPlayerID] = useState(props.playerID);
-
-  useEffect(() => {
-    let unmounted = false;
-    function fetchMyAPI() {
-      axios
-        .get(`/UnitedHome/player/${position}/${playerID}/`)
-        .then((res) => {
-          if (!unmounted) setInfo(res.data);
-        })
-        .catch((err) => {
-          alert(err);
-        });
-    }
-    fetchMyAPI();
-    return () => {
-      unmounted = true;
-    };
-  }, [position, playerID]);
-
+  const miniTableId = useId();
   return (
-    <div style={{ position: "absolute", display: "grid", minWidth: "400px" }}>
-      <div
-        style={{ backgroundColor: "teal", fontSize: "20px", padding: "10px" }}
-      >
-        <b>{info.name}</b>
+    <div className="mini-table" id={miniTableId}>
+      <div>
+        <strong>{props.playerInfo.name}</strong>
       </div>
-      <div
-        style={{
-          backgroundColor: "darkgray",
-          textAlign: "left",
-          padding: "10px",
-          fontSize: "15px",
-        }}
-      >
-        <div style={{ padding: "10px" }}>
-          <b>Full name: </b>
-          {info.full_name}
-          <br></br>
-          <b>Nationality: </b>
-          {info.nationality}
-          <br></br>
-          <b>Birthday: </b>
-          {info.birthday}
-          <br></br>
-          <b>Right foot: </b>
-          {info.right_foot ? "Right" : "left"}
-          <br></br>
-          <b>Number: </b>
-          {info.kit_number}
-          <br></br>
-          <b>Height: </b>
-          {info.height}
-          <br></br>
-          <b>Role: </b>
-          {info.role}
-          <br></br>
-          <b>Salary: </b>
-          {info.salary}
-          <br></br>
-          <b>Status: </b>
-          {info.status}
-          <br></br>
-        </div>
+      <div className="mini-table-content">
+        <ul className="mini-table-info" style={{ listStyleType: "none" }}>
+          <li>
+            <strong>Full name: </strong>
+            <span>{props.playerInfo.full_name}</span>
+          </li>
+          <li>
+            <strong>Nationality: </strong>
+            <span>{props.playerInfo.nationality}</span>
+          </li>
+          <li>
+            <strong>Birthday: </strong>
+            <span>{props.playerInfo.birthday}</span>
+          </li>
+          <li>
+            <strong>Right foot: </strong>
+            <span>{props.playerInfo.right_foot ? "Right" : "left"}</span>
+          </li>
+          <li>
+            <strong>Number: </strong>
+            <span>{props.playerInfo.kit_number}</span>
+          </li>
+          <li>
+            <strong>Height: </strong>
+            <span>{props.playerInfo.height}</span>
+          </li>
+          <li>
+            <strong>Role: </strong>
+            <span>{props.playerInfo.role}</span>
+          </li>
+          <li>
+            <strong>Salary: </strong>
+            <span>{props.playerInfo.salary}</span>
+          </li>
+          <li>
+            <strong>Status: </strong>
+            <span>{props.playerInfo.status}</span>
+          </li>
+        </ul>
         <div>
           <img
-            src={info.avatar_link}
-            alt={info.name + "avatar"}
+            src={props.playerInfo.avatar_link}
+            alt={props.playerInfo.name + "avatar"}
             height="220px"
           ></img>
         </div>

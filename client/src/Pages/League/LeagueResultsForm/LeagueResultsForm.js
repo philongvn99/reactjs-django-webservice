@@ -1,8 +1,7 @@
-// eslint-disable-next-line
 import React, { useState, useEffect, useRef } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { Container, Row, Col } from "reactstrap";
-import axios from "axios";
+import axiosInstance from "../../../config/axiosConfig";
 
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
@@ -61,7 +60,14 @@ const getListStyle = (boardtype) => ({
   borderRadius: "20px",
 });
 
-const style = {
+const styles = {
+  entireFormStyle: {
+    margin: "20px 0px",
+    padding: "5px 5px",
+    border: "2px solid black",
+    borderRadius: "10px",
+    background: "black",
+  },
   imgStyle: {
     height: "30px",
     width: "30px",
@@ -90,11 +96,6 @@ const style = {
     borderRadius: "3px",
     border: "2px solid #303",
   },
-  boardStyle: {
-    padding: "10px",
-    backgroundColor: "#ebff00",
-    borderRadius: "20px",
-  },
   submitButton: {
     width: "100px",
     height: "50px",
@@ -114,7 +115,7 @@ const LeagueResultsForm = () => {
   const [teams, setTeams] = useState([]);
   const [home, setHome] = useState([]);
   const [away, setAway] = useState([]);
-  const [id2List, setId2List] = useState({
+  const [id2List] = useState({
     allteams: "teams",
     hometeams: "home",
     awayteams: "away",
@@ -126,9 +127,10 @@ const LeagueResultsForm = () => {
   useEffect(() => {
     if (isInitialMount.current) {
       isInitialMount.current = false;
+      document.getElementById("league_link").classList = "nav-link active";
       async function fetchMyAPI() {
-        await axios
-          .get("/UnitedHome/league/table")
+        await axiosInstance
+          .getLeagueTable()
           .then((res) => {
             setTeams(res.data);
           })
@@ -155,7 +157,6 @@ const LeagueResultsForm = () => {
       alert("[ERROR]: Number of Home teams is not equal to Away ones");
     else {
       let teamIdList = [];
-      //let teamPointList = []
       let teamGSList = [];
       let teamGCList = [];
       Array.from({ length: numOfMatch }, (v, k) => k).map((k) => {
@@ -165,10 +166,9 @@ const LeagueResultsForm = () => {
         return null;
       });
 
-      axios
-        .put("http://localhost:8000/UnitedHome/league/table/", {
+      axiosInstance
+        .updateLeagueResults({
           id: teamIdList,
-          //point: teamPointLis,
           goalscore: teamGSList,
           goalconceded: teamGCList,
         })
@@ -182,7 +182,7 @@ const LeagueResultsForm = () => {
 
   const renderScoreBoard = (num) =>
     Array.from({ length: num }, (v, k) => k).map((k) => (
-      <div style={style.scoreboardStyle} key={`math${k}-result`}>
+      <div style={styles.scoreboardStyle} key={`math${k}-result`}>
         <input
           type="number"
           id={`home-score-${k}`}
@@ -190,7 +190,7 @@ const LeagueResultsForm = () => {
           min="0"
           value={score[`home${k}`] || 0}
           onChange={handleChange}
-          style={style.scoreStyle}
+          style={styles.scoreStyle}
         ></input>
         -
         <input
@@ -200,7 +200,7 @@ const LeagueResultsForm = () => {
           min="0"
           value={score[`away${k}`] || 0}
           onChange={handleChange}
-          style={style.scoreStyle}
+          style={styles.scoreStyle}
         ></input>
       </div>
     ));
@@ -253,13 +253,13 @@ const LeagueResultsForm = () => {
   // But in this example everything is just done in one place for simplicity
   return (
     <Container>
-      <Row>
+      <Row style={styles.entireFormStyle}>
         <DragDropContext onDragEnd={onDragEnd}>
-          <Col style={{ width: "30%" }}>
+          <Col style={{ padding: 0, width: "30%" }}>
             <Droppable droppableId="allteams">
               {(provided, snapshot) => (
                 <div ref={provided.innerRef} style={getListStyle("teams")}>
-                  <h1 style={style.hStyle}>TEAMS</h1>
+                  <h1 style={styles.hStyle}>TEAMS</h1>
                   {teams.map((item, index) => (
                     <Draggable
                       key={item.team_id + "-team"}
@@ -279,10 +279,10 @@ const LeagueResultsForm = () => {
                           <img
                             src={item.team_logo_link}
                             alt={item.team_acronym_name + "-logo"}
-                            style={style.imgStyle}
+                            style={styles.imgStyle}
                           />
                           <span>{item.team_acronym_name}</span>
-                          <span style={style.rankStyle}>{item.team_id}</span>
+                          <span style={styles.rankStyle}>{item.team_id}</span>
                         </div>
                       )}
                     </Draggable>
@@ -292,11 +292,11 @@ const LeagueResultsForm = () => {
               )}
             </Droppable>
           </Col>
-          <Col style={{ width: "30%" }}>
+          <Col style={{ padding: 0, width: "30%" }}>
             <Droppable droppableId="hometeams">
               {(provided, snapshot) => (
                 <div ref={provided.innerRef} style={getListStyle("home")}>
-                  <h1 style={style.hStyle}>HOME</h1>
+                  <h1 style={styles.hStyle}>HOME</h1>
                   {home.map((item, index) => (
                     <Draggable
                       key={item.team_id + "-home"}
@@ -316,10 +316,10 @@ const LeagueResultsForm = () => {
                           <img
                             src={item.team_logo_link}
                             alt={item.team_acronym_name + "-logo"}
-                            style={style.imgStyle}
+                            style={styles.imgStyle}
                           />
                           <span>{item.team_acronym_name}</span>
-                          <span style={style.rankStyle}>{item.team_id}</span>
+                          <span style={styles.rankStyle}>{item.team_id}</span>
                         </div>
                       )}
                     </Draggable>
@@ -329,30 +329,30 @@ const LeagueResultsForm = () => {
               )}
             </Droppable>
           </Col>
-          <Col style={{ width: "10%" }}>
+          <Col style={{ padding: 0, width: "10%" }}>
             <div style={getListStyle(null)}>
-              <h1 style={style.hStyle}>RESULT</h1>
+              <h1 style={styles.hStyle}>RESULT</h1>
               {
                 <form onSubmit={handleSubmit}>
                   {renderScoreBoard(
                     home.length > away.length ? away.length : home.length
                   )}
-                  <div style={style.scoreboardStyle}>
+                  <div style={styles.scoreboardStyle}>
                     <input
                       type="submit"
                       value="Submit"
-                      style={style.submitButton}
+                      style={styles.submitButton}
                     ></input>
                   </div>
                 </form>
               }
             </div>
           </Col>
-          <Col style={{ width: "30%" }}>
+          <Col style={{ padding: 0, width: "30%" }}>
             <Droppable droppableId="awayteams">
               {(provided, snapshot) => (
                 <div ref={provided.innerRef} style={getListStyle("away")}>
-                  <h1 style={style.hStyle}>AWAY</h1>
+                  <h1 style={styles.hStyle}>AWAY</h1>
                   {away.map((item, index) => (
                     <Draggable
                       key={item.team_id + "-away"}
@@ -372,10 +372,10 @@ const LeagueResultsForm = () => {
                           <img
                             src={item.team_logo_link}
                             alt={item.team_acronym_name + "-logo"}
-                            style={style.imgStyle}
+                            style={styles.imgStyle}
                           />
                           <span>{item.team_acronym_name}</span>
-                          <span style={style.rankStyle}>{item.team_id}</span>
+                          <span style={styles.rankStyle}>{item.team_id}</span>
                         </div>
                       )}
                     </Draggable>

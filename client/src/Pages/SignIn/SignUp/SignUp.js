@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { fireDatabase, storage } from "../../../config/firebaseConfig";
 import { Container, Row, Col } from "reactstrap";
+import validator from "validator";
 import "./sign-up.css";
 
 const SignUpForm = (props) => {
-  const [username, setUsername] = useState(null);
-  const [name, setName] = useState(null);
-  const [email, setEmail] = useState(null);
-  const [phone, setPhone] = useState(null);
-  const [password, setPassword] = useState(null);
-  const [confirmPassword, setConfirmPassword] = useState(null);
-  const [license, setLicense] = useState(null);
+  const [userRes, setUserRes] = useState({
+    username: "",
+    email: "",
+    phone: "",
+    name: "",
+    password: "",
+    c_password: "",
+    license: "",
+  });
   const [error, setError] = useState({
     username: "",
     email: "",
@@ -21,137 +23,179 @@ const SignUpForm = (props) => {
     license: "",
   });
 
+  useEffect(() => {
+    document.getElementById("login_link").classList = "nav-link active";
+    document.getElementById("profile_indicator").classList = "menu-item active";
+  });
+
   const submitHandler = (event) => {
-    console.log(
-      username,
-      email,
-      phone,
-      name,
-      password,
-      confirmPassword,
-      license
-    );
+    setError({
+      username: /[0-9A-Za-z_]{8,32}$/.test(userRes.username)
+        ? ""
+        : "Your username should only include number, character and underscore",
+      email: validator.isEmail(userRes.phone) ? "" : "Invalid Email format",
+      phone: /0[0-9]{9}$/.test(userRes.phone)
+        ? ""
+        : "Invalid Vietnamese Mobile phone number format",
+      name: validator.isByteLength(userRes.name, { min: 8, max: 32 })
+        ? ""
+        : "Length of your name should has 8-32 characters",
+      password: validator.isStrongPassword(userRes.password, {
+        minLength: 8,
+        minLowercase: 1,
+        minUppercase: 1,
+        minNumbers: 1,
+        minSymbols: 1,
+        returnScore: false,
+      })
+        ? ""
+        : "Another Stronger password, please!",
+      c_password:
+        userRes.c_password === userRes.password
+          ? ""
+          : "Please re-enter exactly your new demand password",
+      license: /([0-9]){2}[A-Z][A-Z0-9]?-[0-9]{4,5}$/.test(userRes.license)
+        ? ""
+        : "Valid Vietnamese License Plate Format, please!",
+    });
+    if (
+      JSON.stringify(error) ===
+      '{"phone":"","name":"","p_password":"","password":"","c_password":"","license":""}'
+    )
+      console.log(userRes);
   };
 
   return (
-    <Container id="signup-background">
-      <Col id="signup-form" sm="8">
-        <Row className="title">SIGN UP</Row>
-        <Row className="submit-signup-field">
+    <Container className="signup-form">
+      <Col className="signup-cover" sm="8">
+        <Row className="form-title">SIGN UP</Row>
+        <Row className="signup-field">
           <Col>
-            <label htmlFor="username">USERNAME</label>
+            <label htmlFor="signup-username">USERNAME</label>
           </Col>
           <Col>
             <input
               id="signup-username"
               type="text"
               placeholder="Pikachu123"
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={(e) =>
+                setUserRes({ ...userRes, username: e.target.value })
+              }
             />
           </Col>
-          <div className="error-notice" id={`username-error`}>
-            {error.username}
-          </div>
         </Row>
-        <Row className="submit-signup-field">
+        <Row className="error-notice" id={`username-error`}>
+          {error.username}
+        </Row>
+        <Row className="signup-field">
           <Col>
-            <label htmlFor="email">EMAIL</label>
+            <label htmlFor="signup-email">EMAIL</label>
           </Col>
           <Col>
             <input
-              id={"signup-email"}
-              type="text"
+              id="signup-email"
+              type="email"
               placeholder="meotwo@gmail.com"
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) =>
+                setUserRes({ ...userRes, email: e.target.value })
+              }
             />
           </Col>
-          <div className="error-notice" id={`email-error`}>
-            {error.email}
-          </div>
         </Row>
-        <Row className="submit-signup-field">
+        <Row className="error-notice" id={`email-error`}>
+          {error.email}
+        </Row>
+        <Row className="signup-field">
           <Col>
-            <label htmlFor="name">NAME</label>
+            <label htmlFor="signup-name">NAME</label>
           </Col>
           <Col>
             <input
               id={"signup-name"}
               type="text"
               placeholder="UCHIHA SATOSHI"
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => setUserRes({ ...userRes, name: e.target.value })}
             />
           </Col>
-          <div className="error-notice" id="name-error">
-            {error.name}
-          </div>
         </Row>
-        <Row className="submit-signup-field">
+        <Row className="error-notice" id="name-error">
+          {error.name}
+        </Row>
+        <Row className="signup-field">
           <Col>
-            <label htmlFor="email">PHONE</label>
+            <label htmlFor="signup-phone">PHONE</label>
           </Col>
           <Col>
             <input
-              id={"signup-phone"}
+              id="signup-phone"
               type="text"
               placeholder="0123xxxxxx"
-              onChange={(e) => setPhone(e.target.value)}
+              onChange={(e) =>
+                setUserRes({ ...userRes, phone: e.target.value })
+              }
             />
           </Col>
-          <div className="error-notice" id={`phone-error`}>
-            {error.phone}
-          </div>
         </Row>
-        <Row className="submit-signup-field">
+        <Row className="error-notice" id={`phone-error`}>
+          {error.phone}
+        </Row>
+        <Row className="signup-field">
           <Col>
-            <label htmlFor="email">PASSWORD</label>
+            <label htmlFor="signup-password">PASSWORD</label>
           </Col>
           <Col>
             <input
-              id={"signup-password"}
+              id="signup-password"
               type="password"
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) =>
+                setUserRes({ ...userRes, password: e.target.value })
+              }
             />
           </Col>
-          <div className="error-notice" id={`password-error`}>
-            {error.password}
-          </div>
         </Row>
-        <Row className="submit-signup-field">
+        <Row className="error-notice" id={`password-error`}>
+          {error.password}
+        </Row>
+        <Row className="signup-field">
           <Col>
-            <label htmlFor="email">CONFIRM PASSWORD</label>
+            <label htmlFor="signup-confirmpassword">CONFIRM PASSWORD</label>
           </Col>
           <Col>
             <input
-              id={"signup-confirmpassword"}
+              id="signup-confirmpassword"
               type="password"
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              onChange={(e) =>
+                setUserRes({ ...userRes, c_password: e.target.value })
+              }
             />
           </Col>
-          <div className="error-notice" id={`confirmpassword-error`}>
-            {error.c_password}
-          </div>
         </Row>
-        <Row className="submit-signup-field">
+        <Row className="error-notice" id={`confirmpassword-error`}>
+          {error.c_password}
+        </Row>
+        <Row className="signup-field">
           <Col>
-            <label htmlFor="license">LICENSE PLATE NUMBER</label>
+            <label htmlFor="signup-license">LICENSE PLATE NUMBER</label>
           </Col>
           <Col>
             <input
-              id={"signup-license"}
+              id="signup-license"
               type="text"
               placeholder="64B2-00298"
-              onChange={(e) => setLicense(e.target.value)}
+              onChange={(e) =>
+                setUserRes({ ...userRes, license: e.target.value })
+              }
             />
           </Col>
-          <div className="error-notice" id={`license-error`}>
-            {error.license}
-          </div>
         </Row>
-        <div className="submit-signup-field">
+        <Row className="error-notice" id={`license-error`}>
+          {error.license}
+        </Row>
+        <Row className="signup-field">
           <button id="Signup-submit" onClick={submitHandler}>
             Sign Up
           </button>
-        </div>
+        </Row>
       </Col>
     </Container>
   );

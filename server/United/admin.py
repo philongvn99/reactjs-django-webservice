@@ -1,8 +1,10 @@
 from django.contrib import admin
-from .models import BasicPlayerInfo
+# from .models import PlayerInfo, MatchResult, UserInfo
 
-# Register your models here.
-class BasicPlayerInfoAdmin(admin.ModelAdmin):
-    list_display=['name', 'nationality', 'birthday', 'role', 'height', 'salary', 'status']
+# # Register your models here.
+# class BasicPlayerInfoAdmin(admin.ModelAdmin):
+#     list_display=['name', 'nationality', 'birthday', 'role', 'height', 'salary', 'status']
 
-admin.site.register(BasicPlayerInfo, BasicPlayerInfoAdmin)
+# admin.site.register(PlayerInfo)
+# admin.site.register(BasicPlayerInfoAdmin)
+# admin.site.register(UserInfo)

@@ -3,24 +3,14 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="Phi Long 6/3">
+    <meta name="description" content="Phi Long's React-Django Web Service">
+    <title>United React Django</title>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
       integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
       crossorigin="anonymous"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"
-    />
-    <title>United React Django</title>
-    <link
-      href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css"
-      rel="stylesheet"
     />
     <script
       src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -28,17 +18,21 @@
       crossorigin="anonymous"
     ></script>
     <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-      crossorigin="anonymous"
-    ></script>
-    <script
       src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
       integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
       crossorigin="anonymous"
     ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"
+    />
     <script
       src="https://kit.fontawesome.com/a24fe02605.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
       crossorigin="anonymous"
     ></script>
   </head>
@@ -90,16 +84,16 @@
                             <a href="http://localhost:3000/players/">All</a>
                           </div>
                           <div class="child">
-                            <a href="http://localhost:3000/players/goalkeepers"
+                            <a href="http://localhost:3000/players/goalkeeper"
                               >Goalkeepers</a
                             >
-                            <a href="http://localhost:3000/players/defenders"
+                            <a href="http://localhost:3000/players/defender"
                               >Defenders</a
                             >
                             <a href="http://localhost:3000/players/midfielders"
                               >Midfielders</a
                             >
-                            <a href="http://localhost:3000/players/forwards"
+                            <a href="http://localhost:3000/players/forward"
                               >Forwards</a
                             >
                           </div>
@@ -112,16 +106,18 @@
                     <div class="dropdown-nav">
                       <a href="#" id="league_link" class="nav-link">League</a>
                       <div class="dropdown-content">
-                        <div class="child">
-                          <a href="http://localhost:3000/league/table"
-                            >League Table</a
-                          >
-                          <a href="http://localhost:3000/league/leagueform"
-                            >Adding League Results</a
-                          >
-                          <a href="http://localhost:3000/league/matchform"
-                            >Adding Match Result</a
-                          >
+                        <div class="grid-container">
+                          <div class="child">
+                            <a href="http://localhost:3000/league/table"
+                              >League Table</a
+                            >
+                            <a href="http://localhost:3000/league/leagueform"
+                              >Adding League Results</a
+                            >
+                            <a href="http://localhost:3000/league/matchform"
+                              >Adding Match Result</a
+                            >
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -134,7 +130,7 @@
                         id="login_link"
                         class="nav-link dropbtn"
                         onclick="return false;"
-                        >Login</a
+                        >User</a
                       >
                       <div class="dropdown-content">
                         <div class="grid-container">
@@ -146,22 +142,14 @@
                   <!-- Contact -->
                   <li class="nav-item">
                     <a
-                      href="http://localhost:3000/players/"
+                      href="http://localhost:3000/contact/"
                       id="user_link"
                       class="nav-link"
                       >Contact Us</a
                     >
                   </li>
                 </ul>
-                <form class="form-inline mt-md-0">
-                  <input
-                    type="text"
-                    placeholder="Search"
-                    aria-label="Search"
-                    class="form-control mr-sm-2"
-                  />
-                  <button class="btn btn-dark my-2 my-sm-0">Search</button>
-                </form>
+                <div id="search-bar"></div>
               </div>
             </nav>
           </div>
@@ -170,14 +158,14 @@
         <!-- .#top-bar -->
         <div id="topbar" class="row top-bar">
           <!-- top bar left -->
-          <div class="col col-lg-9 col-sm-9 col-xs-12 left-top-slogan">
+          <div class="col col-lg-9 col-sm-12 col-xs-12 left-top-slogan">
             <div class="top-bar-slogan" id="music-switch">
               Make the World RED again!
             </div>
           </div>
 
           <!-- top bar right -->
-          <div class="col col-lg-3 col-sm-3 col-xs-12 right-top-info">
+          <div class="col col-lg-3 col-sm-12 col-xs-12 right-top-info">
             <button
               class="btn btn-black dropdown-toggle music"
               type="button"
@@ -188,7 +176,52 @@
             >
               Music
             </button>
-            <div id="audio"></div><!--B-->
+            <div id="audio">
+              <div class="dropdown-menu music-menu" aria-labelledby="dropdownMenuButton">
+                <audio
+                  class="background-music"
+                  id="audio-music"
+                  src="/resource/music/GloryGloryManUnited.mp3"
+                  autoPlay
+                  controls
+                  loop
+                >
+                  <p>
+                    If you are reading this, it is because your browser does not support
+                    the audio element.
+                  </p>
+                </audio>
+                <ul class="music-selector">
+                  <li>
+                    <button
+                      class="music-option"
+                      id="ggmu-option"
+                      value="/resource/music/GloryGloryManUnited.mp3"
+                      >
+                      Glory Glory Manchester United
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      class="music-option"
+                      id="hnnu-option"
+                      value="/resource/music/HaNoiNU.mp3"
+                    >
+                      Ha Noi And U
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      class="music-option"
+                      id="tn-option"
+                      value="/resource/music/TheNights.mp3"
+                    >
+                      The Nights
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div><!--B-->
           </div><!--B-->
         </div> <!--B-->
 

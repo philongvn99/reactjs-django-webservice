@@ -22,6 +22,14 @@
   .sticky-top {
     position: relative;
   }
+  #menu-indicator{
+    display: none !important;
+  }
+  #topbar {
+    visibility: visible !important;
+    display: table;
+    width: 100%;
+  }
 }
 /* Small Devices, Tablets */
 @media only screen and (max-width: 768px) {
@@ -77,25 +85,20 @@ a:hover {
   background: repeating-linear-gradient(45deg, pink, white 10%);
 }
 
-a {
-  text-decoration: none;
-}
-
 .top-bar {
-  z-index: -1000;
   align-items: center;
   background-size: cover;
   background-color:#000;
-  /* background-image: url(https://i.pinimg.com/originals/96/c1/84/96c184acc2cfdcf5f3df60d00923f134.jpg); */
   min-height: 80px;
+  margin-right: 0px !important;
+  margin-left: 0px !important;
 }
 
-.left-top-slogan,
-.list-inline-item a,
-.right-top-info a {
+.left-top-slogan {
   align-items: center;
   color: rgb(240, 0, 0);
   font-size: 20px;
+  padding-left: 50px;
 }
 
 .top-bar-slogan {
@@ -104,7 +107,6 @@ a {
 }
 
 /* Music */
-
 /*      ------------     */
 
 .music-switch {
@@ -117,13 +119,11 @@ a {
   color: red;
 }
 
-.background-music {
-  background: repeating-linear-gradient(to right bottom, black, red 10%);
-}
-
 .music-menu {
   background: repeating-linear-gradient(to right bottom, black, red 10%);
   padding: 5px 5px;
+  border: 5px darkred solid;
+  border-radius: 10px;
 }
 
 .music-selector {
@@ -143,13 +143,13 @@ a {
 .header-nav-bar {
   align-content: center;
   border-width: 5px;
-  /* http://www.vivianplantation.com/images/top-header-blue.gif?crc=3843190975 */
   position: -webkit-sticky; /* Safari */
   position: sticky;
   top: 0;
   background: linear-gradient(black, red);
-  top: 0;
   z-index: 600;
+  margin-right: 0px !important;
+  margin-left: 0px !important;
 }
 
 /*============= NAVIGATION =============*/
@@ -168,10 +168,13 @@ a {
 }
 .nav-link {
   color: black !important;
+  min-width: 80px;
+  text-align: center;
 }
 .nav-link.active,
 .nav-link:hover {
-  color: #000000 !important;
+  background-color: #fff !important;
+  border-radius: 20px;
 }
 
 /*..........DROP DOWN........................*/
@@ -182,11 +185,19 @@ a {
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color:mistyrose;
+  background: transparent;
   min-width: max-content;
-  border-radius: 20px;
-  overflow: hidden;
   /* padding: 2px 2px; */
+}
+
+.dropdown-nav:hover:before {
+  content: "";
+  position: absolute;
+  height: 40px;
+  width: 40px;
+  background-color: mistyrose;
+  transform: rotate(45deg) translate(60px, 20px);
+	border-radius: 12 0 0 0;
 }
 
 .dropdown-content a {
@@ -216,12 +227,16 @@ a {
 .row {
   display: flex;
   justify-content: center;
-  padding: 0px !important;
+  padding: 0px;
 }
 
 .grid-container {
+  margin-top: 20px;
+  background: mistyrose;
   display: grid;
   grid-template-columns: auto auto;
+  border-radius: 20px;
+  overflow: hidden;
 }
 
 .grid-container > div {
@@ -242,9 +257,15 @@ a {
 }
 
 /*..........LOGIN FORM.....................*/
-.login-form {
-  margin: 10px;
+.login-dropdown {
+  padding: 10px;
   color: #000;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
 }
 
 .btn-black {
@@ -273,7 +294,7 @@ a {
 
 .btn {
   margin-top: 10px;
-  min-width: 90px;
+  min-width: 30px;
   margin: 0px 10px;
 }
 
@@ -283,8 +304,9 @@ a {
 }
 
 .error-notice {
-  color: rgb(240, 0, 0);
+  color: brown;
   font-size: 10px;
+  min-height: 20px;
 }
 
 /*============= === =============*/
@@ -309,6 +331,11 @@ a {
   display: flex;
   align-items: center;
 }
+/*============= === =============*/
+
+
+/*============= SIGNUP & MODIFY =============*/
+
 
 /*============= FOOTER =============*/
 

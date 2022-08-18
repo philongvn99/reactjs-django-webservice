@@ -1,0 +1,113 @@
+#menu-indicator {
+    background: #fff;
+    height: auto;
+    width: auto;
+    border-radius: 35px;
+    border: 2px solid black;
+    box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    bottom: 330px;
+    right: 50px;
+}
+
+#menu-indicator ul {
+    flex-direction: column;
+    top: 0;
+    left: 0;
+    display: flex;
+    width: 50px;
+    padding: 0px;
+}
+
+#menu-indicator ul li {
+    list-style: none;
+    width: 50px;
+    position: relative;
+    height: 50px;
+    z-index: 1;
+}
+
+#menu-indicator ul li a {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    text-align: center;
+    color: black;
+    font-weight: 500;
+}
+
+#menu-indicator ul li a .icon{
+    position: relative;
+    display: block;
+    line-height: 70px;
+    text-align: center;
+}
+
+#menu-indicator ul li.active a .icon{
+    color: #000;
+}
+
+#menu-indicator ul li a .icon btn{
+    font-size: 24px;
+}
+
+#menu-indicator ul li a .title {
+    position: absolute;
+    top: 15%;
+    right: 100px;
+    border-radius: 10px;
+    padding: 2px 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    background: #000;
+    color: #fff;
+    font-size: 24px; 
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.5s;
+}
+
+#menu-indicator ul li:hover a .title {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(-25px);
+}
+
+#menu-indicator ul li a .title::before {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    background-color: #000;
+    right: -16px;
+    transform: rotate(45deg) translateY(75%);
+    border-radius: 2px;
+}
+
+#menu-indicator ul .indicator {
+    position: absolute;
+    top: 10px;
+    left: 5px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: pink;
+    transition: 0.5s;
+}
+
+#menu-indicator ul li:nth-child(1).active ~ .indicator {
+    transform: translateY(calc(50px * 0));
+}
+#menu-indicator ul li:nth-child(2).active ~ .indicator {
+    transform: translateY(calc(50px * 1));
+}
+#menu-indicator ul li:nth-child(3).active ~ .indicator {
+    transform: translateY(calc(50px * 2));
+}
+#menu-indicator ul li:nth-child(4).active ~ .indicator {
+    transform: translateY(calc(50px * 3));
+}
+#menu-indicator ul li:nth-child(5).active ~ .indicator {
+    transform: translateY(calc(50px * 4));
+}

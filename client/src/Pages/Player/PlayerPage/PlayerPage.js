@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row } from "reactstrap";
-import axios from "axios";
 import PlayerTable from "../resource/TableComponent/PlayerTable";
 
 const PlayerPage = () => {
@@ -13,17 +12,14 @@ const PlayerPage = () => {
     async function fetchMyAPI() {
       document.getElementById("player_link").classList =
         "nav-link active dropbtn";
-      await axios
-        .get(`/UnitedHome/player/`)
-        .then((res) => {
-          setGoalkeeperData(res.data.goalkeepers);
-          setDefenderData(res.data.defenders);
-          setMidfielderData(res.data.midfielders);
-          setForwardData(res.data.forwards);
-        })
-        .catch((err) => {
-          alert(err);
-        });
+      document.getElementById("player_indicator").classList =
+        "menu-item active";
+
+      let players = JSON.parse(await sessionStorage.getItem("players"));
+      setGoalkeeperData(players.goalkeeper);
+      setDefenderData(players.defender);
+      setMidfielderData(players.midfielder);
+      setForwardData(players.forward);
     }
     fetchMyAPI();
   }, []);
@@ -34,26 +30,26 @@ const PlayerPage = () => {
         {goalkeeperData !== null && (
           <PlayerTable
             players={goalkeeperData}
-            title="goalkeepers"
+            title="goalkeeper"
           ></PlayerTable>
         )}
       </Row>
       <Row id="defender-table">
         {defenderData !== null && (
-          <PlayerTable players={defenderData} title="defenders"></PlayerTable>
+          <PlayerTable players={defenderData} title="defender"></PlayerTable>
         )}
       </Row>
       <Row id="midfielder-table">
         {midfielderData !== null && (
           <PlayerTable
             players={midfielderData}
-            title="midfielders"
+            title="midfielder"
           ></PlayerTable>
         )}
       </Row>
       <Row id="forward-table">
         {forwardData !== null && (
-          <PlayerTable players={forwardData} title="forwards"></PlayerTable>
+          <PlayerTable players={forwardData} title="forward"></PlayerTable>
         )}
       </Row>
     </Container>

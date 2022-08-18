@@ -1,0 +1,96 @@
+$color: #3694d7;
+$timing: .3s;
+
+.selector-container {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    background-color: mix($color,#fff,55%);
+}
+
+.selector-container.expanded{
+    background-color: mix($color,#fff,15%);
+    transition: all linear .2s;
+    border-bottom: 5px solid black;
+    z-index: 10;
+}
+
+.select-input {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 0 20px;
+    position: relative;
+    justify-content: space-between;
+    height: 42px;
+    border: .06em solid $color;
+  }
+  
+  
+.select-input::before {
+    position: absolute;
+    content: '';
+    right: 8px;
+    top: 18px;
+    border-top: 5px solid $color;
+    border-right: 5px solid transparent;
+    border-left: 5px solid transparent;
+    transition: .4s all ease-in-out;
+}
+
+.select-icon {
+    font-size: 20px;
+    margin-right: 5px;
+    color: $color;
+    flex-basis: 30px;
+}
+
+.select-label {
+    color: #252525;
+}
+
+.select-label.placeholder {
+    color: mix($color,#fff,15%);
+}
+
+.select-list {
+    border-top: none;
+    transition: all .2s,
+}
+
+.select-list {
+    border-top: none;
+    transition: all .5s linear;
+    position: relative;
+    opacity: 1;
+}
+
+.select-list.hidden {
+    transition: all .5s linear;
+    opacity: 0;
+}
+
+
+.select-item span:hover {
+    color: $color;
+}
+
+.select-item {
+    display: flex;
+    padding: 10px 20px;
+    cursor: pointer;
+    flex-wrap: wrap;
+    min-height: 42px;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid #000;
+}
+
+.select-item span {
+    margin-right: 5px;
+}
+
+.select-item>img, .select-input>img {
+    height: 20px;
+}

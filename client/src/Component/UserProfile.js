@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { fireDatabase } from "../config/firebaseConfig";
 
-const UserProfile = (props) => {
-  var [userInfo, setUserInfo] = useState(props.userInfo);
-  var [avatarUrl, setAvatarUrl] = useState(null);
+const UserProfile = ({ userInfo }) => {
+  const [avatarUrl, setAvatarUrl] = useState(null);
 
   useEffect(() => {
     async function getAvatarUrl() {
@@ -18,11 +17,20 @@ const UserProfile = (props) => {
       );
     }
     getAvatarUrl();
-  }, [userInfo.username]);
+  }, [userInfo]);
 
   const logoutFunction = () => {
     localStorage.setItem("user", JSON.stringify({}));
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
     window.location.reload();
+  };
+
+  const MouseOver = (event) => {
+    event.target.style.width = "120px";
+  };
+  const MouseOut = (event) => {
+    event.target.style.width = "100px";
   };
 
   return (
@@ -33,17 +41,23 @@ const UserProfile = (props) => {
             src={avatarUrl}
             alt="firebase-avatar"
             style={styles.profileAvatar}
+            onMouseOver={MouseOver}
+            onMouseOut={MouseOut}
           ></img>
         </a>
       </div>
       <div style={styles.profileDetails}>
-        <h5>
-          <i className="bx bx-mail-send"></i>
-          <span>{userInfo.email}</span>
+        <h5 style={styles.info}>
+          <i className="fas fa-envelope"></i>
+          <span> {userInfo.email}</span>
         </h5>
-        <h5>
-          <i className="bx bx-phone"></i>
-          <span>{userInfo.phone}</span>
+        <h5 style={styles.info}>
+          <i className="fas fa-phone"></i>
+          <span> {userInfo.phone}</span>
+        </h5>
+        <h5 style={styles.info}>
+          <i className="fas fa-car"></i>
+          <span> {userInfo.license}</span>
         </h5>
         <div className="actionBtn">
           <button id="logout-button" onClick={logoutFunction}>
@@ -76,17 +90,30 @@ const styles = {
     boxShadow: "0 15px 50px rgba(0, 0, 0, 0.8)",
     display: "flex",
     margin: "5px 0px",
+    width: "100px",
   },
 
-  imgBox: { display: "flex", justifyContent: "center" },
+  imgBox: {
+    display: "flex",
+    justifyContent: "center",
+  },
 
   modifyLink: {
     backgroundColor: "transparent",
+  },
+
+  avatarUrl: {
+    width: "100px",
+    height: "100px",
   },
 
   profileDetails: {
     fontWeight: "500",
     display: "block",
     padding: "10px",
+  },
+
+  info: {
+    textAlign: "left",
   },
 };

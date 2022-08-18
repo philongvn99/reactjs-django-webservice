@@ -1,10 +1,10 @@
-#signup-background {
+.signup-form {
     align-items: center;
     justify-content: center;
     display: flex;
 }
 
-#signup-form{
+.signup-cover{
     display: block;
     background-color:crimson;
     padding: 20px;
@@ -15,21 +15,21 @@
     width: fit-content;
 }
 
-.title{
+.signup-title{
     font-size: xx-large;
 }
 
-.submit-signup-field{
+.signup-field{
     margin-top: 30px;
     align-content: center;
     height: 50px;
 }
 
-div label{
+.signup-field label{
     float: left;
 }
 
-div input{
+.signup-field input{
     float: right;
     border-radius: 4px;
 }

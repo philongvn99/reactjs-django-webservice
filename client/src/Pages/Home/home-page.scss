@@ -1,27 +1,27 @@
-.center-row {
+#home-page .center-row {
   align-items: center;
   margin-bottom: 10px;
 }
 
-.title {
+#home-page .title {
   justify-content: center;
   display: flex;
 }
 
-.basic-article-group {
+#home-page .basic-article-group {
   padding: 10px 0px;
 }
 
-.jump-section-1 {
+#home-page .jump-section-1 {
   background-color: red;
   margin-bottom: 10px;
 }
 
-.jump-col {
+#home-page .jump-col {
   text-align: center;
 }
 
-.jump-button {
+#home-page .jump-button {
   margin: 10px;
   height: 130px;
   width: 130px;
@@ -31,16 +31,16 @@
   background-color: black;
 }
 
-.jump-button img {
+#home-page .jump-button img {
   height: 120px;
   width: 120px;
   border-radius: 15px;
 }
 
-.article-thumbnail {
+#home-page .article-thumbnail {
   height: 99vh;
 }
 
-p {
+#home-page p {
   color: #221015;
 }

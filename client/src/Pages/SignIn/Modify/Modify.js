@@ -1,123 +1,111 @@
 import React, { useState, useEffect } from "react";
-import { fireDatabase, storage } from "../../../config/firebaseConfig";
-import axios from "axios";
+import validator from "validator";
 import "./modify.css";
 
 const Modify = (props) => {
-  const [selectedFile, setSelectedFIle] = useState(null);
   const [userInfo, setUserInfo] = useState({
-    username: "",
-    email: "",
     phone: "",
     name: "",
     p_password: "",
     password: "",
     c_password: "",
+    license: "",
   });
+  const [error, setError] = useState({
+    phone: "",
+    name: "",
+    p_password: "",
+    password: "",
+    c_password: "",
+    license: "",
+  });
+  const [password, setPassword] = useState("");
   const [display, setDisplay] = useState(true);
   const [changePassword, setChangePassword] = useState(false);
 
   useEffect(() => {
+    document.getElementById("login_link").classList = "nav-link active";
+    document.getElementById("profile_indicator").classList = "menu-item active";
     async function getUser() {
       const user = JSON.parse(localStorage.getItem("user"));
-      console.log(user);
       if (Object.keys(user).length === 0) setDisplay(false);
-      else
+      else {
         setUserInfo({
           ...userInfo,
-          username: user.username,
-          email: user.email,
           phone: user.phone,
           name: user.name,
+          license: user.license,
         });
+        setPassword(user.password);
+      }
     }
     getUser();
-  }, []);
-
-  const fileSelectHandler = (event) => {
-    console.log(event.target.files);
-    setSelectedFIle(event.target.files[0]);
-  };
+  }, [userInfo]);
 
   const onChecked = (e) => {
     setChangePassword(e.target.checked);
   };
 
-  const fileUploadHandler = () => {
-    if (selectedFile == null) return;
-    const userInfo = JSON.parse(localStorage.getItem("user"));
-    if (Object.keys(userInfo).length > 0) {
-      storage
-        .ref(`/${selectedFile.name}`)
-        .put(selectedFile)
-        .on(
-          "state_changed",
-          function progress(snapshot) {
-            console.log(snapshot);
-            fireDatabase
-              .ref(`/avatarLink/${userInfo.username}`)
-              .set(
-                `https://firebasestorage.googleapis.com/v0/b/plfirebase-cc1f1.appspot.com/o/${selectedFile.name}?alt=media`
-              )
-              .catch((error) => ({
-                errorCode: error.code,
-                errorMessage: error.message,
-              }));
-          },
-          function error(err) {
-            alert(err);
-          },
-          function complete() {
-            alert("success");
-          }
-        );
-    } else alert("Please Sign In");
-  };
-
   const submitHandler = () => {
-    console.log(userInfo);
+    setError({
+      phone: /0[0-9]{9}$/.test(userInfo.phone)
+        ? ""
+        : "Invalid Vietnamese Mobile phone number format",
+      name: validator.isByteLength(userInfo.name, { min: 8, max: 32 })
+        ? ""
+        : "Length of your name should has 8-32 characters",
+      p_password:
+        userInfo.p_password === password || !changePassword
+          ? ""
+          : "Your password is incorrect",
+      password:
+        validator.isStrongPassword(userInfo.password, {
+          minLength: 8,
+          minLowercase: 1,
+          minUppercase: 1,
+          minNumbers: 1,
+          minSymbols: 1,
+          returnScore: false,
+        }) || !changePassword
+          ? ""
+          : "Another Stronger password, please!",
+      c_password:
+        userInfo.c_password === userInfo.password || !changePassword
+          ? ""
+          : "Please re-enter exactly your new demand password",
+      license: /([0-9]){2}[A-Z][A-Z0-9]?-[0-9]{4,5}$/.test(userInfo.license)
+        ? ""
+        : "Valid Vietnamese License Plate Format, please!",
+    });
+    if (
+      JSON.stringify(error) ===
+      '{"phone":"","name":"","p_password":"","password":"","c_password":"","license":""}'
+    )
+      console.log(userInfo);
   };
 
   if (display)
     return (
-      <div id="modify-background">
-        <div id="modify-form">
-          <h1>Modify</h1>
-          <div className="submit-modify-field">
-            <label htmlFor="UserName">Username</label>
-            <input
-              id="modify-username"
-              type="text"
-              value={userInfo.username}
-              onChange={(e) =>
-                setUserInfo({ ...userInfo, username: e.target.value })
-              }
-            />
-          </div>
-          <div className="submit-modify-field">
-            <label htmlFor="Email">Email</label>
-            <input
-              id="modify-email"
-              type="email"
-              value={userInfo.email}
-              onChange={(e) =>
-                setUserInfo({ ...userInfo, email: e.target.value })
-              }
-            />
-          </div>
-          <div className="submit-modify-field">
-            <label htmlFor="Phone Number">Name</label>&nbsp;
+      <div className="modify-form">
+        <div className="modify-cover">
+          <h1 className="modify-form-title">Modify</h1>
+          <div className="field">
+            <label htmlFor="modify-phone">Phone Number (10 digits)</label>&nbsp;
             <input
               id="modify-phone"
-              type="number"
+              type="tel"
+              pattern="0[0-9]{9}"
               value={userInfo.phone}
               onChange={(e) =>
                 setUserInfo({ ...userInfo, phone: e.target.value })
               }
             />
           </div>
-          <div className="submit-modify-field">
-            <label htmlFor="Name">Name</label>
+          <div className="error-notice" id="phone-error">
+            {error.phone}
+          </div>
+          <div className="field">
+            <label htmlFor="modify-name">Name</label>
             <input
               id="modify-name"
               type="text"
@@ -127,7 +115,23 @@ const Modify = (props) => {
               }
             />
           </div>
-
+          <div className="error-notice" id="name-error">
+            {error.name}
+          </div>
+          <div className="field">
+            <label htmlFor="modify-license">License</label>
+            <input
+              id="modify-license"
+              type="text"
+              value={userInfo.license}
+              onChange={(e) =>
+                setUserInfo({ ...userInfo, license: e.target.value })
+              }
+            />
+          </div>
+          <div className="error-notice" id="license-error">
+            {error.license}
+          </div>
           <input
             onClick={onChecked}
             className="form-check-input"
@@ -139,10 +143,12 @@ const Modify = (props) => {
 
           {changePassword && (
             <>
-              <div className="submit-modify-field">
-                <label htmlFor="Password">Current Password</label>
+              <div className="field">
+                <label htmlFor="modify-current-password">
+                  Current Password
+                </label>
                 <input
-                  id="current-password"
+                  id="modify-current-password"
                   type="password"
                   placeholder="Current Password"
                   onChange={(e) =>
@@ -150,8 +156,11 @@ const Modify = (props) => {
                   }
                 />
               </div>
-              <div className="submit-modify-field">
-                <label htmlFor="Password">Password</label>
+              <div className="error-notice" id="past-password-error">
+                {error.p_password}
+              </div>
+              <div className="field">
+                <label htmlFor="modify-password">Password</label>
                 <input
                   id="modify-password"
                   type="password"
@@ -161,8 +170,13 @@ const Modify = (props) => {
                   }
                 />
               </div>
-              <div className="submit-modify-field">
-                <label htmlFor="Confirm Password">Confirm Password</label>
+              <div className="error-notice" id="password-error">
+                {error.password}
+              </div>
+              <div className="field">
+                <label htmlFor="modify-confirm-password">
+                  Confirm Password
+                </label>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <input
                   id="modify-confirm-password"
@@ -173,17 +187,51 @@ const Modify = (props) => {
                   }
                 />
               </div>
+              <div className="error-notice" id="confirm-password-error">
+                {error.c_password}
+              </div>
             </>
           )}
-          <div className="submit-modify-field">
-            <button id="modify-submit" onClick={submitHandler}>
-              Modify
+          <div className="field modify-submit">
+            <button onClick={submitHandler} className="modify-button">
+              <span>Modify</span>
             </button>
           </div>
         </div>
       </div>
     );
-  else return <div>Please Sign In First!</div>;
+  else {
+    return (
+      <div id="content">
+        <div class="wrapper">
+          <pre>{String.raw`
+ \                           /
+  \   Please Sign In First  /
+   \                       /
+    ]  To view this page  [    ,'|
+    ]                     [   /  |
+    ]___               ___[ ''   |
+    ]  ]\             /[  [ |:   |
+    ]  ] \           / [  [ |:   |
+    ]  ]  ]         [  [  [ |:   |
+    ]  ]  ]__     __[  [  [ |:   |
+    ]  ]  ] ]\ _ /[ [  [  [ |:   |
+    ]  ]  ] ] (#) [ [  [  [ :===='
+    ]  ]  ]_].nMn.[_[  [  [
+    ]  ]  ]  MMMMM. [  [  [
+    ]  ] /   YMMMNA  \ [  [
+    ]__]/    AMMMA "  \[__[
+    ]       AANNNAA       [
+    ]      AAAN/"AAA      [
+    ]         N M         [
+   /          N            \
+  /           q,            \
+ /                           \
+        `}</pre>
+        </div>
+      </div>
+    );
+  }
 };
 
 export default Modify;

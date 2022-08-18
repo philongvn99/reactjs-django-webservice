@@ -1,8 +1,10 @@
 .players td,
 .players th {
-  border: 1px solid #faa;
-  padding: 8px;
+  border: .1vw solid #faa;
+  padding: .8vw;
   text-align: center;
+  font-size: 1vw;
+  width: 8vw;
 }
 .players tr:nth-child(even) {
   background-color: lightcoral;
@@ -15,27 +17,20 @@
 }
 
 .players th {
-  padding-top: 12px;
-  padding-bottom: 12px;
+  padding-top: 1.2vw;
+  padding-bottom: 1.2vw;
   text-align: center;
   background-color: #000;
   color: #fff;
 }
 
-@media only screen and (max-width: 768px) {
-  .td-position,
-  .th-position {
-    min-width: 60px !important;
-    font-weight: 100px !important;
-  }
-}
-
 .entire-table {
-  padding: 5px;
-  border: 5px solid black;
-  border-radius: 10px;
-  margin: 5px 0px;
+  padding: .5vw;
+  border: .5vw solid black;
+  border-radius: 1vw;
+  margin: .5vw 0px;
   background-color: mistyrose;
+  display: block;
 }
 
 .players {
@@ -43,15 +38,67 @@
   border-collapse: collapse;
 }
 
-a {
-  color: firebrick;
-  text-decoration: none;
+.position-title {
+  margin: 0;
 }
 
-a:hover {
+.entire-table a {
+  color: firebrick;
+  text-decoration: none;
+  font-size: 4vw;
+ 
+}
+
+.entire-table a:hover {
   color: red;
 }
 
-th {
+.entire-table th, li>span {
   font-family: Bradley Hand, cursive;
+}
+
+.td-position {
+  position: relative;
+}
+
+.mini-table {
+  position:absolute;
+  display: block;
+  bottom: 0;
+  z-index: 10;
+  background-color: teal;
+  font-size: 1vw; 
+  padding: .1vw;
+}
+
+.mini-table-content {
+  background-color: darkgray;
+  text-align: left;
+  padding: .1vw;
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
+.mini-table-info {
+  display: inline-block;
+  margin-right: 1vw;
+  min-width: 20vw;
+}
+
+.mini-table-info p{
+  margin: 0px;
+}
+
+.mini-table-info > img {
+  min-width: 30vw;
+}
+
+.players th:nth-child(2), .players td:nth-child(2) {
+  width: 10vw;
+}
+.players th:nth-child(6), .players td:nth-child(6) {
+  width: 10vw;
+}
+.players th:nth-child(1), .players td:nth-child(1) {
+  width: 2.5vw;
 }

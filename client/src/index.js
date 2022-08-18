@@ -1,65 +1,82 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import App from "./App";
-import UserProfile from "./Component/UserProfile";
-import Audio from "./Component/Audio";
 import "./style.css";
-import axios from "axios";
-import { Navbar } from "reactstrap";
 import $ from "jquery";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import SearchBar from "./Component/SearchBar";
+import UserProfile from "./Component/UserProfile";
+import axiosInstance from "./config/axiosConfig";
 
-ReactDOM.render(<App />, document.getElementById("root"));
+const root = ReactDOM.createRoot(document.getElementById("root"));
+const user_dropdown = ReactDOM.createRoot(
+  document.getElementById("login-dropdown")
+);
+root.render(<App />);
+let myAudio = document.querySelector("#audio-music");
 
+// ===================== ONLOAD =================================
 window.onload = function () {
-  const pauseMusic = sessionStorage.getItem("musicPaused");
-  const srcMusic = sessionStorage.getItem("musicSrc");
-
-  ReactDOM.render(
-    <Audio
-      src={srcMusic ? srcMusic : "/resource/music/GloryGloryManUnited.mp3"}
-    />,
-    document.getElementById("audio")
-  );
-
-  let myAudio = document.getElementById("background-music");
-
   myAudio.volume = 0.05;
   myAudio.currentTime = sessionStorage.getItem("musicCurrTime");
+  myAudio.src =
+    sessionStorage.getItem("musicSrc") ||
+    "/resource/music/GloryGloryManUnited.mp3";
 
-  pauseMusic === "true"
+  sessionStorage.getItem("musicPaused") === "true"
     ? myAudio.pause()
     : myAudio.play().catch((error) => {
         //  when an exception is played, the exception flow is followed
       });
 };
 
-window.addEventListener("beforeunload", function (event) {
-  var myAudio = document.getElementById("background-music");
+// ============== HEADER SCROLL HANDLING =========================
 
+$(document).on("scroll", function () {
+  if (window.scrollY > 78) {
+    $("#topbar").addClass("invisible"); //hide();
+    $("#navbar").css({ top: 78, position: "relative" });
+  } else {
+    $("#topbar").removeClass("invisible"); //show();
+    $("#navbar").css({ top: 0, position: "sticky" });
+  }
+  if (window.scrollY < 160) {
+    $("#menu-indicator").addClass("invisible");
+  } else {
+    $("#menu-indicator").removeClass("invisible");
+  }
+});
+
+// ==============  SEARCH BAR  =========================
+let searchDiv = ReactDOM.createRoot(document.getElementById("search-bar"));
+searchDiv.render(<SearchBar />);
+
+// ============== MUSIC PLAYER =========================
+
+window.addEventListener("beforeunload", function (event) {
   sessionStorage.setItem("musicCurrTime", myAudio.currentTime);
   sessionStorage.setItem("musicPaused", myAudio.paused);
   sessionStorage.setItem("musicSrc", myAudio.src);
 });
 
-$(document).on("scroll", function () {
-  if (window.scrollY > 78) {
-    $("#topbar").addClass("invisible"); //hide();
-  } else {
-    $("#topbar").removeClass("invisible"); //show();
-  }
+document.getElementById("music-switch").addEventListener("click", () => {
+  myAudio.paused ? myAudio.play() : myAudio.pause();
 });
 
-const switchMusic = () => {
-  var myAudio = document.getElementById("background-music");
-  return myAudio.paused ? myAudio.play() : myAudio.pause();
-};
+let musicOptions = document.querySelectorAll(".music-option");
+for (let i = 0; i < musicOptions.length; i++) {
+  musicOptions[i].addEventListener("click", (e) => {
+    myAudio.src = e.target.value;
+  });
+}
 
-const submitLogin = () => {
-  var usernameLogin = document.getElementById("login-username").value;
-  var passwordLogin = document.getElementById("login-password").value;
+// ============================= USER TABLE ============================
 
-  let usernameErrorHTML = "";
-  let passwordErrorHTML = "";
+const submitLogin = async () => {
+  let usernameLogin = document.getElementById("login-username").value;
+  let passwordLogin = document.getElementById("login-password").value;
+
+  let usernameErrorHTML = " ";
+  let passwordErrorHTML = " ";
 
   if (usernameLogin.length < 6)
     usernameErrorHTML = "Username must have at least 6 characters";
@@ -75,52 +92,52 @@ const submitLogin = () => {
 
   document.getElementById("pass-error").innerHTML = passwordErrorHTML;
 
-  if (usernameErrorHTML === "" && passwordErrorHTML === "") {
-    axios
-      .post("http://localhost:8000/UnitedHome/login/", {
+  if (usernameErrorHTML === " " && passwordErrorHTML === " ") {
+    await axiosInstance
+      .login({
         username: usernameLogin,
         password: passwordLogin,
       })
       .then((res) => {
-        if (res.data.success) {
-          localStorage.setItem("user", JSON.stringify(res.data.userInfo));
+        if (res.status === 200) {
+          localStorage.setItem("user", JSON.stringify(res.data.user_session));
+          const token = res.data.auth_token;
+          localStorage.setItem("access_token", token["access"]);
+          localStorage.setItem("refresh_token", token["refresh"]);
           document.getElementById("login_link").innerHTML =
-            res.data.userInfo.name;
-          ReactDOM.render(
-            <UserProfile userInfo={res.data.userInfo} />,
-            document.getElementById("login-dropdown")
+            res.data.user_session.name;
+          user_dropdown.render(
+            <UserProfile userInfo={res.data.user_session} />
           );
-        } else alert("Username or Password is INVALID");
+        } else alert(res.data.message);
       })
-      .catch((err) => alert(err));
+      .catch((err) => {
+        console.log(err);
+        alert(err);
+      });
   }
 };
 
+// ................Table Component................
 export const defaultLoginComponent = (
-  <div className="login-form">
-    <form>
-      <label>
-        <i className="bx bx-user"></i>
-        <span>User Name</span>
+  <div className="login-dropdown">
+    <form className="login-form">
+      <label htmlFor="login-username">
+        <i className="fas fa-user"></i>
+        <span> Username</span>
       </label>
-      <br />
       <input
         id="login-username"
         type="text"
         className="form-control login-input"
-        placeholder="Username"
+        placeholder="Username / Phone / Email"
         autoComplete="off"
       />
-      <br />
-      <br />
-      <div className="error-notice" id="user-error">
-        <br />
-      </div>
-      <label>
-        <i className="bx bx-user"></i>
-        <span>Password</span>
+      <div className="error-notice" id="user-error"></div>
+      <label htmlFor="login-password">
+        <i className="fas fa-lock"></i>
+        <span> Password</span>
       </label>
-      <br />
       <input
         id="login-password"
         type="password"
@@ -128,11 +145,7 @@ export const defaultLoginComponent = (
         placeholder="Password"
         autoComplete="off"
       />
-      <br />
-      <br />
-      <div className="error-notice" id="pass-error">
-        <br />
-      </div>
+      <div className="error-notice" id="pass-error"></div>
     </form>
     <button className="btn btn-black" id="login-btn" onClick={submitLogin}>
       Login
@@ -148,17 +161,9 @@ export const defaultLoginComponent = (
   </div>
 );
 
-// BUTTON ONCLICK FUNCTION
-
-document.getElementById("music-switch").onclick = function () {
-  switchMusic();
-};
-
-//---------------------------------
-
-// Render User Table
+// ..............Render User Table...............................
 const userInfo = JSON.parse(localStorage.getItem("user"));
-var loginComponent = undefined;
+let loginComponent = undefined;
 
 if (userInfo != null && Object.keys(userInfo).length > 0) {
   document.getElementById("login_link").innerHTML = userInfo.name;
@@ -166,4 +171,4 @@ if (userInfo != null && Object.keys(userInfo).length > 0) {
 } else {
   loginComponent = defaultLoginComponent;
 }
-ReactDOM.render(loginComponent, document.getElementById("login-dropdown"));
+user_dropdown.render(loginComponent);

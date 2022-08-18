@@ -1,93 +1,56 @@
 import psycopg2
 from django.db import models
-from django import forms
-from rest_framework import status
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from datetime import datetime, date
-from django.contrib.postgres.forms import SimpleArrayField
-from . import support as sp
+from . import forms, support as sp
+
 # Create your models here.
 
 
 # ===========================INITIAL==========================//
-connectionPG = psycopg2.connect(user="philong249",
-                                password="01886933234",
-                                host="localhost",
-                                port="5432",
-                                database="plpostgres_database")
+connectionPG = psycopg2.connect(
+    user="philong249",
+    password="01886933234",
+    host="localhost",
+    port="5432",
+    database="plpostgres_database",
+)
 cursorDB = connectionPG.cursor()
-print(connectionPG.get_dsn_parameters(), "\n")
 cursorDB.execute("SELECT version();")
 record = cursorDB.fetchone()
-print("You are connected to - ", record, "\n")
 # ==============================================================//
 
-
-class inputJSON(forms.Form):
-    method = forms.CharField(required=True, max_length=100)
-    dataip = forms.CharField(required=True, max_length=4)
-
-
-class MatchResultListForm(forms.Form):
-    id = SimpleArrayField(forms.IntegerField(required=True))
-    goalscore = SimpleArrayField(forms.IntegerField(required=True))
-    goalconceded = SimpleArrayField(forms.IntegerField(required=True))
-
-
-class BasicPlayerInfo(models.Model):
-    name = models.CharField(max_length=50)
-    nationality = models.CharField(max_length=20)
-    birthday = models.DateField()
-    role = models.CharField(max_length=20)
-    height = models.IntegerField()
-    salary = models.IntegerField(null='non-Public')
-    status = models.CharField(max_length=20)
-
-
-class LoginInfo(forms.Form):
-    username = forms.CharField(required=True, max_length=40, min_length=6)
-    password = forms.CharField(required=True, max_length=40, min_length=6)
-
-class SignupInfo(forms.Form):
-    username = forms.CharField(required=True, max_length=40, min_length=6)
-    password = forms.CharField(required=True, max_length=40, min_length=6)
-    phone = forms.CharField(required=True, max_length=40, min_length=6)
-    email = forms.CharField(required=True, max_length=40, min_length=6)
-    license = forms.CharField(required=False, max_length=40, min_length=7)
 
 # PLAYER----------------------------------------------------------------------------
 
 
-def getBasicInfo():
+def getPlayerInfos():
     allRecord = {}
+    cursorDB.execute("""SELECT * FROM v_players""")
+    tableContent = cursorDB.fetchall()
     for position in sp.tableList:
         allRecord[position] = []
-        cursorDB.execute("""SELECT * FROM v_%s""" % (position, ))
-        tableContent = cursorDB.fetchall()
-        for record in tableContent:
-            allRecord[position].append(
-                dict(zip(sp.BasicPlayerInfoField, record)))
+    for record in tableContent:
+        allRecord[record[-3].lower()].append(dict(zip(sp.personalField, record)))
     return allRecord
 
 
 def getInfoByPosition(position):
     if position not in sp.tableList:
         return None
-    cursorDB.execute("""SELECT * FROM v_%s""" % (position, ))
+    cursorDB.execute("""SELECT * FROM v_%s""" % (position,))
     tableContent = []
     for player in cursorDB.fetchall():
         tableContent.append(dict(zip(sp.BasicPlayerInfoField, player)))
     return tableContent
 
 
-def getInfoByID(position, ID):
-    cursorDB.execute("""SELECT * FROM get_player_by_id(%s)""" % (ID, ))
+def getPlayerInfoByID(position, ID):
+    cursorDB.execute("""SELECT * FROM get_player_by_id(%s)""" % (ID,))
     returnRecord = cursorDB.fetchall()
     if returnRecord == []:
         return None
     personalInfo = dict(zip(sp.personalField, returnRecord[0]))
     return personalInfo
+
 
 # LEAGUE----------------------------------------------------------------------------
 
@@ -105,8 +68,10 @@ def getLeagueTable():
 
 def updateLeagueTable(idList, gsList, gcList, nTeam):
     res = []
-    cursorDB.execute("""SELECT * from update_league_table( ARRAY %s, ARRAY %s, ARRAY %s, %s)""" %
-                     (idList, gsList, gcList, nTeam))
+    cursorDB.execute(
+        """SELECT * from update_league_table( ARRAY %s, ARRAY %s, ARRAY %s, %s)"""
+        % (idList, gsList, gcList, nTeam)
+    )
     connectionPG.commit()
     returnRecord = cursorDB.fetchall()
     if returnRecord == []:
@@ -128,16 +93,37 @@ def clearLeagueTable():
     return res
 
 
-def summitUserLoginData(username, password):
+# USER---------------------------------------------------------------------------------
+def submitUserLoginData(userform: forms.UserInfoForm):
+    user = userform.data
     cursorDB.execute(
-        """SELECT * FROM authenticate_user('%s', '%s')""" % (username, password))
-    return dict(zip(('username', 'email', 'phone', 'name'), cursorDB.fetchall()[0]))
+        """SELECT * FROM authenticate_user('%s', '%s')"""
+        % (user["username"], user["password"])
+    )
+    res = cursorDB.fetchall()[0]
+    return dict(zip(sp.userField, res)) if res[0] else None
 
 
 def getUserInfo(username):
+    cursorDB.execute("""SELECT * FROM get_user_by_username('%s')""" % (username))
+    return dict(zip(sp.userField, cursorDB.fetchall()[0]))
+
+
+def registerUser(userform: forms.UserInfoForm):
+    user = userform.data
     cursorDB.execute(
-        """SELECT * FROM get_user_by_username('%s')""" % (username))
-    return dict(zip(('username', 'email', 'phone', 'name'), cursorDB.fetchall()[0]))
+        """SELECT * FROM register_user('%s', '%s', '%s', '%s', '%s', '%s')"""
+        % (
+            user["username"],
+            user["password"],
+            user["email"],
+            user["name"],
+            user["phone"],
+            user["license"],
+        )
+    )
+    return dict(zip(sp.userField, cursorDB.fetchall()[0]))
+
 
 # TEST---------------------------------------------------------------------------------
 

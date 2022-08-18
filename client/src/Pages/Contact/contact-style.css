@@ -1,0 +1,9 @@
+.contact-cover {
+    display: block;
+}
+
+.contact-up {
+    display: flex;
+    flex-direction: "column";
+    justify-content: space-around;
+}

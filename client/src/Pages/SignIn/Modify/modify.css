@@ -1,12 +1,13 @@
-#modify-background {
+.modify-form {
   align-items: center;
   justify-content: center;
   display: flex;
 }
 
-#modify-form {
+.modify-cover {
   display: block;
   background-color: crimson;
+  opacity: 0.9;
   padding: 20px;
   text-align: center;
   margin: 10px 0px;
@@ -15,23 +16,120 @@
   width: 60%;
 }
 
-.submit-modify-field {
+.modify-cover .field {
   margin-top: 30px;
   align-content: center;
   height: 50px;
 }
 
-div label {
+.modify-cover .field label {
   float: left;
+  text-transform: uppercase;
 }
 
-div input {
+.modify-cover div input {
   float: right;
   border-radius: 4px;
 }
 
-.modify-form button {
+.modify-submit {
+  pointer-events: none;
+}
+
+.modify-button {
+  pointer-events: all;
+  height: 50px;
+}
+
+.modify-submit span {
+  position: relative;
+  z-index: 1;
+}
+
+.modify-cover::before {
+  content: "";
+  position: absolute;
+  border: 2px gray solid;
+  height: 20px;
+  width: 40px;
+  transform: translate(-500%, -30px);
+  background: lightpink;
+  transition: 0.5s linear;
+}
+
+.modify-cover:hover:before {
+  background: red;
+  transform: translate(400%, -30px);
+  transition: 0.5s linear;
+}
+
+.modify-cover::after {
+  content: "";
+  position: absolute;
+  border: 2px gray solid;
+  height: 20px;
+  width: 40px;
+  transform: translate(400%, 10px);
+  background: lightpink;
+  transition: 0.5s linear;
+}
+
+.modify-cover:hover:after {
+  background: red;
+  transform: translate(-500%, 10px);
+  transition: 0.5s linear;
+}
+
+.modify-button {
   background-color: lightpink;
   border-radius: 10px;
   width: 150px;
+  padding: 10px 30px;
+  text-transform: uppercase;
+  transition: 0.5s linear;
+}
+
+.modify-button:hover {
+  width: 200px;
+  letter-spacing: 0.25rem;
+  box-shadow:  0 0 35px #ff1;
+  transition: 0.5s linear;
+}
+
+.error-notice {
+  color: wheat !important;
+  text-align: left;
+  font-size: 15px !important; 
+}
+
+
+.not-signin {
+  height: 400px;
+  background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#content {
+  padding: 50px 0;
+}
+
+.wrapper {
+  display: block;
+  position: relative;
+  text-align: left;
+  margin: 0 auto;
+  padding: 0 10px;
+  width: 800px;
+  display: flex;
+  justify-content: center;
+}
+
+pre {
+  line-height: 1.25;
+  white-space: pre;
+  font-size:large;
+  background-color: black;
+  color: white;
 }
