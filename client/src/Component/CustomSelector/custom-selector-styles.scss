@@ -11,7 +11,7 @@ $timing: .3s;
 .selector-container.expanded{
     background-color: mix($color,#fff,15%);
     transition: all linear .2s;
-    border-bottom: 5px solid black;
+    // border-bottom: 5px solid black;
     z-index: 10;
 }
 
@@ -51,11 +51,6 @@ $timing: .3s;
 
 .select-label.placeholder {
     color: mix($color,#fff,15%);
-}
-
-.select-list {
-    border-top: none;
-    transition: all .2s,
 }
 
 .select-list {

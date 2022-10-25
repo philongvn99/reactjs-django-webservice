@@ -25,7 +25,7 @@ cdcommand="cd "`realpath`
 # echo $str1
 
 osascript -e "tell app \"Terminal\" to do script \"$cdcommand"client"; npm start\""
-osascript -e "tell app \"Terminal\" to do script \"$cdcommand"server"; source venv/bin/activate; python manage.py runserver\""
+osascript -e "tell app \"Terminal\" to do script \"$cdcommand"server"; conda activate base; python manage.py runserver\""
 
 # (cd ./server ; python manage.py runserver) &
 # (cd ./client ; npm run start) &&

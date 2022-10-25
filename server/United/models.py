@@ -1,5 +1,7 @@
 import psycopg2
-from django.db import models
+from fake_useragent import UserAgent
+from urllib.request import Request, urlopen
+from bs4 import BeautifulSoup
 from . import forms, support as sp
 
 # Create your models here.
@@ -16,6 +18,7 @@ connectionPG = psycopg2.connect(
 cursorDB = connectionPG.cursor()
 cursorDB.execute("SELECT version();")
 record = cursorDB.fetchone()
+ua = UserAgent()
 # ==============================================================//
 
 
@@ -55,9 +58,10 @@ def getPlayerInfoByID(position, ID):
 # LEAGUE----------------------------------------------------------------------------
 
 
-def getLeagueTable():
+def getLeagueTable(season):
     leagueTable = []
-    cursorDB.execute("""SELECT * from get_all_teams()""")
+    season = season + '::smallint'
+    cursorDB.execute("""SELECT * from get_all_teams(%s)""" % (season, ))
     returnRecord = cursorDB.fetchall()
     if returnRecord == []:
         return None
@@ -79,6 +83,29 @@ def updateLeagueTable(idList, gsList, gcList, nTeam):
     for record in returnRecord:
         res.append(dict(zip(sp.leagueTableField, record)))
     return res
+
+def getLeagueResults(dateString:str):       
+    match_req = Request(f'https://www.espn.com/soccer/fixtures/_/date/{dateString}/league/eng.1')
+    print(dateString)
+    match_req.add_header('User-Agent', ua.random)
+    match_doc = urlopen(match_req).read().decode('utf8')
+    
+    soup = BeautifulSoup(match_doc, 'html.parser')
+        
+    resultSoup = soup.select("tr.has-results")
+    results = {"home": [], "away": [], "score": {}}
+
+    i = 0
+    for res in resultSoup[:10]:
+        teams = [team.text for team in res.select("a span")]
+        score = res.select("a")[1].text.split('-')
+        if len(score) > 1:
+            results["home"].append(teams[0])
+            results["away"].append(teams[1])
+            results["score"][f'home{i}'] = int(score[0])
+            results["score"][f'away{i}'] = int(score[1])
+            i += 1
+    return results
 
 
 def clearLeagueTable():
@@ -123,6 +150,9 @@ def registerUser(userform: forms.UserInfoForm):
         )
     )
     return dict(zip(sp.userField, cursorDB.fetchall()[0]))
+
+def modifyUserInfo(modifiable):
+    cursorDB.execute("""SELECT * FROM register_user('%s', '%s', '%s', '%s', '%s', '%s')""")
 
 
 # TEST---------------------------------------------------------------------------------

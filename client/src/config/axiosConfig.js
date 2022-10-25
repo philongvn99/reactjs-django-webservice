@@ -6,7 +6,7 @@ let authTokens = localStorage.getItem("access_token")
 
 const axiosInstance = axios.create({
   baseURL: "http://localhost:8000/UnitedHome/",
-  timeout: 1000,
+  timeout: 3000,
   headers: {
     "Content-Type": "application/json",
     // Authorization: `Bearer ${authTokens?.accessToken}`,
@@ -64,7 +64,7 @@ axiosInstance.interceptors.response.use(
       localStorage.setItem("access_token", newAccToken);
       // error.config.headers["Authorization"] = "Bearer " + newAccToken;
       console.log(error.config);
-      // window.location.reload(true);
+      window.location.reload(true);
     }
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
@@ -89,7 +89,13 @@ const refreshToken = async () => {
 // };
 
 axiosInstance.login = (user) => axiosInstance.post("/user/login/", user);
-axiosInstance.getLeagueTable = () => axiosInstance.get("/league/table");
+axiosInstance.getLeagueTable = (season = "2023") =>
+  axiosInstance.get(`/league/table/${season + "/"}`);
+axiosInstance.getPlayerInfo = () => axiosInstance.get("/player/");
+axiosInstance.getMatchResults = (dateString) =>
+  axiosInstance.get(`/league/result/${dateString}/`);
+axiosInstance.updateLeagueResults = (results) =>
+  axiosInstance.put("http://localhost:8000/UnitedHome/league/table/", results);
 axiosInstance.updateLeagueResults = (results) =>
   axiosInstance.put("http://localhost:8000/UnitedHome/league/table/", results);
 

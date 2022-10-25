@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef, useId } from "react";
-import CustomSelector from "./CustomSelector/CustomSelector";
+import React, { useState, useRef } from "react";
+import CustomSelector from "../../../Component/CustomSelector/CustomSelector";
 import LineupSelector from "./LineupSelector/LineupSelector";
 import { Leagues, Round } from "./data";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
@@ -8,28 +8,25 @@ import "./match-result-form-styles.scss";
 const MatchResultForm = (props) => {
   const [Players] = useState(JSON.parse(sessionStorage.getItem("players")));
   const [league, setLeague] = useState(null);
-  const [round, setRound] = useState();
-  const [home, setHome] = useState({ value: true, label: "Home", logo: null });
-  const [stadium, setStadium] = useState("");
-  const [date, setDate] = useState("");
+  const [round, setRound] = useState(null);
+  const [home, setHome] = useState(true);
+
+  const dateRef = useRef();
+  const stadiumRef = useRef();
+
+  console.log(league);
 
   return (
     <div className="match-form-background">
       <div className="match-event-info">
         <div className="match-selection">
-          <input
-            type="date"
-            placeholder="League"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-          ></input>
+          <input type="date" placeholder="League" ref={dateRef}></input>
         </div>
         <div className="match-selection league">
           <CustomSelector
             options={Leagues}
-            onChange={(e) => {
-              setLeague(e);
-            }}
+            onChange={(e) => setLeague(e)}
+            value={league}
             placeholder="League Option"
           ></CustomSelector>
         </div>
@@ -57,25 +54,25 @@ const MatchResultForm = (props) => {
             ))}
         </div>
         <div className="match-selection">
-          <CustomSelector
-            options={[
-              { value: true, label: "Home", logo: null },
-              { value: false, label: "Away", logo: null },
-            ]}
-            defaultValue={{ value: true, label: "Home", logo: null }}
-            onChange={(e) => setHome(e.value)}
-            placeholder="Home/Away"
-          ></CustomSelector>
+          <input
+            type="button"
+            onClick={() => setHome((h) => !h)}
+            value={home ? "HOME" : "AWAY"}
+          ></input>
         </div>
         <div className="match-selection">
-          <input
-            type="text"
-            placeholder="Stadium"
-            value={stadium}
-            onChange={(e) => {
-              setStadium(e.target.value);
-            }}
-          ></input>
+          <input ref={stadiumRef} type="text" placeholder="Stadium"></input>
+          <button
+            onClick={() =>
+              console.log(
+                dateRef.current.value,
+                league.value,
+                round.value,
+                home.value,
+                stadiumRef.current.value
+              )
+            }
+          ></button>
         </div>
       </div>
       <div className="match-event-detail">

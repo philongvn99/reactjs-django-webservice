@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { Container, Row, Col } from "reactstrap";
 import axiosInstance from "../../../config/axiosConfig";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
@@ -97,7 +99,7 @@ const styles = {
     border: "2px solid #303",
   },
   submitButton: {
-    width: "100px",
+    width: "150px",
     height: "50px",
   },
 };
@@ -111,6 +113,12 @@ const scoreList = () => {
   return ret;
 };
 
+const dateStringFromDate = (date) =>
+  date.getYear() +
+  1900 +
+  String(date.getMonth() + 1).padStart(2, "0") +
+  String(date.getDate()).padStart(2, "0");
+
 const LeagueResultsForm = () => {
   const [teams, setTeams] = useState([]);
   const [home, setHome] = useState([]);
@@ -121,23 +129,27 @@ const LeagueResultsForm = () => {
     awayteams: "away",
   });
   const [score, setScore] = useState(scoreList);
+  const [dateStr, setDateStr] = useState(new Date());
 
   const isInitialMount = useRef(true);
+
+  async function fetchMyAPI() {
+    await axiosInstance
+      .getLeagueTable()
+      .then((res) => {
+        console.log(res.data);
+        setTeams(res.data);
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  }
 
   useEffect(() => {
     if (isInitialMount.current) {
       isInitialMount.current = false;
       document.getElementById("league_link").classList = "nav-link active";
-      async function fetchMyAPI() {
-        await axiosInstance
-          .getLeagueTable()
-          .then((res) => {
-            setTeams(res.data);
-          })
-          .catch((err) => {
-            alert(err);
-          });
-      }
+
       fetchMyAPI();
     } else {
       // Your useEffect code here to be run on update
@@ -149,6 +161,42 @@ const LeagueResultsForm = () => {
       ...score,
       [event.target.name]: parseInt(event.target.value),
     });
+  };
+
+  const handleButton = (date) => {
+    async function getMatchResults() {
+      // let newTeams = await axiosInstance
+      //   .getLeagueTable()
+      //   .then((res) => res.data);
+      await axiosInstance
+        .getMatchResults(dateStringFromDate(date))
+        .then((res) => {
+          let newTeams = teams.map((a) => ({ ...a }));
+          let newHome = [];
+          let newAway = [];
+
+          Array.from(res.data["home"], (v, i) => {
+            let idx = newTeams.findIndex((o) => o.team_name === v);
+            newHome.push(newTeams[idx]);
+            newTeams.splice(idx, 1);
+          });
+
+          Array.from(res.data["away"], (v, i) => {
+            let idx = newTeams.findIndex((o) => o.team_name === v);
+            if (idx < 0) console.log(v);
+            newAway.push(newTeams[idx]);
+            newTeams.splice(idx, 1);
+          });
+          setScore(res.data["score"]);
+          setAway(newAway);
+          setHome(newHome);
+          setTeams(newTeams);
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    }
+    getMatchResults();
   };
 
   const handleSubmit = (event) => {
@@ -170,7 +218,7 @@ const LeagueResultsForm = () => {
         .updateLeagueResults({
           id: teamIdList,
           goalscore: teamGSList,
-          goalconceded: teamGCList,
+          goalconceeded: teamGCList,
         })
         .then(function (response) {
           if (response.data.success) alert("Successful Update");
@@ -254,6 +302,14 @@ const LeagueResultsForm = () => {
   return (
     <Container>
       <Row style={styles.entireFormStyle}>
+        <DatePicker
+          dateFormat="dd-MM-yyyy"
+          selected={moment(dateStr).toDate()}
+          onChange={(date) => {
+            setDateStr(date);
+            handleButton(date);
+          }}
+        />
         <DragDropContext onDragEnd={onDragEnd}>
           <Col style={{ padding: 0, width: "30%" }}>
             <Droppable droppableId="allteams">

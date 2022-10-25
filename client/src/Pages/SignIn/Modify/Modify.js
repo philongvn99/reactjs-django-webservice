@@ -1,16 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import validator from "validator";
 import "./modify.css";
 
 const Modify = (props) => {
-  const [userInfo, setUserInfo] = useState({
+  const [userPublicInfo, setUserPublicInfo] = useState({
     phone: "",
     name: "",
-    p_password: "",
-    password: "",
-    c_password: "",
     license: "",
   });
+
+  const phoneRef = useRef();
+  const nameRef = useRef();
+  const p_passwordRef = useRef();
+  const passwordRef = useRef();
+  const c_passwordRef = useRef();
+  const licenseRef = useRef();
+
   const [error, setError] = useState({
     phone: "",
     name: "",
@@ -19,7 +24,6 @@ const Modify = (props) => {
     c_password: "",
     license: "",
   });
-  const [password, setPassword] = useState("");
   const [display, setDisplay] = useState(true);
   const [changePassword, setChangePassword] = useState(false);
 
@@ -30,17 +34,15 @@ const Modify = (props) => {
       const user = JSON.parse(localStorage.getItem("user"));
       if (Object.keys(user).length === 0) setDisplay(false);
       else {
-        setUserInfo({
-          ...userInfo,
+        setUserPublicInfo({
           phone: user.phone,
           name: user.name,
           license: user.license,
         });
-        setPassword(user.password);
       }
     }
     getUser();
-  }, [userInfo]);
+  }, []);
 
   const onChecked = (e) => {
     setChangePassword(e.target.checked);
@@ -48,18 +50,25 @@ const Modify = (props) => {
 
   const submitHandler = () => {
     setError({
-      phone: /0[0-9]{9}$/.test(userInfo.phone)
+      phone: /0[0-9]{9}$/.test(phoneRef.current.value)
         ? ""
         : "Invalid Vietnamese Mobile phone number format",
-      name: validator.isByteLength(userInfo.name, { min: 8, max: 32 })
+      name: validator.isByteLength(nameRef.current.value, { min: 8, max: 32 })
         ? ""
         : "Length of your name should has 8-32 characters",
       p_password:
-        userInfo.p_password === password || !changePassword
+        validator.isStrongPassword(passwordRef.current.value, {
+          minLength: 8,
+          minLowercase: 1,
+          minUppercase: 1,
+          minNumbers: 1,
+          minSymbols: 1,
+          returnScore: false,
+        }) || !changePassword
           ? ""
-          : "Your password is incorrect",
+          : "Your input password is not strong enough",
       password:
-        validator.isStrongPassword(userInfo.password, {
+        validator.isStrongPassword(passwordRef.current.value, {
           minLength: 8,
           minLowercase: 1,
           minUppercase: 1,
@@ -70,10 +79,13 @@ const Modify = (props) => {
           ? ""
           : "Another Stronger password, please!",
       c_password:
-        userInfo.c_password === userInfo.password || !changePassword
+        c_passwordRef.current.value === passwordRef.current.value ||
+        !changePassword
           ? ""
           : "Please re-enter exactly your new demand password",
-      license: /([0-9]){2}[A-Z][A-Z0-9]?-[0-9]{4,5}$/.test(userInfo.license)
+      license: /([0-9]){2}[A-Z][A-Z0-9]?-[0-9]{4,5}$/.test(
+        licenseRef.current.value
+      )
         ? ""
         : "Valid Vietnamese License Plate Format, please!",
     });
@@ -81,7 +93,14 @@ const Modify = (props) => {
       JSON.stringify(error) ===
       '{"phone":"","name":"","p_password":"","password":"","c_password":"","license":""}'
     )
-      console.log(userInfo);
+      console.log(
+        licenseRef.current.value,
+        p_passwordRef.current.value,
+        c_passwordRef.current.value,
+        nameRef.current.value,
+        phoneRef.current.value,
+        passwordRef.current.value
+      );
   };
 
   if (display)
@@ -95,10 +114,8 @@ const Modify = (props) => {
               id="modify-phone"
               type="tel"
               pattern="0[0-9]{9}"
-              value={userInfo.phone}
-              onChange={(e) =>
-                setUserInfo({ ...userInfo, phone: e.target.value })
-              }
+              ref={phoneRef}
+              defaultValue={userPublicInfo.phone}
             />
           </div>
           <div className="error-notice" id="phone-error">
@@ -109,10 +126,8 @@ const Modify = (props) => {
             <input
               id="modify-name"
               type="text"
-              value={userInfo.name}
-              onChange={(e) =>
-                setUserInfo({ ...userInfo, name: e.target.value })
-              }
+              ref={nameRef}
+              defaultValue={userPublicInfo.name}
             />
           </div>
           <div className="error-notice" id="name-error">
@@ -123,10 +138,8 @@ const Modify = (props) => {
             <input
               id="modify-license"
               type="text"
-              value={userInfo.license}
-              onChange={(e) =>
-                setUserInfo({ ...userInfo, license: e.target.value })
-              }
+              ref={licenseRef}
+              defaultValue={userPublicInfo.license}
             />
           </div>
           <div className="error-notice" id="license-error">
@@ -136,7 +149,7 @@ const Modify = (props) => {
             onClick={onChecked}
             className="form-check-input"
             type="checkbox"
-            value={true}
+            defaultValue={true}
           />
           <label>Do you want to change password</label>
           <br></br>
@@ -150,10 +163,8 @@ const Modify = (props) => {
                 <input
                   id="modify-current-password"
                   type="password"
+                  ref={p_passwordRef}
                   placeholder="Current Password"
-                  onChange={(e) =>
-                    setUserInfo({ ...userInfo, password: e.target.value })
-                  }
                 />
               </div>
               <div className="error-notice" id="past-password-error">
@@ -164,10 +175,8 @@ const Modify = (props) => {
                 <input
                   id="modify-password"
                   type="password"
+                  ref={passwordRef}
                   placeholder="Password"
-                  onChange={(e) =>
-                    setUserInfo({ ...userInfo, password: e.target.value })
-                  }
                 />
               </div>
               <div className="error-notice" id="password-error">
@@ -181,10 +190,8 @@ const Modify = (props) => {
                 <input
                   id="modify-confirm-password"
                   type="password"
+                  ref={c_passwordRef}
                   placeholder="Confirm Password"
-                  onChange={(e) =>
-                    setUserInfo({ ...userInfo, c_password: e.target.value })
-                  }
                 />
               </div>
               <div className="error-notice" id="confirm-password-error">

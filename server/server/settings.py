@@ -12,8 +12,6 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
-from datetime import timedelta
-from django.conf import settings
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,12 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "s8p-$eif)z5qw!26z@9f8z11&i!7c5+rg^)0-o74aoj5v=ye_z"
+SECRET_KEY = "s8p-$eif)z5qw!26z@9f8z11&i!7c5+rg^)0-o74aoj5v=ye_z" # os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*'] # os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 
 # Application definition
 CORS_ORIGIN_ALLOW_ALL = True
@@ -42,7 +40,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "rest_framework.authtoken",
-    "rest_framework_simplejwt",
     "United.apps.UnitedConfig",
     "corsheaders",
     "django_filters",
@@ -136,6 +133,8 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
+APPEND_SLASH = False
+
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
@@ -162,6 +161,7 @@ DATABASES = {
         "PORT": "5432",
     }
 }
+
 
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 

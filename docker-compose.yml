@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  webserver:
+    build: ./server
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./server/:/usr/src/webserver/
+    ports:
+      - 8000:8000
+    env_file:
+      - ./server/.env.dev
+    depends_on:
+      - db
+
+  db:
+    image: postgres:13.0-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=philong249
+      - POSTGRES_PASSWORD=01886933234
+      - POSTGRES_DB=plpostgres_database
+
+volumes:
+  postgres_data:

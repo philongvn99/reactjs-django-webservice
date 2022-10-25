@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../../../config/axiosConfig";
+import CustomSelector from "../../../Component/CustomSelector/CustomSelector";
 import "./league-table-style.css";
 
 const StandingTable = (props) => {
@@ -80,27 +81,40 @@ const StandingTable = (props) => {
 const LeagueTable = () => {
   const [teams, setTeams] = useState(null);
 
+  async function fetchMyAPI(season = 2023) {
+    await axiosInstance
+      .getLeagueTable(season)
+      .then((res) => {
+        setTeams(res.data);
+      })
+      .catch((err) => {
+        if (err.response.status === 401) {
+          window.location.reload();
+        } else alert(err);
+      });
+  }
+
   useEffect(() => {
     document.getElementById("league_link").classList = "nav-link active";
     document.getElementById("league_indicator").classList = "menu-item active";
-    async function fetchMyAPI() {
-      await axiosInstance
-        .getLeagueTable()
-        .then((res) => {
-          setTeams(res.data);
-        })
-        .catch((err) => {
-          if (err.response.status === 401) {
-            window.location.reload();
-          } else alert(err);
-        });
-    }
+
     fetchMyAPI();
   }, []);
 
   return (
     teams !== null && (
-      <StandingTable teamlist={teams} title="league table"></StandingTable>
+      <div style={{ margin: "1vw 0px", justifyContent: "space-between" }}>
+        <CustomSelector
+          options={[
+            { value: "2022", label: "2022", logo: null },
+            { value: "2023", label: "2023", logo: null },
+          ]}
+          defaultValue={{ value: "2023", label: "2023", logo: null }}
+          onChange={(e) => fetchMyAPI(e.value)}
+          placeholder="Round"
+        ></CustomSelector>
+        <StandingTable teamlist={teams} title="league table"></StandingTable>
+      </div>
     )
   );
 };

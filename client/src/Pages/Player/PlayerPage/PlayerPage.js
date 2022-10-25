@@ -3,10 +3,9 @@ import { Container, Row } from "reactstrap";
 import PlayerTable from "../resource/TableComponent/PlayerTable";
 
 const PlayerPage = () => {
-  const [goalkeeperData, setGoalkeeperData] = useState(null);
-  const [defenderData, setDefenderData] = useState(null);
-  const [midfielderData, setMidfielderData] = useState(null);
-  const [forwardData, setForwardData] = useState(null);
+  const [players, setPlayers] = useState(
+    JSON.parse(sessionStorage.getItem("players"))
+  );
 
   useEffect(() => {
     async function fetchMyAPI() {
@@ -14,45 +13,36 @@ const PlayerPage = () => {
         "nav-link active dropbtn";
       document.getElementById("player_indicator").classList =
         "menu-item active";
-
-      let players = JSON.parse(await sessionStorage.getItem("players"));
-      setGoalkeeperData(players.goalkeeper);
-      setDefenderData(players.defender);
-      setMidfielderData(players.midfielder);
-      setForwardData(players.forward);
     }
     fetchMyAPI();
   }, []);
 
   return (
-    <Container id="position-table" style={styles.Content}>
-      <Row id="goalkeeper-table">
-        {goalkeeperData !== null && (
+    players && (
+      <Container id="position-table" style={styles.Content}>
+        <Row id="goalkeeper-table">
           <PlayerTable
-            players={goalkeeperData}
+            players={players.goalkeeper}
             title="goalkeeper"
           ></PlayerTable>
-        )}
-      </Row>
-      <Row id="defender-table">
-        {defenderData !== null && (
-          <PlayerTable players={defenderData} title="defender"></PlayerTable>
-        )}
-      </Row>
-      <Row id="midfielder-table">
-        {midfielderData !== null && (
+        </Row>
+        <Row id="defender-table">
           <PlayerTable
-            players={midfielderData}
+            players={players.defender}
+            title="defender"
+          ></PlayerTable>
+        </Row>
+        <Row id="midfielder-table">
+          <PlayerTable
+            players={players.midfielder}
             title="midfielder"
           ></PlayerTable>
-        )}
-      </Row>
-      <Row id="forward-table">
-        {forwardData !== null && (
-          <PlayerTable players={forwardData} title="forward"></PlayerTable>
-        )}
-      </Row>
-    </Container>
+        </Row>
+        <Row id="forward-table">
+          <PlayerTable players={players.forward} title="forward"></PlayerTable>
+        </Row>
+      </Container>
+    )
   );
 };
 export default PlayerPage;

@@ -1,17 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import PlayerTable from "../resource/TableComponent/PlayerTable";
 import { Container, Row } from "reactstrap";
 import { fireDatabase } from "../../../config/firebaseConfig";
 import "./position-style.css";
 
 const Position = (props) => {
-  const [playerTable, setPlayerTable] = useState(null);
   const [thumbnailLink, setThumbnailLink] = useState(null);
+
+  const { pos } = props.match.params;
+
+  const positionPlayers = useMemo(
+    () => JSON.parse(sessionStorage.getItem("players"))[pos],
+    [pos]
+  );
 
   useEffect(() => {
     document.getElementById("player_link").classList = "nav-link active";
-
-    const { pos } = props.match.params;
 
     async function fetchMyAPI() {
       fireDatabase.ref(`/player-table/${pos + "s"}`).on(
@@ -23,16 +27,10 @@ const Position = (props) => {
           console.log("The read failed: " + errorObject.name);
         }
       );
-
-      setPlayerTable(
-        <PlayerTable
-          players={JSON.parse(sessionStorage.getItem("players"))[pos]}
-          title={pos}
-        ></PlayerTable>
-      );
     }
+
     fetchMyAPI();
-  }, [props]);
+  }, []);
 
   return (
     <Container className="position-table">
@@ -43,7 +41,11 @@ const Position = (props) => {
           alt="ICON of this position"
         ></img>
       </Row>
-      <Row>{playerTable}</Row>
+      <Row>
+        {positionPlayers && (
+          <PlayerTable players={positionPlayers} title={pos}></PlayerTable>
+        )}
+      </Row>
       <Row>
         <div style={{ display: "flex", alignItems: "center", height: "50px" }}>
           <a

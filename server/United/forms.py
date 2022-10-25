@@ -5,7 +5,7 @@ from django.core.validators import RegexValidator
 
 loginValidator = [
     RegexValidator(
-        r"^[a-zA-Z0-9]{16,32}$",
+        r"^[a-zA-Z0-9]{7,32}$",
         message="Input must be Alphanumeric with maximum length 31",
     ),
 ]
@@ -27,7 +27,7 @@ nameValidator = [
 
 class LoginInfoForm(forms.Form):
     username = forms.CharField(min_length=8, max_length=32, validators=loginValidator)
-    password = forms.CharField(min_length=8, max_length=32, validators=loginValidator)
+    password = forms.CharField(min_length=7, max_length=32, validators=loginValidator)
 
 
 class PlayerInfoForm(forms.Form):
@@ -82,7 +82,7 @@ class UserInfoForm(forms.Form):
 
 
 class MatchResultListForm(forms.Form):
-    id = SimpleArrayField(forms.IntegerField())
+    id = SimpleArrayField(forms.CharField(min_length=3, max_length=6))
     goalscore = SimpleArrayField(forms.IntegerField())
     goalconceeded = SimpleArrayField(forms.IntegerField())
 

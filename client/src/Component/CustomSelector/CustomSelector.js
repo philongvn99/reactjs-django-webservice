@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./custom-selector-styles.scss";
 
 const CustomSelector = (props) => {
@@ -10,15 +10,34 @@ const CustomSelector = (props) => {
     }
   );
   const [isOpened, setIsOpened] = useState(false);
+  const ref = useRef();
 
   const handleSelect = (selection) => {
     setIsOpened(!isOpened);
     setSelectedOption(selection);
-    props.onChange(selection);
+    if (props.onChange) props.onChange(selection);
   };
+
+  useEffect(() => {
+    const onBodyClick = (event) => {
+      if (ref.current && ref.current.contains(event.target)) {
+        return;
+      }
+      setIsOpened(false);
+    };
+
+    // add event listener
+    document.body.addEventListener("click", onBodyClick);
+
+    // remove event listener
+    return () => {
+      document.body.removeEventListener("click", onBodyClick);
+    };
+  }, []);
 
   return (
     <div
+      ref={ref}
       className={
         isOpened ? "selector-container expanded" : "selector-container"
       }

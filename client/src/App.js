@@ -9,7 +9,7 @@ import MenuIndicator from "./Component/MenuIndicator/MenuIndicator";
 import MatchResultForm from "./Pages/League/MatchResultsForm/MatchResultForm";
 import LeagueResultsForm from "./Pages/League/LeagueResultsForm/LeagueResultsForm";
 // import Snowfall from "react-snowfall";
-import axios from "axios";
+import axiosInstance from "./config/axiosConfig";
 import { Container, Row, Col } from "reactstrap";
 import {
   BrowserRouter as Router,
@@ -27,11 +27,12 @@ const App = (props) => {
       let players = sessionStorage.getItem("players");
 
       if (players === null) {
-        await axios
-          .get(`/UnitedHome/player/`)
-          .then((res) =>
-            sessionStorage.setItem("players", JSON.stringify(res.data))
-          )
+        await axiosInstance
+          .getPlayerInfo()
+          .then((res) => {
+            //console.log(res.data);
+            sessionStorage.setItem("players", JSON.stringify(res.data));
+          })
           .catch((err) => {
             alert(err);
           });

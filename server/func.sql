@@ -29,13 +29,15 @@ CREATE OR REPLACE FUNCTION get_player_by_id("p_id" int)
 		END
 	$func$;
 
-CREATE OR REPLACE FUNCTION get_all_teams()
+CREATE OR REPLACE FUNCTION get_all_teams("season" smallint DEFAULT 2023)
 	RETURNS SETOF tb_team
 	LANGUAGE plpgsql AS
 	$func$
 		BEGIN
 			RETURN QUERY
 				SELECT * FROM tb_team 
+					WHERE team_season = "season"
+
 					ORDER BY 	team_points DESC, 
 								team_goal_difference DESC,
 								team_goal_for DESC,
@@ -183,3 +185,27 @@ CREATE OR REPLACE FUNCTION get_user_by_username(user_name VARCHAR(256))
 			WHERE (account_username = user_name) OR (account_phone = user_name) OR (account_phone = user_name));
 	END;
 	$func$
+
+INSERT INTO "tb_team"("team_name", "team_acronym_name", "team_logo_link", "team_league") VALUES 
+('Arsenal', 'ARS', 'https://resources.premierleague.com/premierleague/badges/t3.png',  'PREMIER_LEAGUE'),
+('Aston Villa', 'AVL', 'https://resources.premierleague.com/premierleague/badges/t7.png',  'PREMIER_LEAGUE'),
+('Brenford', 'BRE', 'https://resources.premierleague.com/premierleague/badges/t94.png',  'PREMIER_LEAGUE'),
+('Bournemouth', 'BOU', 'https://resources.premierleague.com/premierleague/badges/t91.png',  'PREMIER_LEAGUE'),
+('Brighton and Hove Albion', 'BHA', 'https://resources.premierleague.com/premierleague/badges/t36.png',  'PREMIER_LEAGUE'),
+('Chelsea', 'CHE', 'https://resources.premierleague.com/premierleague/badges/t8.png',  'PREMIER_LEAGUE'),
+('Crystal Palace', 'CRY', 'https://resources.premierleague.com/premierleague/badges/t31.png',  'PREMIER_LEAGUE'),
+('Everton', 'EVE', 'https://resources.premierleague.com/premierleague/badges/t11.png',  'PREMIER_LEAGUE'),
+('Fulham', 'FUL', 'https://resources.premierleague.com/premierleague/badges/t54.png',  'PREMIER_LEAGUE'),
+('Leeds United', 'LEE', 'https://resources.premierleague.com/premierleague/badges/t2.png',  'PREMIER_LEAGUE'),
+('Leicester City', 'LEI', 'https://resources.premierleague.com/premierleague/badges/t13.png',  'PREMIER_LEAGUE'),
+('Liverpool', 'LIV', 'https://resources.premierleague.com/premierleague/badges/t14.png',  'PREMIER_LEAGUE'),
+('Manchester City', 'MCI', 'https://resources.premierleague.com/premierleague/badges/t43.png',  'PREMIER_LEAGUE'),
+('Manchester United', 'MUN', 'https://resources.premierleague.com/premierleague/badges/t1.png',  'PREMIER_LEAGUE'),
+('Newcastle United', 'NEW', 'https://resources.premierleague.com/premierleague/badges/t4.png',  'PREMIER_LEAGUE'),
+('Nottingham Forest', 'NFO', 'https://resources.premierleague.com/premierleague/badges/t17.png',  'PREMIER_LEAGUE'),
+('Southamton', 'SOU', 'https://resources.premierleague.com/premierleague/badges/t20.png',  'PREMIER_LEAGUE'),
+('Tottenham Hotspur', 'TOT', 'https://resources.premierleague.com/premierleague/badges/t6.png',  'PREMIER_LEAGUE'),
+('West Ham United', 'WHU', 'https://resources.premierleague.com/premierleague/badges/t21.png',  'PREMIER_LEAGUE'),
+('Wolverhamton Wanderers', 'WOL', 'https://resources.premierleague.com/premierleague/badges/t39.png',  'PREMIER_LEAGUE');
+
+UPDATE "tb_team" SET "team_id" = CONCAT(team_acronym_name, '_', (team_season-2000)::varchar(10));
